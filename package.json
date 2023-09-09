@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
-	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"name": "obsidian-recipe-view",
+	"version": "0.0.1",
+	"description": "Adds a recipe view to make it easy to cook with your notes",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
