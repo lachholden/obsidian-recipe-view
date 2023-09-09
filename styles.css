@@ -18,15 +18,22 @@
 }
 
 .recipe__column-side {
-    background-color: var(--color-base-30);
     flex-basis: calc(var(--file-line-width) / 2);
     flex-grow: 0;
     flex-shrink: 1;
 }
 
 .recipe__column-main {
-    background-color: var(--color-base-10);
     flex-basis: var(--file-line-width);
     flex-grow: 0;
     flex-shrink: 1;
+}
+
+.recipe__column-side ul {
+    padding-inline-start: 0;
+}
+
+.recipe__column-side ul li {
+    margin-top: var(--size-4-2);
+    list-style: none;
 }

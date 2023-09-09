@@ -3,11 +3,11 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 import { RecipeView, VIEW_TYPE_RECIPE } from 'recipe/recipe-view';
 
 interface RecipeViewPluginSettings {
-	mySetting: string;
+	sideColumnRegex: string;
 }
 
 const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
-	mySetting: 'default'
+	sideColumnRegex: 'Ingredients|Nutrition'
 }
 
 export default class RecipeViewPlugin extends Plugin {
@@ -16,7 +16,7 @@ export default class RecipeViewPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		this.registerView(VIEW_TYPE_RECIPE, (leaf) => new RecipeView(leaf));
+		this.registerView(VIEW_TYPE_RECIPE, (leaf) => new RecipeView(leaf, this));
 
 		this.addRibbonIcon("chef-hat", "Open as recipe", () => {
 			this.activateView();
@@ -62,13 +62,13 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			.setName('Side column regex')
+			.setDesc('A regular expression for headings of sections to pull to the side column')
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
+				.setPlaceholder('Ingredients|Nutrition')
+				.setValue(this.plugin.settings.sideColumnRegex)
 				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
+					this.plugin.settings.sideColumnRegex = value;
 					await this.plugin.saveSettings();
 				}));
 	}
