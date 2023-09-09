@@ -1,8 +1,32 @@
-/*
+.workspace-leaf-content[data-type="recipe-view"] .view-content {
+    padding: 0;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.recipe__container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+}
 
-If your plugin does not need CSS, delete this file.
+.recipe__column {
+    padding: var(--file-margins);
+    max-height: 100%;
+    overflow: scroll;
+}
 
-*/
+.recipe__column-side {
+    background-color: var(--color-base-30);
+    flex-basis: calc(var(--file-line-width) / 2);
+    flex-grow: 0;
+    flex-shrink: 1;
+}
+
+.recipe__column-main {
+    background-color: var(--color-base-10);
+    flex-basis: var(--file-line-width);
+    flex-grow: 0;
+    flex-shrink: 1;
+}
