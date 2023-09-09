@@ -32,7 +32,6 @@ export default class RecipeViewPlugin extends Plugin {
 
 	async activateView() {
 		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-		console.log(activeView?.leaf.view.getState())
 		activeView?.leaf.setViewState({
 			type: VIEW_TYPE_RECIPE,
 			active: true,
