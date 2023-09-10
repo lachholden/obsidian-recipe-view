@@ -1,11 +1,10 @@
 {
 	"id": "recipe-view",
-	"name": "Recipe View",
-	"version": "0.0.1",
+	"name": "Recipe view",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Adds a recipe view to make it easy to cook with your notes",
+	"description": "View your notes as interactive recipe cards while you cook.",
 	"author": "lachholden",
 	"authorUrl": "https://github.com/lachholden",
-	"fundingUrl": "",
 	"isDesktopOnly": false
 }

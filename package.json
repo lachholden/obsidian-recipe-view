@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-recipe-view",
-	"version": "0.0.1",
-	"description": "Adds a recipe view to make it easy to cook with your notes",
+	"version": "0.1.0",
+	"description": "View your notes as interactive recipe cards while you cook.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
