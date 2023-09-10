@@ -106,8 +106,25 @@
 		padding-inline-start: 0;
 	}
 
-	:global(.column-side ul li) {
+	:global(.column-side ul > li) {
 		margin-top: var(--size-4-2);
 		list-style: none;
+	}
+
+	:global(.column-main ol) {
+		padding-inline-start: 20px;
+		counter-reset: step;
+	}
+
+	:global(.column-main ol > li) {
+		margin-top: var(--size-4-2);
+		vertical-align: top;
+		counter-increment: step;
+		padding-inline-start: 20px;
+	}
+
+	:global(.column-main ol > li::marker) {
+		color: var(--text-accent);
+		content: counter(step) " ";
 	}
 </style>
