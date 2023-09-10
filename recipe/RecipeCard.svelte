@@ -122,6 +122,10 @@
 		overflow: scroll;
 	}
 
+	.column:empty {
+		display: none;
+	}
+
 	.column-side {
 		flex-basis: calc(var(--file-line-width) / 2);
 		flex-grow: 0;

@@ -43,14 +43,16 @@
 	<div class="metadata">
 		<div class="inline-title">{title}</div>
 		<div class="frontmatter">
-			{#each Object.entries(frontmatter) as [key, value]}
-				<span class="frontmatter-entry">
-					<span class="key">{key}</span>
-					<span class="value">
-						{@html formatFrontmatterValue(key, value)}
+			{#if frontmatter}
+				{#each Object.entries(frontmatter) as [key, value]}
+					<span class="frontmatter-entry">
+						<span class="key">{key}</span>
+						<span class="value">
+							{@html formatFrontmatterValue(key, value)}
+						</span>
 					</span>
-				</span>
-			{/each}
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>
