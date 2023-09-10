@@ -27,6 +27,25 @@ export class RecipeView extends FileView {
 
     async onOpen() {
         this.renderRecipe();
+        this.containerEl.on('mouseover', 'a.internal-link', (e, el) => {
+            this.app.workspace.trigger('hover-link', {
+                event: e,
+                source: this, // TODO ??
+                hoverParent: this,
+                el,
+                linktext: el.getAttr("href"),
+                sourcePath: this.file!.path,
+            });
+        }); // TODO check this behaves as expected
+        this.containerEl.on('click', 'a.internal-link', (e, el) => {
+            const inNewLeaf = e.button === 1 || e.ctrlKey || e.metaKey;
+            this.app.workspace.openLinkText(
+                el.getAttribute("href")!,
+                this.file!.path,
+                inNewLeaf,
+            )
+        });
+        // TODO clicking tags and file links
     }
 
     async onClose() {
