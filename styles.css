@@ -1,3 +1,26 @@
+/* @settings
+
+name: Recipe view
+id: recipe-view
+settings:
+  - id: thumbnail-size
+    title: Thumbnail size
+    description: Size of the recipe thumbnail in pixels
+    type: variable-number
+    default: 150
+    format: px
+
+  - id: selected-step-alpha
+    title: Selected step opacity
+    description: The opacity of the background of the selected steps. Uses the accent colour set under "Appearance".
+    type: variable-number-slider
+    default: 0.3
+    min: 0
+    max: 1
+    step: 0.01
+*/
+
+
 .workspace-leaf-content[data-type="recipe-view"] .view-content {
     padding: 0;
     font-size: var(--font-text-size);

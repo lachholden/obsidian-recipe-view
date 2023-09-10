@@ -58,10 +58,6 @@
 </div>
 
 <style>
-	:root {
-		--thumbnail-size: 150px;
-	}
-
 	.title-block {
 		display: flex;
 		flex-direction: row;

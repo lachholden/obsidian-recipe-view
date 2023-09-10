@@ -59,7 +59,7 @@
 			var(--accent-h),
 			var(--accent-s),
 			var(--accent-l),
-			20%
+			var(--selected-step-alpha)
 		);
 		border-radius: var(--radius-m);
 	}

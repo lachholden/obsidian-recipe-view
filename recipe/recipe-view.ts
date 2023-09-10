@@ -29,6 +29,8 @@ export class RecipeView extends FileView {
     async onOpen() {
         store.plugin.set(this.plugin);
 
+        app.workspace.trigger("parse-style-settings");
+
         this.renderRecipe();
         // These events can be registered directly as they'll be cleaned up
         // when `containerEl` goes out of scope
