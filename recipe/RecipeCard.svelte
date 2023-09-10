@@ -2,6 +2,7 @@
 	import { CachedMetadata, TFile } from "obsidian";
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
 	import PlainElement from "./PlainElement.svelte";
+	import CheckableIngredientList from "./CheckableIngredientList.svelte";
 
 	export let renderedMarkdownNodes: HTMLCollection;
 	export let metadata: CachedMetadata | undefined;
@@ -22,41 +23,37 @@
 	$: titleProps.frontmatter = metadata?.frontmatter;
 
 	$: {
-		let i = 0;
-		while (i < renderedMarkdownNodes.length) {
+		let sendToColumn = mainColumnComponents;
+		let sendToSideUntilLevel = 7;
+		let currentHeader = null;
+		for (let i = 0; i < renderedMarkdownNodes.length; i++) {
 			let item = renderedMarkdownNodes.item(i)!;
 
-			// Extract sections under headers
-			if (
-				item.nodeName?.startsWith("H") &&
-				item.textContent?.match(/Ingredients|Nutrition/i)
-			) {
-				sideColumnComponents.push({
-					type: PlainElement,
-					props: { element: item },
-				});
-				const heading_level = parseInt(item.nodeName.at(1)!);
-				while (true) {
-					item = renderedMarkdownNodes.item(++i);
-					if (!item) {
-						break;
-					}
-					let nextHeadingLevel = item.nodeName?.startsWith("H")
-						? parseInt(item.nodeName.at(1)!)
-						: 7;
-					if (nextHeadingLevel <= heading_level) {
-						break;
-					} else {
-						sideColumnComponents.push({
-							type: PlainElement,
-							props: { element: item },
-						});
-					}
+			// Headers can change which column to send items to
+			if (item.nodeName.startsWith("H")) {
+				let headerLevel = parseInt(item.nodeName.at(1)!);
+				if (
+					sendToColumn == mainColumnComponents &&
+					item.textContent?.match(/Ingredients|Nutrition/i)
+				) {
+					sendToColumn = sideColumnComponents;
+					sendToSideUntilLevel = headerLevel;
+				} else if (
+					sendToColumn == sideColumnComponents &&
+					headerLevel <= sendToSideUntilLevel
+				) {
+					sendToColumn = mainColumnComponents;
+					sendToSideUntilLevel = 7;
+				}
+
+				// Don't extract any more images as a thumbnail
+				if (titleProps.thumbnailPath == null) {
+					titleProps.thumbnailPath = "";
 				}
 			}
 
-			// Extract the first image (not under a header) as the thumbnail
-			else if (
+			// Extract the first image as a thumbnail
+			if (
 				item.getElementsByTagName("IMG").length > 0 &&
 				titleProps.thumbnailPath == null
 			) {
@@ -64,17 +61,24 @@
 					.getElementsByTagName("IMG")
 					.item(0)
 					.getAttribute("src");
-				i++; // don't include this item in either column
+				continue; // Don't send to either column
 			}
 
-			// Otherwise, just send it to the main column
-			else {
-				mainColumnComponents.push({
-					type: PlainElement,
-					props: { element: item },
+			// If we're sending an unordered list to the sidebar, then make it checkable
+			if (item.nodeName == "UL" && sendToColumn == sideColumnComponents) {
+				console.log(item);
+				sendToColumn.push({
+					type: CheckableIngredientList,
+					props: { ul: item },
 				});
-				i++;
+				continue;
 			}
+
+			// Add current item to current column
+			sendToColumn.push({
+				type: PlainElement,
+				props: { element: item },
+			});
 		}
 	}
 </script>
@@ -119,15 +123,6 @@
 		flex-basis: var(--file-line-width);
 		flex-grow: 0;
 		flex-shrink: 1;
-	}
-
-	:global(.column-side ul) {
-		padding-inline-start: 0;
-	}
-
-	:global(.column-side ul > li) {
-		margin-top: var(--size-4-2);
-		list-style: none;
 	}
 
 	:global(.column-main ol) {
