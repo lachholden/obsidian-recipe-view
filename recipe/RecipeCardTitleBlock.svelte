@@ -58,6 +58,10 @@
 </div>
 
 <style>
+	:root {
+		--thumbnail-size: 150px;
+	}
+
 	.title-block {
 		display: flex;
 		flex-direction: row;
@@ -68,7 +72,10 @@
 		word-wrap: break-word;
 	}
 	img.thumbnail {
-		height: 100px;
+		height: var(--thumbnail-size);
+		width: var(--thumbnail-size);
+		object-fit: cover;
+		flex: 0 0 var(--thumbnail-size);
 		margin-inline-end: var(--size-4-4);
 		border-radius: var(--radius-s);
 	}
