@@ -42,12 +42,15 @@ export class RecipeView extends FileView {
     async renderRecipe(): Promise<boolean> {
         if (!this.file) { return false };
         const text = await this.app.vault.cachedRead(this.file!);
+        const metadata = await this.app.metadataCache.getFileCache(this.file!);
         const mdDiv = createDiv();
         MarkdownRenderer.render(this.app, text, mdDiv, this.file!.path, this);
         this.content = new RecipeCard({
             target: this.contentEl,
             props: {
-                renderedMarkdownNodes: mdDiv.childNodes
+                renderedMarkdownNodes: mdDiv.children,
+                file: this.file!,
+                metadata: metadata,
             }
         });
 

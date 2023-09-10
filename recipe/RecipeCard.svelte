@@ -1,13 +1,29 @@
 <script lang="ts">
-	export let renderedMarkdownNodes: NodeListOf<ChildNode>;
+	import { CachedMetadata, TFile } from "obsidian";
+	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
+
+	export let renderedMarkdownNodes: HTMLCollection;
+	export let metadata: CachedMetadata | undefined;
+	export let file: TFile;
 
 	let sideColumn: HTMLElement;
 	let mainColumn: HTMLElement;
 
+	let titleProps = {
+		title: "",
+		thumbnailPath: null,
+		frontmatter: null,
+	};
+
+	$: titleProps.title = file.basename;
+	$: titleProps.frontmatter = metadata?.frontmatter;
+
 	$: if (sideColumn && mainColumn) {
 		let i = 0;
 		while (i < renderedMarkdownNodes.length) {
-			let item = renderedMarkdownNodes.item(i);
+			let item = renderedMarkdownNodes.item(i)!;
+
+			// Extract sections under headers
 			if (
 				item.nodeName?.startsWith("H") &&
 				item.textContent?.match(/Ingredients|Nutrition/i)
@@ -28,7 +44,22 @@
 						sideColumn.appendChild(item.cloneNode(true));
 					}
 				}
-			} else {
+			}
+
+			// Extract the first image (not under a header) as the thumbnail
+			else if (
+				item.getElementsByTagName("IMG").length > 0 &&
+				titleProps.thumbnailPath == null
+			) {
+				titleProps.thumbnailPath = item
+					.getElementsByTagName("IMG")
+					.item(0)
+					.getAttribute("src");
+				i++;
+			}
+
+			// Otherwise, just send it to the main column
+			else {
 				mainColumn.appendChild(item.cloneNode(true));
 				i++;
 			}
@@ -38,7 +69,9 @@
 
 <div class="container">
 	<div class="column column-side" bind:this={sideColumn} />
-	<div class="column column-main" bind:this={mainColumn} />
+	<div class="column column-main" bind:this={mainColumn}>
+		<RecipeCardTitleBlock {...titleProps} />
+	</div>
 </div>
 
 <style>
