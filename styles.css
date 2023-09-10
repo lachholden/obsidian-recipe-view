@@ -1,39 +1,3 @@
 .workspace-leaf-content[data-type="recipe-view"] .view-content {
     padding: 0;
 }
-
-.recipe__container {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    height: 100%;
-    overflow: hidden;
-}
-
-.recipe__column {
-    padding: var(--file-margins);
-    max-height: 100%;
-    overflow: scroll;
-}
-
-.recipe__column-side {
-    flex-basis: calc(var(--file-line-width) / 2);
-    flex-grow: 0;
-    flex-shrink: 1;
-}
-
-.recipe__column-main {
-    flex-basis: var(--file-line-width);
-    flex-grow: 0;
-    flex-shrink: 1;
-}
-
-.recipe__column-side ul {
-    padding-inline-start: 0;
-}
-
-.recipe__column-side ul li {
-    margin-top: var(--size-4-2);
-    list-style: none;
-}
