@@ -1,6 +1,7 @@
 import RecipeViewPlugin from "main";
 import { FileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
+import store from "./store";
 
 export const VIEW_TYPE_RECIPE = "recipe-view";
 
@@ -26,7 +27,11 @@ export class RecipeView extends FileView {
     }
 
     async onOpen() {
+        store.plugin.set(this.plugin);
+
         this.renderRecipe();
+        // These events can be registered directly as they'll be cleaned up
+        // when `containerEl` goes out of scope
         this.containerEl.on('mouseover', 'a.internal-link', (e, el) => {
             this.app.workspace.trigger('hover-link', {
                 event: e,

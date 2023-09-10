@@ -4,6 +4,8 @@
 	import PlainElement from "./PlainElement.svelte";
 	import CheckableIngredientList from "./CheckableIngredientList.svelte";
 	import SelectableStepList from "./SelectableStepList.svelte";
+	import RecipeViewPlugin from "main";
+	import store from "./store";
 
 	export let renderedMarkdownNodes: HTMLCollection;
 	export let metadata: CachedMetadata | undefined;
@@ -23,10 +25,14 @@
 	$: titleProps.title = file.basename;
 	$: titleProps.frontmatter = metadata?.frontmatter;
 
+	let plugin: RecipeViewPlugin;
+	store.plugin.subscribe((p) => (plugin = p));
+
 	$: {
+		let sideColumnRegex = RegExp(plugin.settings.sideColumnRegex, "i");
+
 		let sendToColumn = mainColumnComponents;
 		let sendToSideUntilLevel = 7;
-		let currentHeader = null;
 		for (let i = 0; i < renderedMarkdownNodes.length; i++) {
 			let item = renderedMarkdownNodes.item(i)!;
 
@@ -35,7 +41,7 @@
 				let headerLevel = parseInt(item.nodeName.at(1)!);
 				if (
 					sendToColumn == mainColumnComponents &&
-					item.textContent?.match(/Ingredients|Nutrition/i)
+					item.textContent?.match(sideColumnRegex)
 				) {
 					sendToColumn = sideColumnComponents;
 					sendToSideUntilLevel = headerLevel;
