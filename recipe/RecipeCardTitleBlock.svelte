@@ -41,7 +41,7 @@
 		/>
 	{/if}
 	<div class="metadata">
-		<h1>{title}</h1>
+		<div class="inline-title">{title}</div>
 		<div class="frontmatter">
 			{#each Object.entries(frontmatter) as [key, value]}
 				<span class="frontmatter-entry">
