@@ -92,7 +92,7 @@
 	}
 </script>
 
-<div class="container">
+<div class="container markdown-rendered">
 	<div class="column column-side">
 		{#each sideColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
