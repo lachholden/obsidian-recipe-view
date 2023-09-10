@@ -58,7 +58,7 @@
 <style>
 	.title-block {
 		display: flex;
-		flex-direction: flex-row;
+		flex-direction: row;
 	}
 	h1 {
 		margin-top: 0;
@@ -85,5 +85,16 @@
 		color: var(--text-accent);
 		padding-right: var(--size-4-1);
 		font-weight: 500;
+	}
+
+	@media (max-width: 600px) {
+		.title-block {
+			flex-direction: column;
+			justify-content: start;
+			align-items: start;
+		}
+		img.thumbnail {
+			margin-bottom: var(--size-4-4);
+		}
 	}
 </style>

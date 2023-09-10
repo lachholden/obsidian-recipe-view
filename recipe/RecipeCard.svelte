@@ -125,6 +125,22 @@
 		flex-shrink: 1;
 	}
 
+	/* Single-column layout */
+	@media (max-width: 600px) {
+		.container {
+			flex-direction: column-reverse;
+			align-items: stretch;
+			justify-content: start;
+			height: auto;
+			overflow: scroll;
+		}
+		.column {
+			max-height: auto;
+			overflow: auto;
+			flex: 0 1 auto;
+		}
+	}
+
 	:global(.column-main ol) {
 		padding-inline-start: 20px;
 		counter-reset: step;
