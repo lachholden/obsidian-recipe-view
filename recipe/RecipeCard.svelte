@@ -3,6 +3,7 @@
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
 	import PlainElement from "./PlainElement.svelte";
 	import CheckableIngredientList from "./CheckableIngredientList.svelte";
+	import SelectableStepList from "./SelectableStepList.svelte";
 
 	export let renderedMarkdownNodes: HTMLCollection;
 	export let metadata: CachedMetadata | undefined;
@@ -66,10 +67,18 @@
 
 			// If we're sending an unordered list to the sidebar, then make it checkable
 			if (item.nodeName == "UL" && sendToColumn == sideColumnComponents) {
-				console.log(item);
 				sendToColumn.push({
 					type: CheckableIngredientList,
 					props: { ul: item },
+				});
+				continue;
+			}
+
+			// If we're sending an ordered list to the main column, then make it selectable
+			if (item.nodeName == "OL" && sendToColumn == mainColumnComponents) {
+				sendToColumn.push({
+					type: SelectableStepList,
+					props: { ol: item },
 				});
 				continue;
 			}
@@ -139,22 +148,5 @@
 			overflow: auto;
 			flex: 0 1 auto;
 		}
-	}
-
-	:global(.column-main ol) {
-		padding-inline-start: 20px;
-		counter-reset: step;
-	}
-
-	:global(.column-main ol > li) {
-		margin-top: var(--size-4-2);
-		vertical-align: top;
-		counter-increment: step;
-		padding-inline-start: 20px;
-	}
-
-	:global(.column-main ol > li::marker) {
-		color: var(--text-accent);
-		content: counter(step) " ";
 	}
 </style>

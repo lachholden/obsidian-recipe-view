@@ -1,4 +1,6 @@
 <script lang="ts">
+	import PlainElement from "./PlainElement.svelte";
+
 	export let ul: HTMLElement;
 	let items = [];
 	let checked = [];
@@ -16,7 +18,7 @@
 <ul>
 	{#each items as item, i}
 		<li class:checked={checked[i]} on:click={(e) => toggleChecked(i)}>
-			{item}
+			{@html items[i]}
 		</li>
 	{/each}
 </ul>
