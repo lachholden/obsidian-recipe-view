@@ -7,7 +7,6 @@
 		// See if it's a URL
 		try {
 			let url = new URL(value);
-			console.log(url);
 			return createEl("a", {
 				href: url.toString(),
 				text: url.host,
@@ -16,7 +15,6 @@
 
 		// See if it's tags
 		if (key == "tags") {
-			console.log(value);
 			return value
 				.map((tag: string) => {
 					let a = createEl("a", {

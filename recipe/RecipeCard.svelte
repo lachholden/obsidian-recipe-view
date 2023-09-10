@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { CachedMetadata, TFile } from "obsidian";
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
+	import PlainElement from "./PlainElement.svelte";
 
 	export let renderedMarkdownNodes: HTMLCollection;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
-	let sideColumn: HTMLElement;
-	let mainColumn: HTMLElement;
+	// let sideColumn: HTMLElement;
+	// let mainColumn: HTMLElement;
+	let sideColumnComponents = [];
+	let mainColumnComponents = [];
 
 	let titleProps = {
 		title: "",
@@ -18,7 +21,7 @@
 	$: titleProps.title = file.basename;
 	$: titleProps.frontmatter = metadata?.frontmatter;
 
-	$: if (sideColumn && mainColumn) {
+	$: {
 		let i = 0;
 		while (i < renderedMarkdownNodes.length) {
 			let item = renderedMarkdownNodes.item(i)!;
@@ -28,7 +31,10 @@
 				item.nodeName?.startsWith("H") &&
 				item.textContent?.match(/Ingredients|Nutrition/i)
 			) {
-				sideColumn.appendChild(item.cloneNode(true));
+				sideColumnComponents.push({
+					type: PlainElement,
+					props: { element: item },
+				});
 				const heading_level = parseInt(item.nodeName.at(1)!);
 				while (true) {
 					item = renderedMarkdownNodes.item(++i);
@@ -41,7 +47,10 @@
 					if (nextHeadingLevel <= heading_level) {
 						break;
 					} else {
-						sideColumn.appendChild(item.cloneNode(true));
+						sideColumnComponents.push({
+							type: PlainElement,
+							props: { element: item },
+						});
 					}
 				}
 			}
@@ -55,12 +64,15 @@
 					.getElementsByTagName("IMG")
 					.item(0)
 					.getAttribute("src");
-				i++;
+				i++; // don't include this item in either column
 			}
 
 			// Otherwise, just send it to the main column
 			else {
-				mainColumn.appendChild(item.cloneNode(true));
+				mainColumnComponents.push({
+					type: PlainElement,
+					props: { element: item },
+				});
 				i++;
 			}
 		}
@@ -68,9 +80,16 @@
 </script>
 
 <div class="container">
-	<div class="column column-side" bind:this={sideColumn} />
-	<div class="column column-main" bind:this={mainColumn}>
+	<div class="column column-side">
+		{#each sideColumnComponents as c}
+			<svelte:component this={c.type} {...c.props} />
+		{/each}
+	</div>
+	<div class="column column-main">
 		<RecipeCardTitleBlock {...titleProps} />
+		{#each mainColumnComponents as c}
+			<svelte:component this={c.type} {...c.props} />
+		{/each}
 	</div>
 </div>
 
