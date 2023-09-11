@@ -72,7 +72,7 @@ export class RecipeView extends FileView {
         this.content = new RecipeCard({
             target: this.contentEl,
             props: {
-                renderedMarkdownNodes: mdDiv.children,
+                renderedMarkdownDiv: mdDiv,
                 file: this.file!,
                 metadata: metadata,
             }

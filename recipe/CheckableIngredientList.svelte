@@ -1,13 +1,14 @@
 <script lang="ts">
-	import PlainElement from "./PlainElement.svelte";
+	export let items: HTMLCollection;
 
-	export let ul: HTMLElement;
-	let items = [];
 	let checked = [];
+	let lis = [];
 
-	for (let i = 0; i < ul.children.length; i++) {
-		items.push(ul.children.item(i)?.innerHTML);
-		checked.push(false);
+	$: for (let i = 0; i < items.length; i++) {
+		console.log(items.item(i));
+		Array.from(items.item(i)?.childNodes).forEach((n) =>
+			lis[i]?.appendChild(n)
+		);
 	}
 
 	function toggleChecked(i) {
@@ -16,10 +17,12 @@
 </script>
 
 <ul>
-	{#each items as item, i}
-		<li class:checked={checked[i]} on:click={(e) => toggleChecked(i)}>
-			{@html items[i]}
-		</li>
+	{#each items as _, i}
+		<li
+			class:checked={checked[i]}
+			on:click={(e) => toggleChecked(i)}
+			bind:this={lis[i]}
+		/>
 	{/each}
 </ul>
 
