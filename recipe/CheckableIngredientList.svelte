@@ -5,7 +5,6 @@
 	let lis = [];
 
 	$: for (let i = 0; i < items.length; i++) {
-		console.log(items.item(i));
 		Array.from(items.item(i)?.childNodes).forEach((n) =>
 			lis[i]?.appendChild(n)
 		);
