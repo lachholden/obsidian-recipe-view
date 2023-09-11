@@ -6,13 +6,12 @@
 	import SelectableStepList from "./SelectableStepList.svelte";
 	import RecipeViewPlugin from "main";
 	import store from "./store";
+	import { onMount } from "svelte";
 
-	export let renderedMarkdownNodes: HTMLCollection;
+	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
-	// let sideColumn: HTMLElement;
-	// let mainColumn: HTMLElement;
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
 
@@ -28,13 +27,17 @@
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
 
-	$: {
+	onMount(() => {
+		// We don't want to mutate renderedMarkdownDiv – all nodes should
+		// get cloned in the subcomponents used here
+		sideColumnComponents = [];
+		mainColumnComponents = [];
 		let sideColumnRegex = RegExp(plugin.settings.sideColumnRegex, "i");
 
 		let sendToColumn = mainColumnComponents;
 		let sendToSideUntilLevel = 7;
-		for (let i = 0; i < renderedMarkdownNodes.length; i++) {
-			let item = renderedMarkdownNodes.item(i)!;
+		for (let i = 0; i < renderedMarkdownDiv.children.length; i++) {
+			let item = renderedMarkdownDiv.children.item(i)!;
 
 			// Headers can change which column to send items to
 			if (item.nodeName.startsWith("H")) {
@@ -75,7 +78,7 @@
 			if (item.nodeName == "UL" && sendToColumn == sideColumnComponents) {
 				sendToColumn.push({
 					type: CheckableIngredientList,
-					props: { ul: item },
+					props: { items: item.children },
 				});
 				continue;
 			}
@@ -84,7 +87,7 @@
 			if (item.nodeName == "OL" && sendToColumn == mainColumnComponents) {
 				sendToColumn.push({
 					type: SelectableStepList,
-					props: { ol: item },
+					props: { steps: item.children },
 				});
 				continue;
 			}
@@ -95,7 +98,7 @@
 				props: { element: item },
 			});
 		}
-	}
+	});
 </script>
 
 <div class="container markdown-rendered">
