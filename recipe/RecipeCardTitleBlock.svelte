@@ -28,7 +28,12 @@
 				})
 				.join(" ");
 		}
-		return value;
+
+		if (typeof value === "string" || value instanceof String) {
+			return value;
+		}
+
+		return undefined;
 	}
 </script>
 
@@ -45,12 +50,14 @@
 		<div class="frontmatter">
 			{#if frontmatter}
 				{#each Object.entries(frontmatter) as [key, value]}
-					<span class="frontmatter-entry">
-						<span class="key">{key}</span>
-						<span class="value">
-							{@html formatFrontmatterValue(key, value)}
+					{#if formatFrontmatterValue(key, value)}
+						<span class="frontmatter-entry">
+							<span class="key">{key}</span>
+							<span class="value">
+								{@html formatFrontmatterValue(key, value)}
+							</span>
 						</span>
-					</span>
+					{/if}
 				{/each}
 			{/if}
 		</div>
