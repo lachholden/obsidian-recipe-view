@@ -5,9 +5,9 @@
 	let lis = [];
 
 	$: for (let i = 0; i < steps.length; i++) {
-		steps
-			.item(i)
-			?.childNodes.forEach((n) => lis[i]?.appendChild(n.cloneNode(true)));
+		Array.from(steps.item(i)?.childNodes).forEach((n) =>
+			lis[i]?.appendChild(n)
+		);
 	}
 </script>
 

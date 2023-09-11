@@ -5,9 +5,10 @@
 	let lis = [];
 
 	$: for (let i = 0; i < items.length; i++) {
-		items
-			.item(i)
-			?.childNodes.forEach((n) => lis[i]?.appendChild(n.cloneNode(true)));
+		console.log(items.item(i));
+		Array.from(items.item(i)?.childNodes).forEach((n) =>
+			lis[i]?.appendChild(n)
+		);
 	}
 
 	function toggleChecked(i) {

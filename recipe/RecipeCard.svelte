@@ -28,8 +28,11 @@
 	store.plugin.subscribe((p) => (plugin = p));
 
 	onMount(() => {
-		// We don't want to mutate renderedMarkdownDiv – all nodes should
-		// get cloned in the subcomponents used here
+		// We essentially want to create all our subcomponents that pick off
+		// the nodes we want from the tree under renderedMarkdownDiv using
+		// appendChild. As this process destructs renderedMarkdownDiv and leaves
+		// just the bones, this process is only run once in onMount.
+		// TODO figure out how to refresh if the document changes
 		sideColumnComponents = [];
 		mainColumnComponents = [];
 		let sideColumnRegex = RegExp(plugin.settings.sideColumnRegex, "i");

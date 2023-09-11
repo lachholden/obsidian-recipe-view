@@ -2,7 +2,7 @@
 	export let element: Element;
 	let div: HTMLElement;
 
-	$: div?.appendChild(element.cloneNode(true));
+	$: div?.appendChild(element);
 </script>
 
 <div bind:this={div} />
