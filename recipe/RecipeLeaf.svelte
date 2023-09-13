@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, getContext } from "svelte";
 	import ScaledQuantity from "./ScaledQuantity.svelte";
-	import { matchQuantities } from "./quantities";
+	import { deUnicodeFractions, matchQuantities } from "./quantities";
 
 	export let element: HTMLElement | undefined;
 	export let childNodes: NodeListOf<ChildNode> | undefined;
@@ -26,6 +26,7 @@
 			let parent = n.parentNode!;
 			// n.parentNode!.removeChild(n);
 			let currentIndex = 0;
+			n.textContent = deUnicodeFractions(n.textContent!);
 			for (let match of matchQuantities(n.textContent!)) {
 				parent.insertBefore(
 					document.createTextNode(

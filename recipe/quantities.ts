@@ -20,6 +20,58 @@ export enum QtyFormatType {
     DECIMAL,
 }
 
+export function deUnicodeFractions(str: string) {
+    str = str.normalize("NFKD"); // turns special fractions into super/subscripts
+    return str.replace("\u2044", "/")
+        .replace("\u2070", "0")
+        .replace("\u00B9", "1")
+        .replace("\u00B2", "2")
+        .replace("\u00B3", "3")
+        .replace("\u2074", "4")
+        .replace("\u2075", "5")
+        .replace("\u2076", "6")
+        .replace("\u2077", "7")
+        .replace("\u2078", "8")
+        .replace("\u2079", "9")
+        .replace("\u2080", "0")
+        .replace("\u2081", "1")
+        .replace("\u2082", "2")
+        .replace("\u2083", "3")
+        .replace("\u2084", "4")
+        .replace("\u2085", "5")
+        .replace("\u2086", "6")
+        .replace("\u2087", "7")
+        .replace("\u2088", "8")
+        .replace("\u2089", "9")
+}
+
+export function reUnicodeFractions(str: string) {
+    return str.replace(/\b(?<n>\d+)\/(?<d>\d+)\b/ig, (m, $1, $2) => {
+        console.log(m);
+        return $1
+            .replace("0", "\u2070")
+            .replace("1", "\u00B9")
+            .replace("2", "\u00B2")
+            .replace("3", "\u00B3")
+            .replace("4", "\u2074")
+            .replace("5", "\u2075")
+            .replace("6", "\u2076")
+            .replace("7", "\u2077")
+            .replace("8", "\u2078")
+            .replace("9", "\u2079") + "\u2044" + $2
+                .replace("0", "\u2080")
+                .replace("1", "\u2081")
+                .replace("2", "\u2082")
+                .replace("3", "\u2083")
+                .replace("4", "\u2084")
+                .replace("5", "\u2085")
+                .replace("6", "\u2086")
+                .replace("7", "\u2087")
+                .replace("8", "\u2088")
+                .replace("9", "\u2089")
+    });
+}
+
 function numberStringToQuantityNumber(str: string, unit?: string) {
     return {
         value: new Fraction(str),
@@ -44,7 +96,7 @@ export function formatQuantity(value: Fraction, format: QtyFormatType, scale: Fr
     value = value.mul(scale);
     if (format == QtyFormatType.FRACTION) {
         value = new Fraction(Math.round(16 * Fraction(value).valueOf()), 16);
-        return value.toFraction(true);
+        return reUnicodeFractions(value.toFraction(true));
     } else {
         return value.toString();
     }
