@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { onMount, getContext } from "svelte";
 	import ScaledQuantity from "./ScaledQuantity.svelte";
 	import { QUANTITY } from "./qty-scale";
 
@@ -10,7 +10,9 @@
 
 	let scaleComponents = [];
 
-	function parseForQty(n: Node) {
+	let qtyScaleStore = getContext("qtyScaleStore");
+
+	function parseForQty(n: Node, qtyScaleScore) {
 		if (n.nodeType == Node.ELEMENT_NODE) {
 			if (
 				(n as HTMLElement).hasAttribute("data-qty") ||
@@ -24,9 +26,7 @@
 			let parent = n.parentNode!;
 			// n.parentNode!.removeChild(n);
 			let currentIndex = 0;
-			console.log(n.textContent);
 			for (let match of n.textContent!.matchAll(QUANTITY)) {
-				console.log(match);
 				parent.insertBefore(
 					document.createTextNode(
 						n.textContent!.slice(currentIndex, match.index)
@@ -44,6 +44,7 @@
 								match.groups?.number ||
 								match.groups?.startnumber,
 							unit: match.groups!.unit,
+							qtyScaleScore: qtyScaleScore,
 						},
 					})
 				);
@@ -57,7 +58,9 @@
 		}
 
 		if (n.hasChildNodes()) {
-			Array.from(n.childNodes).forEach((c) => parseForQty(c));
+			Array.from(n.childNodes).forEach((c) =>
+				parseForQty(c, qtyScaleScore)
+			);
 		}
 	}
 
@@ -73,9 +76,9 @@
 		}
 
 		// Walk all trees under elements with data-qty-parse to parse quantities
-		if (qtyParseAll) parseForQty(div);
+		if (qtyParseAll) parseForQty(div, qtyScaleStore);
 		div.querySelectorAll("[data-qty-parse]").forEach((root) => {
-			parseForQty(root);
+			parseForQty(root, qtyScaleStore);
 		});
 	});
 </script>

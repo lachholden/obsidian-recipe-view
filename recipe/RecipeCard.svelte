@@ -15,6 +15,9 @@
 	export let file: TFile;
 
 	let qtyScale: number;
+	let qtyScaleStore = writable(1.0);
+	setContext("qtyScaleStore", qtyScaleStore);
+	$: qtyScaleStore.set(qtyScale || 1.0);
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
