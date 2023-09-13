@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { CachedMetadata, TFile } from "obsidian";
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
-	import PlainElement from "./PlainElement.svelte";
+	import RecipeLeaf from "./RecipeLeaf.svelte";
 	import CheckableIngredientList from "./CheckableIngredientList.svelte";
 	import SelectableStepList from "./SelectableStepList.svelte";
 	import RecipeViewPlugin from "main";
@@ -97,8 +97,8 @@
 
 			// Add current item to current column
 			sendToColumn.push({
-				type: PlainElement,
-				props: { element: item },
+				type: RecipeLeaf,
+				props: { element: item, qtyParseAll: false },
 			});
 		}
 	});

@@ -12,7 +12,10 @@
 			class:checked={checked[i]}
 			on:click={(e) => (checked[i] = !checked[i])}
 		>
-			<RecipeLeaf parent={items.item(i)} qtyParseAll={true} />
+			<RecipeLeaf
+				childNodes={items.item(i).childNodes}
+				qtyParseAll={true}
+			/>
 		</li>
 	{/each}
 </ul>

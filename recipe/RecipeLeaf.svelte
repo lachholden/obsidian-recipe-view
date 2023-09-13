@@ -3,7 +3,8 @@
 	import ScaledQuantity from "./ScaledQuantity.svelte";
 	import { QUANTITY } from "./qty-scale";
 
-	export let parent: HTMLElement;
+	export let element: HTMLElement | undefined;
+	export let childNodes: NodeListOf<ChildNode> | undefined;
 	export let qtyParseAll: boolean;
 	let div: HTMLDivElement;
 
@@ -51,16 +52,21 @@
 
 	onMount(() => {
 		// Mount all child nodes in the component
-		Array.from(parent.childNodes).forEach((n) => {
-			div.appendChild(n);
-		});
+
+		if (childNodes) {
+			Array.from(childNodes).forEach((n) => {
+				div.appendChild(n);
+			});
+		} else if (element) {
+			div.appendChild(element);
+		}
 
 		// Walk all trees under elements with data-qty-parse to parse quantities
-		if (div.matches("[data-qty-parse]")) parseForQty(div);
+		if (qtyParseAll) parseForQty(div);
 		div.querySelectorAll("[data-qty-parse]").forEach((root) => {
 			parseForQty(root);
 		});
 	});
 </script>
 
-<div bind:this={div} data-qty-parse={qtyParseAll} />
+<div bind:this={div} />
