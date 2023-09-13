@@ -4,16 +4,19 @@
 	export let unit: string;
 </script>
 
-<span class="scale-number">{number}</span>
-{#if unit}<span class="scale-unit">{unit}</span>{/if}
+<span class:scaled={scale != 1.0}
+	><span class="scale-number">{number}</span>{#if unit}
+		<span class="scale-unit">&nbsp;{unit}</span>{/if}</span
+>
 
 <style>
-	.scale-number {
-		color: var(--color-orange);
-		font-weight: bold;
-	}
-
-	.scale-unit {
-		color: var(--color-orange);
+	.scaled {
+		background-color: hsla(
+			var(--accent-h),
+			var(--accent-s),
+			var(--accent-l),
+			20%
+		);
+		border-radius: var(--border-radius-s);
 	}
 </style>
