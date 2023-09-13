@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { CachedMetadata, TFile } from "obsidian";
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
-	import PlainElement from "./PlainElement.svelte";
+	import RecipeLeaf from "./RecipeLeaf.svelte";
 	import CheckableIngredientList from "./CheckableIngredientList.svelte";
 	import SelectableStepList from "./SelectableStepList.svelte";
 	import RecipeViewPlugin from "main";
 	import store from "./store";
-	import { onMount } from "svelte";
+	import { onMount, setContext } from "svelte";
+	import ScaleSelector from "./ScaleSelector.svelte";
+	import { writable } from "svelte/store";
+	import Fraction from "fraction.js";
 
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
+
+	let qtyScale: Fraction;
+	let qtyScaleStore = writable(new Fraction(1));
+	setContext("qtyScaleStore", qtyScaleStore);
+	$: qtyScaleStore.set(qtyScale);
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
@@ -97,8 +105,8 @@
 
 			// Add current item to current column
 			sendToColumn.push({
-				type: PlainElement,
-				props: { element: item },
+				type: RecipeLeaf,
+				props: { element: item, qtyParseAll: false },
 			});
 		}
 	});
@@ -106,6 +114,7 @@
 
 <div class="container markdown-rendered">
 	<div class="column column-side">
+		<ScaleSelector bind:scale={qtyScale} />
 		{#each sideColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
 		{/each}

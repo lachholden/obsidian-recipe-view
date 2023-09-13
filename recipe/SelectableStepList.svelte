@@ -1,14 +1,9 @@
 <script lang="ts">
+	import RecipeLeaf from "./RecipeLeaf.svelte";
+
 	export let steps: HTMLCollection;
 
 	let selected = null;
-	let lis = [];
-
-	$: for (let i = 0; i < steps.length; i++) {
-		Array.from(steps.item(i)?.childNodes).forEach((n) =>
-			lis[i]?.appendChild(n)
-		);
-	}
 </script>
 
 <ol class="recipe-mutex-select">
@@ -16,8 +11,12 @@
 		<li
 			class:selected={selected == i}
 			on:click={(e) => (selected = selected == i ? null : i)}
-			bind:this={lis[i]}
-		/>
+		>
+			<RecipeLeaf
+				childNodes={steps.item(i).childNodes}
+				qtyParseAll={false}
+			/>
+		</li>
 	{/each}
 </ol>
 

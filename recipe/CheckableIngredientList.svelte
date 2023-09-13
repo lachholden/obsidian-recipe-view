@@ -1,27 +1,22 @@
 <script lang="ts">
+	import RecipeLeaf from "./RecipeLeaf.svelte";
+
 	export let items: HTMLCollection;
 
-	let checked = [];
-	let lis = [];
-
-	$: for (let i = 0; i < items.length; i++) {
-		Array.from(items.item(i)?.childNodes).forEach((n) =>
-			lis[i]?.appendChild(n)
-		);
-	}
-
-	function toggleChecked(i) {
-		checked[i] = !checked[i];
-	}
+	let checked: boolean[] = [];
 </script>
 
 <ul>
 	{#each items as _, i}
 		<li
 			class:checked={checked[i]}
-			on:click={(e) => toggleChecked(i)}
-			bind:this={lis[i]}
-		/>
+			on:click={(e) => (checked[i] = !checked[i])}
+		>
+			<RecipeLeaf
+				childNodes={items.item(i).childNodes}
+				qtyParseAll={true}
+			/>
+		</li>
 	{/each}
 </ul>
 
