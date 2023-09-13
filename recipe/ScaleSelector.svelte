@@ -38,7 +38,7 @@
 			var(--accent-h),
 			var(--accent-s),
 			var(--accent-l),
-			30%
+			var(--selected-step-alpha)
 		);
 		margin-inline-start: var(--size-4-2);
 		text-align: right;
