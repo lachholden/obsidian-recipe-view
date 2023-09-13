@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let scale = 1.0;
 	export let number: string;
 	export let unit: string;
 </script>
@@ -17,6 +16,6 @@
 			var(--accent-l),
 			20%
 		);
-		border-radius: var(--border-radius-s);
+		border-radius: var(--radius-s);
 	}
 </style>

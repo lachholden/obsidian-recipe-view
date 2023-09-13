@@ -6,11 +6,15 @@
 	import SelectableStepList from "./SelectableStepList.svelte";
 	import RecipeViewPlugin from "main";
 	import store from "./store";
-	import { onMount } from "svelte";
+	import { onMount, setContext } from "svelte";
+	import ScaleSelector from "./ScaleSelector.svelte";
+	import { writable } from "svelte/store";
 
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
+
+	let qtyScale: number;
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
@@ -106,6 +110,7 @@
 
 <div class="container markdown-rendered">
 	<div class="column column-side">
+		<ScaleSelector bind:scale={qtyScale} />
 		{#each sideColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
 		{/each}
