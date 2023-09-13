@@ -9,11 +9,11 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 **Features include:**
 - 📒 Works with your recipes as-is, in whatever format you like to write them
 - 🌈 Lets you use all the regular markdown formatting, like in the rest of your vault
+- 🎚️ Scale the quantities in your recipes easily
 - ⚙️ Independently scrollable and configurable two-column view, for easier cooking reference
-- ✅ Bullet lists in the side column let you cross out ingredients as you add them
-- 📌 Numbered lists in the main column let you highlight the step you're up to
+- ✅ Cross out ingredients as you add them
+- 📌 Highlight your current step to keep track of where you're up to
 - 📱 Works on phones and tablets
-- [🚧 work in progress] Scale the quantities in your recipes easily
 
 **Why keep your recipes in Obsidian?**
 - ⚡ Portable and future-proof markdown
@@ -22,10 +22,66 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 - ☁️ Write them on your laptop, check ingredients in the store on your phone, and cook from them in the kitchen with your iPad
 
 ## Usage
+
+Here's a tour of the main features.
+
+### Activation
 When you have the note for the recipe you want to view active, click the chef's hat icon in the ribbon. To make any edits to the recipe, you can use the back button to navigate back to the regular markdown view.
 
-Configure in settings which sections you want to be pulled into the side column based on their headings – the default is `Ingredients|Nutrition`.
+### Formatting
+The plugin is designed to not enforce any kind of strict format on your recipe notes, and should handle lots of different methods gracefully. That said, a suggested standard format to work best with this plugin is:
 
-The first image in your note that is not under a heading is pulled out as a thumbnail. All properties/front matter fields in your note are displayed under the title.
+```markdown
+![[thumbnail.jpg]]
 
+Any preamble can go here.
+
+## Ingredients
+**Section 1**
+- bulleted lists
+- quantities at the start, e.g.:
+- 180 grams butter
+- 3 eggs
+
+**Another section**
+- Feel free to split your ingredients up
+  - and add notes underneath
+- You don't need any bold headings if you don't want
+- 15 of [[Another recipe]], pre-made
+
+## Directions
+1. Numbered lists
+2. Feel free to include any markdown you like in your steps
+3. You can also split these up in sections, with bold or level 3+ headings
+
+## Notes
+Anything else you want can go here.
+
+## Nutrition
+Common when recipes are downloaded from the web
+```
+
+Feel free to adapt the suggested format however you like though – and if there's a certain style you prefer that does not work well with the plugin currently, create an issue with an example recipe and let me know!
+
+**The plugin currently follows the following rules for formatting the recipe card:**
+- Configure in settings which sections you want to be pulled into the side column based on their headings – the default is `Ingredients|Nutrition`.
+- Any bulleted lists in the side column will be converted into checkable ingredient lists – just click items to cross them out.
+- Any numbered lists in the main column will let you click on a step to highlight it. Click a different step to move the highlight, or the same step again to clear the highlight.
+- The first image in your note that is not under a heading is pulled out as a thumbnail. All properties/front matter fields in your note are displayed under the title.
+
+
+### Scaling ingredients
+<img src="docs/scaled.png" style="float: left; width: 300px; margin-right: 30px; margin-bottom:30px;" />
+
+Easily scale the ingredient quantities in your recipes using the widget at the top of the side column. By default, it will scale detected quantities in checkable ingredient lists only.
+
+To scale certain quantities in other sections e.g. in the directions, wrap them like `<span data-qty-parse>180 grams</span>`. You could also wrap a whole step in the same tags to parse all present quantities.
+
+To stop a certain quantity from being scaled mistakenly, wrap it like `<span data-qty-no-parse>30 centimetres</span>`.
+
+If the recipe is scaled, any quantities that have been adjusted will have an underline to make it clear what has and has not changed.
+
+<div style="clear: both;">
+
+### Additional settings
 The [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin will let you configure aspects of how the recipe card appears.
