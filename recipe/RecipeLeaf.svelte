@@ -12,23 +12,30 @@
 
 	function parseForQty(n: Node) {
 		if (n.nodeType == Node.ELEMENT_NODE) {
-			if ((n as HTMLElement).hasAttribute("data-qty")) {
+			if (
+				(n as HTMLElement).hasAttribute("data-qty") ||
+				(n as HTMLElement).hasAttribute("data-qty-no-parse")
+			) {
 				return;
 			}
 		}
 
 		if (n.nodeType == Node.TEXT_NODE) {
 			let parent = n.parentNode!;
-			n.parentNode!.removeChild(n);
+			// n.parentNode!.removeChild(n);
 			let currentIndex = 0;
+			console.log(n.textContent);
 			for (let match of n.textContent!.matchAll(QUANTITY)) {
 				console.log(match);
-				parent.appendText(
-					n.textContent!.slice(currentIndex, match.index)
+				parent.insertBefore(
+					document.createTextNode(
+						n.textContent!.slice(currentIndex, match.index)
+					),
+					n
 				);
 				let qtyTarget = createEl("span");
 				qtyTarget.setAttribute("data-qty", "true");
-				parent.appendChild(qtyTarget);
+				parent.insertBefore(qtyTarget, n);
 				scaleComponents.push(
 					new ScaledQuantity({
 						target: qtyTarget,
@@ -42,7 +49,11 @@
 				);
 				currentIndex = match.index + match[0].length;
 			}
-			parent.appendText(n.textContent!.slice(currentIndex));
+			parent.insertBefore(
+				document.createTextNode(n.textContent!.slice(currentIndex)),
+				n
+			);
+			parent.removeChild(n);
 		}
 
 		if (n.hasChildNodes()) {
