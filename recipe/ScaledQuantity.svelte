@@ -19,12 +19,7 @@
 
 <style>
 	.scaled {
-		background-color: hsla(
-			var(--accent-h),
-			var(--accent-s),
-			var(--accent-l),
-			20%
-		);
-		border-radius: var(--radius-s);
+		text-decoration: underline var(--text-accent) 1px;
+		text-underline-offset: 4px;
 	}
 </style>
