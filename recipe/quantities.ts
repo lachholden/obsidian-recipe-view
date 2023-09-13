@@ -47,7 +47,6 @@ export function deUnicodeFractions(str: string) {
 
 export function reUnicodeFractions(str: string) {
     return str.replace(/\b(?<n>\d+)\/(?<d>\d+)\b/ig, (m, $1, $2) => {
-        console.log(m);
         return $1
             .replace("0", "\u2070")
             .replace("1", "\u00B9")
@@ -76,7 +75,8 @@ function numberStringToQuantityNumber(str: string, unit?: string) {
     return {
         value: new Fraction(str),
         format: (str.contains("/") ||
-            unit?.match(/tablespoons?|teaspoons?|tb?sp?s?\.?|cups?|sticks?/i))
+            unit?.match(/tablespoons?|teaspoons?|tb?sp?s?\.?|cups?|sticks?/i) ||
+            !unit)
             ? QtyFormatType.FRACTION : QtyFormatType.DECIMAL,
     }
 }

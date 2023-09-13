@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fraction from "fraction.js";
 
-	export let scaleNum: number = 1.0;
+	export let scaleNum: number | null = 1.0;
 	export let scale = new Fraction(1);
 	$: scale = new Fraction(scaleNum || 1);
 </script>
@@ -10,7 +10,10 @@
 	<label
 		>Scale recipe <input
 			type="number"
+			inputmode="decimal"
+			min="0"
 			on:blur={() => (scaleNum = scaleNum || 1)}
+			on:focus={() => (scaleNum = scaleNum == 1 ? null : scaleNum)}
 			bind:value={scaleNum}
 		/></label
 	>
@@ -23,6 +26,7 @@
 		font-size: var(--font-smaller);
 		background-color: var(--background-secondary);
 		padding: var(--size-4-2);
+		margin-block-end: var(--size-4-4);
 		border-radius: var(--radius-s);
 		color: var(--text-muted);
 	}
@@ -34,11 +38,12 @@
 			var(--accent-h),
 			var(--accent-s),
 			var(--accent-l),
-			20%
+			30%
 		);
 		margin-inline-start: var(--size-4-2);
 		text-align: right;
 		font-size: var(--font-smaller);
+		height: var(--size-4-8);
 	}
 
 	label {

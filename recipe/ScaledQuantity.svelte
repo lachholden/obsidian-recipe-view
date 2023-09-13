@@ -19,7 +19,9 @@
 
 <style>
 	.scaled {
-		text-decoration: underline var(--text-accent) 1px;
+		text-decoration-line: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--text-accent);
 		text-underline-offset: 4px;
 	}
 </style>
