@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { Writable } from "svelte/store";
 
-	export let number: string;
+	export let numberValue: number;
 	export let unit: string;
-	export let qtyScaleScore;
+	export let qtyScaleStore;
 
 	export let scale: number = 1.0;
-	qtyScaleScore.subscribe((s) => (scale = s));
+	qtyScaleStore.subscribe((s) => (scale = s));
 </script>
 
 <span class:scaled={scale != 1.0}
-	><span class="scale-number">{scale}x {number}</span>{#if unit}
+	><span class="scale-number">{scale * numberValue}</span>{#if unit}
 		<span class="scale-unit">&nbsp;{unit}</span>{/if}</span
 >
 

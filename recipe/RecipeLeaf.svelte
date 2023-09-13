@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, getContext } from "svelte";
 	import ScaledQuantity from "./ScaledQuantity.svelte";
-	import { QUANTITY } from "./qty-scale";
+	import { matchQuantities } from "./quantities";
 
 	export let element: HTMLElement | undefined;
 	export let childNodes: NodeListOf<ChildNode> | undefined;
@@ -12,7 +12,7 @@
 
 	let qtyScaleStore = getContext("qtyScaleStore");
 
-	function parseForQty(n: Node, qtyScaleScore) {
+	function parseForQty(n: Node, qtyScaleStore) {
 		if (n.nodeType == Node.ELEMENT_NODE) {
 			if (
 				(n as HTMLElement).hasAttribute("data-qty") ||
@@ -26,7 +26,7 @@
 			let parent = n.parentNode!;
 			// n.parentNode!.removeChild(n);
 			let currentIndex = 0;
-			for (let match of n.textContent!.matchAll(QUANTITY)) {
+			for (let match of matchQuantities(n.textContent!)) {
 				parent.insertBefore(
 					document.createTextNode(
 						n.textContent!.slice(currentIndex, match.index)
@@ -40,15 +40,13 @@
 					new ScaledQuantity({
 						target: qtyTarget,
 						props: {
-							number:
-								match.groups?.number ||
-								match.groups?.startnumber,
-							unit: match.groups!.unit,
-							qtyScaleScore: qtyScaleScore,
+							numberValue: match.numberValue,
+							unit: match.unit,
+							qtyScaleStore: qtyScaleStore,
 						},
 					})
 				);
-				currentIndex = match.index + match[0].length;
+				currentIndex = match.index + match.length;
 			}
 			parent.insertBefore(
 				document.createTextNode(n.textContent!.slice(currentIndex)),
@@ -59,7 +57,7 @@
 
 		if (n.hasChildNodes()) {
 			Array.from(n.childNodes).forEach((c) =>
-				parseForQty(c, qtyScaleScore)
+				parseForQty(c, qtyScaleStore)
 			);
 		}
 	}
