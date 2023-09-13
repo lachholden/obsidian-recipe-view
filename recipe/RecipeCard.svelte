@@ -9,15 +9,16 @@
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
 	import { writable } from "svelte/store";
+	import Fraction from "fraction.js";
 
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
-	let qtyScale: number;
-	let qtyScaleStore = writable(1.0);
+	let qtyScale: Fraction;
+	let qtyScaleStore = writable(new Fraction(1));
 	setContext("qtyScaleStore", qtyScaleStore);
-	$: qtyScaleStore.set(qtyScale || 1.0);
+	$: qtyScaleStore.set(qtyScale);
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];

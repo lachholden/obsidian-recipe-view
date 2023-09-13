@@ -1,4 +1,6 @@
 /** Matches numbers of the forms e.g. 1, 1.5, 1/2, 3 1/2 */
+import Fraction from "fraction.js";
+
 export const NUMBER = new RegExp(/\d+((\s+\d+)?\/\d+|\.\d+)?/)
 
 /** Matches a whole bunch of common units that you would want to scale in recipes */
@@ -13,18 +15,17 @@ export const START_NUMBER_ALONE = new RegExp("(?<startnumber>^" + NUMBER.source 
 /** Matches either a number at the start of a string, or otherwise a number and unit */
 export const QUANTITY = new RegExp(NUMBER_WITH_UNIT.source + "|" + START_NUMBER_ALONE.source, "ig");
 
-function numberStringToNumber(str: string) {
-    if (str.contains("/")) {
-        let [maybe_int_and_num, denominator] = str.split("/");
-        if (maybe_int_and_num.match(/\s+/)) {
-            var [integer, numerator] = maybe_int_and_num.split(/\s+/);
-        } else {
-            var integer = "0";
-            var numerator = maybe_int_and_num;
-        }
-        return parseFloat(integer) + parseFloat(numerator) / parseFloat(denominator);
-    } else {
-        return parseFloat(str);
+export enum QtyFormatType {
+    FRACTION,
+    DECIMAL,
+}
+
+function numberStringToQuantityNumber(str: string, unit?: string) {
+    return {
+        value: new Fraction(str),
+        format: (str.contains("/") ||
+            unit?.match(/tablespoons?|teaspoons?|tb?sp?s?\.?|cups?|sticks?/i))
+            ? QtyFormatType.FRACTION : QtyFormatType.DECIMAL,
     }
 }
 
@@ -33,8 +34,18 @@ export function matchQuantities(str: string) {
         return {
             index: match.index,
             length: match[0].length,
-            numberValue: numberStringToNumber(match.groups!.number || match.groups!.startnumber),
+            value: numberStringToQuantityNumber(match.groups!.number || match.groups!.startnumber, match.groups!.unit),
             unit: match.groups!.unit,
         }
     });
+}
+
+export function formatQuantity(value: Fraction, format: QtyFormatType, scale: Fraction) {
+    value = value.mul(scale);
+    if (format == QtyFormatType.FRACTION) {
+        value = new Fraction(Math.round(16 * Fraction(value).valueOf()), 16);
+        return value.toFraction(true);
+    } else {
+        return value.toString();
+    }
 }

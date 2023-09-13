@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let scale: Number = 1.0;
+	import Fraction from "fraction.js";
+
+	export let scaleNum: number = 1.0;
+	export let scale = new Fraction(1);
+	$: scale = new Fraction(scaleNum || 1);
 </script>
 
 <div>
-	<label>Scale recipe <input type="number" bind:value={scale} /></label>
+	<label>Scale recipe <input type="number" bind:value={scaleNum} /></label>
 </div>
 
 <style>

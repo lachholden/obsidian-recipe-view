@@ -40,7 +40,8 @@
 					new ScaledQuantity({
 						target: qtyTarget,
 						props: {
-							numberValue: match.numberValue,
+							value: match.value.value,
+							format: match.value.format,
 							unit: match.unit,
 							qtyScaleStore: qtyScaleStore,
 						},

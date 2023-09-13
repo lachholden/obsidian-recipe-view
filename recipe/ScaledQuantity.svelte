@@ -1,16 +1,19 @@
 <script lang="ts">
-	import { Writable } from "svelte/store";
+	import { QtyFormatType, formatQuantity } from "./quantities";
+	import Fraction from "fraction.js";
 
-	export let numberValue: number;
+	export let value: Fraction;
+	export let format: QtyFormatType;
 	export let unit: string;
 	export let qtyScaleStore;
 
-	export let scale: number = 1.0;
+	export let scale: Fraction = new Fraction(1);
 	qtyScaleStore.subscribe((s) => (scale = s));
 </script>
 
-<span class:scaled={scale != 1.0}
-	><span class="scale-number">{scale * numberValue}</span>{#if unit}
+<span class:scaled={!scale.equals(1)}
+	><span class="scale-number">{formatQuantity(value, format, scale)}</span
+	>{#if unit}
 		<span class="scale-unit">&nbsp;{unit}</span>{/if}</span
 >
 
