@@ -7,7 +7,13 @@
 </script>
 
 <div>
-	<label>Scale recipe <input type="number" bind:value={scaleNum} /></label>
+	<label
+		>Scale recipe <input
+			type="number"
+			on:blur={() => (scaleNum = scaleNum || 1)}
+			bind:value={scaleNum}
+		/></label
+	>
 </div>
 
 <style>
