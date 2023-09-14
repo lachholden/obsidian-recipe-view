@@ -66,7 +66,7 @@ Feel free to adapt the suggested format however you like though – and if there
 **The plugin currently follows the following rules for formatting the recipe card:**
 - Configure in settings which sections you want to be pulled into the side column based on their headings – the default is `Ingredients|Nutrition`.
 - Any bulleted lists in the side column *or* that appear before any header will be converted into checkable ingredient lists – just click items to cross them out.
-- Any numbered lists in the main column will let you click on a step to highlight it. Click a different step to move the highlight, or the same step again to clear the highlight.
+- Any numbered lists or sequences of paragraphs in the main column will let you click on a step to highlight it. Click a different step to move the highlight, or the same step again to clear the highlight.
 - The first image in your note that is not under a heading is pulled out as a thumbnail. All properties/front matter fields in your note are displayed under the title.
 
 

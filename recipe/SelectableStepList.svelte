@@ -1,24 +1,38 @@
 <script lang="ts">
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 
-	export let steps: HTMLCollection;
+	export let steps: HTMLCollection | Array<HTMLElement>;
+	export let kind: string;
 
 	let selected = null;
 </script>
 
-<ol class="recipe-mutex-select">
+{#if kind == "ol"}
+	<!-- means steps is the children of an OL element -->
+	<ol class="recipe-mutex-select">
+		{#each steps as _, i}
+			<li
+				class:selected={selected == i}
+				on:click={(e) => (selected = selected == i ? null : i)}
+			>
+				<RecipeLeaf
+					childNodes={steps.item(i).childNodes}
+					qtyParseAll={false}
+				/>
+			</li>
+		{/each}
+	</ol>
+{:else if kind == "p"}
+	<!-- means steps is an array of P elements -->
 	{#each steps as _, i}
-		<li
+		<p
 			class:selected={selected == i}
 			on:click={(e) => (selected = selected == i ? null : i)}
 		>
-			<RecipeLeaf
-				childNodes={steps.item(i).childNodes}
-				qtyParseAll={false}
-			/>
-		</li>
+			<RecipeLeaf childNodes={steps[i].childNodes} qtyParseAll={false} />
+		</p>
 	{/each}
-</ol>
+{/if}
 
 <style>
 	ol {
@@ -41,7 +55,14 @@
 		margin: 0;
 	}
 
-	ol > li.selected {
+	p {
+		padding: var(--size-4-2);
+		margin-inline: calc(-1 * var(--size-4-2));
+		margin-block: calc(var(--p-spacing) - 2 * var(--size-4-2));
+	}
+
+	ol > li.selected,
+	p.selected {
 		background-color: hsla(
 			var(--accent-h),
 			var(--accent-s),

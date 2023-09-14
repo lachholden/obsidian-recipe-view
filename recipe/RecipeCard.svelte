@@ -107,8 +107,34 @@
 			if (item.nodeName == "OL" && sendToColumn == mainColumnComponents) {
 				sendToColumn.push({
 					type: SelectableStepList,
-					props: { steps: item.children },
+					props: {
+						steps: item.children,
+						kind: "ol",
+					},
 				});
+				continue;
+			}
+
+			// If we're sending a paragraph to the main column, then make it selectable
+			if (item.nodeName == "P" && sendToColumn == mainColumnComponents) {
+				let prev = sendToColumn[sendToColumn.length - 1];
+				if (
+					prev &&
+					prev.type == SelectableStepList &&
+					prev.props.kind == "p"
+				) {
+					console.log(prev);
+					console.log(item);
+					prev.props.steps.push(item);
+				} else {
+					sendToColumn.push({
+						type: SelectableStepList,
+						props: {
+							steps: [item],
+							kind: "p",
+						},
+					});
+				}
 				continue;
 			}
 
