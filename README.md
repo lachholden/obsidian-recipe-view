@@ -1,9 +1,8 @@
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
-*Bring Obsidian with you into the kitchen*
-
 ![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))
 
+*Bring Obsidian with you into the kitchen*
 
 ![A screenshot showing two recipes side-by-side](docs/preview2.png)
 
