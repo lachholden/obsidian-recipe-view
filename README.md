@@ -5,13 +5,13 @@
 ![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))
 
 
----
-
 ![A screenshot showing two recipes side-by-side](docs/preview2.png)
 
-![A screenshot previewing the main features of the plugin](docs/preview.png) 
-![A screenshot showing the plugin on mobile](docs/preview-mobile.jpeg)
+<div>
+<img style="vertical-align: center;" src="docs/preview-mobile.jpeg" width="27%" /><img src="docs/preview.png" width="73%" />
+</div>
 
+---
 
 Store, write, and manage your recipes in as regular Obsidian notes in **portable, future-proof markdown**, then view them as a gorgeous **interactive recipe card** when it's time to cook in the kitchen.
 
