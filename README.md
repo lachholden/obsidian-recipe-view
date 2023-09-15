@@ -65,15 +65,24 @@ Feel free to adapt the suggested format however you like though – and if there
 
 **The plugin currently follows the following rules for formatting the recipe card:**
 - Configure in settings which sections you want to be pulled into the side column based on their headings – the default is `Ingredients|Nutrition`.
-- Any bulleted lists in the side column will be converted into checkable ingredient lists – just click items to cross them out.
-- Any numbered lists in the main column will let you click on a step to highlight it. Click a different step to move the highlight, or the same step again to clear the highlight.
+- Any bulleted lists in the side column *or* that appear before any header will be converted into checkable ingredient lists – just click items to cross them out.
+- Any numbered lists or sequences of paragraphs in the main column will let you click on a step to highlight it. Click a different step to move the highlight, or the same step again to clear the highlight.
 - The first image in your note that is not under a heading is pulled out as a thumbnail. All properties/front matter fields in your note are displayed under the title.
 
 
 ### Scaling ingredients
 <img src="docs/scaled.png" style="float: left; width: 300px; margin-right: 30px; margin-bottom:30px;" />
 
-Easily scale the ingredient quantities in your recipes using the widget at the top of the side column. By default, it will scale detected quantities in checkable ingredient lists only.
+Easily scale the ingredient quantities in your recipes using the widget at the top of the side column. By default, it will scale detected quantities in checkable ingredient lists only. Quantities will be detected as numbers *either* alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
+- 450 g – an integer
+- 1/4 tsp – a text fraction
+- ½ cup – a unicode fraction
+- 3.5 litres – a decimal number
+- 2 3/4 sticks – a mixed text number
+- 1¾ kg – a mixed unicode number (with or without space in between)
+- 1-1/4 oz. – a mixed number separated by a dash (both text and unicode work)
+
+When rescaling, units will be displayed either as a decimal or a fraction based on what was used in the original, or if the original was an integer, then a choice is made based on the unit used. All displayed fractions are presented as mixed numbers with the fraction part rounded to the nearest 1/16, and they will be nicely rendered in unicode, regardless of the input format. There does not need to be a space between the number and the unit, but all quantites will be rendered with a space. Likewise, any dashes in mixed numbers will be rendered as a space.
 
 To scale certain quantities in other sections e.g. in the directions, wrap them like `<span data-qty-parse>180 grams</span>`. You could also wrap a whole step in the same tags to parse all present quantities.
 

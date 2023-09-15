@@ -1,13 +1,13 @@
 /** Matches numbers of the forms e.g. 1, 1.5, 1/2, 3 1/2 */
 import Fraction from "fraction.js";
 
-export const NUMBER = new RegExp(/\d+((\s+\d+)?\/\d+|\.\d+)?/)
+export const NUMBER = new RegExp(/\d+(([\s-]+\d+)?\/\d+|\.\d+)?/)
 
 /** Matches a whole bunch of common units that you would want to scale in recipes */
 export const UNIT = new RegExp(/tb?sp?s?\.?|tablespoons?|teaspoons?|k?g|(kilo)?grams?|cups?|m?Ls?|millilit(re|er)s?|lit(re|er)s?|(fl.?|fluid)?\s+(oz\.?|ounces?)|pounds?|lbs?\.?|sticks?/i)
 
 /** Matches a number followed by some whitespace and a unit */
-export const NUMBER_WITH_UNIT = new RegExp("(?<number>" + NUMBER.source + ")\\s+(?<unit>" + UNIT.source + ")\\b", "ig");
+export const NUMBER_WITH_UNIT = new RegExp("(?<number>" + NUMBER.source + ")\\s*(?<unit>" + UNIT.source + ")\\b", "ig");
 
 /** Matches a number at the start of a string by itself */
 export const START_NUMBER_ALONE = new RegExp("(?<startnumber>^" + NUMBER.source + ")\\b", "ig");
@@ -22,7 +22,8 @@ export enum QtyFormatType {
 
 export function deUnicodeFractions(str: string) {
     str = str.normalize("NFKD"); // turns special fractions into super/subscripts
-    return str.replace("\u2044", "/")
+    return str.replace(/(\d+)(.+\u2044.+)\b/ig, "$1 $2")
+        .replace("\u2044", "/")
         .replace("\u2070", "0")
         .replace("\u00B9", "1")
         .replace("\u00B2", "2")
@@ -73,7 +74,7 @@ export function reUnicodeFractions(str: string) {
 
 function numberStringToQuantityNumber(str: string, unit?: string) {
     return {
-        value: new Fraction(str),
+        value: new Fraction(str.replace(/[-\s]+/g, " ")),
         format: (str.contains("/") ||
             unit?.match(/tablespoons?|teaspoons?|tb?sp?s?\.?|cups?|sticks?/i) ||
             !unit)

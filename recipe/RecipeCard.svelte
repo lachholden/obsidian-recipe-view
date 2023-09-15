@@ -45,6 +45,7 @@
 		mainColumnComponents = [];
 		let sideColumnRegex = RegExp(plugin.settings.sideColumnRegex, "i");
 
+		let seenHeader = false;
 		let sendToColumn = mainColumnComponents;
 		let sendToSideUntilLevel = 7;
 		for (let i = 0; i < renderedMarkdownDiv.children.length; i++) {
@@ -52,6 +53,7 @@
 
 			// Headers can change which column to send items to
 			if (item.nodeName.startsWith("H")) {
+				seenHeader = true;
 				let headerLevel = parseInt(item.nodeName.at(1)!);
 				if (
 					sendToColumn == mainColumnComponents &&
@@ -66,17 +68,19 @@
 					sendToColumn = mainColumnComponents;
 					sendToSideUntilLevel = 7;
 				}
+			}
 
-				// Don't extract any more images as a thumbnail
-				if (titleProps.thumbnailPath == null) {
-					titleProps.thumbnailPath = "";
-				}
+			// To stop margins from not collapsing below the title block,
+			// get rid of the display: none frontmatter
+			if (item.matches("pre.frontmatter")) {
+				continue;
 			}
 
 			// Extract the first image as a thumbnail
 			if (
 				item.getElementsByTagName("IMG").length > 0 &&
-				titleProps.thumbnailPath == null
+				titleProps.thumbnailPath == null &&
+				!seenHeader
 			) {
 				titleProps.thumbnailPath = item
 					.getElementsByTagName("IMG")
@@ -85,11 +89,16 @@
 				continue; // Don't send to either column
 			}
 
-			// If we're sending an unordered list to the sidebar, then make it checkable
-			if (item.nodeName == "UL" && sendToColumn == sideColumnComponents) {
+			// If it's an unordered list, make it checkable if either:
+			// 1. it's going to the sidebar, or
+			// 2. we haven't seen a header yet
+			if (
+				item.nodeName == "UL" &&
+				(sendToColumn == sideColumnComponents || !seenHeader)
+			) {
 				sendToColumn.push({
 					type: CheckableIngredientList,
-					props: { items: item.children },
+					props: { items: item.children, bullets: !seenHeader },
 				});
 				continue;
 			}
@@ -98,8 +107,34 @@
 			if (item.nodeName == "OL" && sendToColumn == mainColumnComponents) {
 				sendToColumn.push({
 					type: SelectableStepList,
-					props: { steps: item.children },
+					props: {
+						steps: item.children,
+						kind: "ol",
+					},
 				});
+				continue;
+			}
+
+			// If we're sending a paragraph to the main column, then make it selectable
+			if (item.nodeName == "P" && sendToColumn == mainColumnComponents) {
+				let prev = sendToColumn[sendToColumn.length - 1];
+				if (
+					prev &&
+					prev.type == SelectableStepList &&
+					prev.props.kind == "p"
+				) {
+					console.log(prev);
+					console.log(item);
+					prev.props.steps.push(item);
+				} else {
+					sendToColumn.push({
+						type: SelectableStepList,
+						props: {
+							steps: [item],
+							kind: "p",
+						},
+					});
+				}
 				continue;
 			}
 
@@ -113,14 +148,19 @@
 </script>
 
 <div class="container markdown-rendered">
-	<div class="column column-side">
-		<ScaleSelector bind:scale={qtyScale} />
-		{#each sideColumnComponents as c}
-			<svelte:component this={c.type} {...c.props} />
-		{/each}
-	</div>
+	{#if sideColumnComponents.length > 0}
+		<div class="column column-side">
+			<ScaleSelector bind:scale={qtyScale} />
+			{#each sideColumnComponents as c}
+				<svelte:component this={c.type} {...c.props} />
+			{/each}
+		</div>
+	{/if}
 	<div class="column column-main">
 		<RecipeCardTitleBlock {...titleProps} />
+		{#if sideColumnComponents.length == 0}
+			<ScaleSelector bind:scale={qtyScale} />
+		{/if}
 		{#each mainColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
 		{/each}
