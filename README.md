@@ -110,3 +110,14 @@ To stop a certain quantity from being scaled mistakenly, wrap it like `<span dat
 
 ### Additional settings
 The [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin will let you configure aspects of how the recipe card appears.
+
+## Attribution
+- Recipes used in the screenshot examples
+    - [Tasty.co's Chewy Chocolate Chip Cookies  ](https://tasty.co/recipe/the-best-chewy-chocolate-chip-cookies)
+    - [Leite's Culinaria's Pastéis de Nata / Portuguese Custard Tarts](https://leitesculinaria.com/7759/recipes-pasteis-de-nata.html)
+- Themes used in the screenshot examples
+    - Default Obsidian theme with Orange accent
+    - [Damian Korcz's excellent Prism Theme](https://github.com/damiankorcz/Prism-Theme)
+- In top preview image & social media preview
+    - Photo by <a href="https://unsplash.com/@andyc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Andy Chilton</a> on <a href="https://unsplash.com/photos/0JFveX0c778?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
