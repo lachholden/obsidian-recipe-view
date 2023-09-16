@@ -5,11 +5,13 @@ import { RecipeView, VIEW_TYPE_RECIPE } from 'recipe/recipe-view';
 interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
 	treatH1AsFilename: boolean;
+	renderUnicodeFractions: boolean;
 }
 
 const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
 	sideColumnRegex: 'Ingredients|Nutrition',
 	treatH1AsFilename: false,
+	renderUnicodeFractions: true,
 }
 
 export default class RecipeViewPlugin extends Plugin {
@@ -119,6 +121,16 @@ class SampleSettingTab extends PluginSettingTab {
 				.onChange(async (value) => {
 					this.plugin.settings!.treatH1AsFilename = value;
 					await this.plugin.saveSettings();
-				}))
+				}));
+
+		new Setting(containerEl)
+			.setName('Render fractions in quantities as unicode')
+			.setDesc('If on, fractions will appear like e.g. "½ cup". If off, they will appear like e.g. "1/2 cup".')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings!.renderUnicodeFractions)
+				.onChange(async (value) => {
+					this.plugin.settings!.renderUnicodeFractions = value;
+					await this.plugin.saveSettings();
+				}));
 	}
 }

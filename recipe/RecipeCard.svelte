@@ -8,7 +8,7 @@
 	import store from "./store";
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
-	import { writable, get } from "svelte/store";
+	import { writable } from "svelte/store";
 	import Fraction from "fraction.js";
 	import { get } from "http";
 
@@ -56,7 +56,7 @@
 			if (item.nodeName.startsWith("H")) {
 				let headerLevel = parseInt(item.nodeName.at(1)!);
 				if (
-					get(store.plugin).settings!.treatH1AsFilename &&
+					plugin.settings!.treatH1AsFilename &&
 					headerLevel == 1 &&
 					seenHeader == false
 				) {
