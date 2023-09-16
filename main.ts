@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
 }
 
 export default class RecipeViewPlugin extends Plugin {
-	settings: RecipeViewPluginSettings;
+	settings: RecipeViewPluginSettings | undefined;
 
 	async onload() {
 		await this.loadSettings();
@@ -61,6 +61,7 @@ export default class RecipeViewPlugin extends Plugin {
 			type: VIEW_TYPE_RECIPE,
 			state: leaf.view.getState(),
 			active: true,
+			// @ts-ignore
 			popstate: true,
 		})
 	}
@@ -70,6 +71,7 @@ export default class RecipeViewPlugin extends Plugin {
 			type: "markdown",
 			state: leaf.view.getState(),
 			active: true,
+			// @ts-ignore
 			popstate: true,
 		})
 	}
@@ -101,9 +103,9 @@ class SampleSettingTab extends PluginSettingTab {
 			.setDesc('A regular expression for headings of sections to pull to the side column')
 			.addText(text => text
 				.setPlaceholder('Ingredients|Nutrition')
-				.setValue(this.plugin.settings.sideColumnRegex)
+				.setValue(this.plugin.settings!.sideColumnRegex)
 				.onChange(async (value) => {
-					this.plugin.settings.sideColumnRegex = value;
+					this.plugin.settings!.sideColumnRegex = value;
 					await this.plugin.saveSettings();
 				}));
 	}
