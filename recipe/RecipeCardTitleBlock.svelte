@@ -2,6 +2,7 @@
 	export let thumbnailPath: string | undefined;
 	export let title: string;
 	export let frontmatter: object;
+	export let singleColumn: boolean;
 
 	function formatFrontmatterValue(key: string, value: any) {
 		// See if it's a URL
@@ -37,7 +38,7 @@
 	}
 </script>
 
-<div class="title-block">
+<div class="title-block" class:single-column={singleColumn}>
 	{#if thumbnailPath}
 		<img
 			class="thumbnail"
@@ -70,11 +71,6 @@
 		flex-direction: row;
 		margin-block-end: var(--size-4-4);
 	}
-	h1 {
-		margin-top: 0;
-		display: inline-block;
-		word-wrap: break-word;
-	}
 	img.thumbnail {
 		height: var(--thumbnail-size);
 		width: var(--thumbnail-size);
@@ -100,14 +96,13 @@
 		font-weight: 500;
 	}
 
-	@media (max-width: 600px) {
-		.title-block {
-			flex-direction: column;
-			justify-content: start;
-			align-items: start;
-		}
-		img.thumbnail {
-			margin-bottom: var(--size-4-4);
-		}
+	/* Single-column layout */
+	.single-column.title-block {
+		flex-direction: column;
+		justify-content: start;
+		align-items: start;
+	}
+	.single-column img.thumbnail {
+		margin-bottom: var(--size-4-4);
 	}
 </style>

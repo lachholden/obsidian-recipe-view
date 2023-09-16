@@ -10,6 +10,10 @@
 	import ScaleSelector from "./ScaleSelector.svelte";
 	import { writable } from "svelte/store";
 	import Fraction from "fraction.js";
+	import { get } from "http";
+
+	let plugin: RecipeViewPlugin;
+	store.plugin.subscribe((p) => (plugin = p));
 
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
@@ -20,6 +24,9 @@
 	setContext("qtyScaleStore", qtyScaleStore);
 	$: qtyScaleStore.set(qtyScale);
 
+	let containerWidth: number;
+	$: singleColumn = containerWidth < plugin.settings.singleColumnMaxWidth;
+
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
 
@@ -29,13 +36,10 @@
 		frontmatter: null,
 	};
 
-	$: titleProps.title = file.basename;
-	$: titleProps.frontmatter = metadata?.frontmatter;
-
-	let plugin: RecipeViewPlugin;
-	store.plugin.subscribe((p) => (plugin = p));
-
 	onMount(() => {
+		titleProps.title = file.basename;
+		titleProps.frontmatter = metadata?.frontmatter;
+
 		// We essentially want to create all our subcomponents that pick off
 		// the nodes we want from the tree under renderedMarkdownDiv using
 		// appendChild. As this process destructs renderedMarkdownDiv and leaves
@@ -53,8 +57,17 @@
 
 			// Headers can change which column to send items to
 			if (item.nodeName.startsWith("H")) {
-				seenHeader = true;
 				let headerLevel = parseInt(item.nodeName.at(1)!);
+				if (
+					plugin.settings!.treatH1AsFilename &&
+					headerLevel == 1 &&
+					seenHeader == false
+				) {
+					titleProps.title = item?.textContent!;
+					continue;
+				} else {
+					seenHeader = true;
+				}
 				if (
 					sendToColumn == mainColumnComponents &&
 					item.textContent?.match(sideColumnRegex)
@@ -123,8 +136,6 @@
 					prev.type == SelectableStepList &&
 					prev.props.kind == "p"
 				) {
-					console.log(prev);
-					console.log(item);
 					prev.props.steps.push(item);
 				} else {
 					sendToColumn.push({
@@ -147,7 +158,11 @@
 	});
 </script>
 
-<div class="container markdown-rendered">
+<div
+	class="container markdown-rendered"
+	bind:clientWidth={containerWidth}
+	class:single-column={singleColumn}
+>
 	{#if sideColumnComponents.length > 0}
 		<div class="column column-side">
 			<ScaleSelector bind:scale={qtyScale} />
@@ -157,7 +172,7 @@
 		</div>
 	{/if}
 	<div class="column column-main">
-		<RecipeCardTitleBlock {...titleProps} />
+		<RecipeCardTitleBlock {...titleProps} {singleColumn} />
 		{#if sideColumnComponents.length == 0}
 			<ScaleSelector bind:scale={qtyScale} />
 		{/if}
@@ -174,7 +189,10 @@
 		align-items: stretch;
 		justify-content: center;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
+		position: relative;
+		top: 0;
+		left: 0;
 	}
 
 	.column {
@@ -200,18 +218,16 @@
 	}
 
 	/* Single-column layout */
-	@media (max-width: 600px) {
-		.container {
-			flex-direction: column-reverse;
-			align-items: stretch;
-			justify-content: start;
-			height: auto;
-			overflow: scroll;
-		}
-		.column {
-			max-height: auto;
-			overflow: auto;
-			flex: 0 1 auto;
-		}
+	.single-column.container {
+		flex-direction: column-reverse;
+		align-items: stretch;
+		justify-content: start;
+		height: auto;
+		overflow: scroll;
+	}
+	.single-column .column {
+		max-height: auto;
+		overflow: auto;
+		flex: 0 1 auto;
 	}
 </style>
