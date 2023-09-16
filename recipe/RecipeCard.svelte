@@ -172,7 +172,8 @@
 		align-items: stretch;
 		justify-content: center;
 		height: 100%;
-		overflow: hidden;
+		overflow: clip;
+		position: fixed;
 	}
 
 	.column {
