@@ -173,7 +173,9 @@
 		justify-content: center;
 		height: 100%;
 		overflow: clip;
-		position: fixed;
+		position: relative;
+		top: 0;
+		left: 0;
 	}
 
 	.column {
