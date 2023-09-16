@@ -70,11 +70,6 @@
 		flex-direction: row;
 		margin-block-end: var(--size-4-4);
 	}
-	h1 {
-		margin-top: 0;
-		display: inline-block;
-		word-wrap: break-word;
-	}
 	img.thumbnail {
 		height: var(--thumbnail-size);
 		width: var(--thumbnail-size);
