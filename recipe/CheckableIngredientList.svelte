@@ -3,8 +3,6 @@
 
 	export let items: HTMLCollection;
 	export let bullets: boolean;
-
-	let checked: boolean[] = [];
 </script>
 
 <ul class:bullets>
