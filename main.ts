@@ -6,12 +6,14 @@ interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
 	treatH1AsFilename: boolean;
 	renderUnicodeFractions: boolean;
+	singleColumnMaxWidth: number;
 }
 
 const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
 	sideColumnRegex: 'Ingredients|Nutrition',
 	treatH1AsFilename: false,
 	renderUnicodeFractions: true,
+	singleColumnMaxWidth: 600,
 }
 
 export default class RecipeViewPlugin extends Plugin {
@@ -102,6 +104,8 @@ class SampleSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+		new Setting(containerEl).setName("Recipe parsing").setHeading()
+
 		new Setting(containerEl)
 			.setName('Side column regex')
 			.setDesc('A regular expression for headings of sections to pull to the side column')
@@ -124,6 +128,11 @@ class SampleSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
+			.setName("Recipe card appearance")
+			.setDesc("More options are available using the style settings plugin.")
+			.setHeading()
+
+		new Setting(containerEl)
 			.setName('Render fractions in quantities as unicode')
 			.setDesc('If on, fractions will appear like e.g. "½ cup". If off, they will appear like e.g. "1/2 cup".')
 			.addToggle(toggle => toggle
@@ -132,5 +141,17 @@ class SampleSettingTab extends PluginSettingTab {
 					this.plugin.settings!.renderUnicodeFractions = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName('Maximum pixel width for single-column view')
+			.setDesc('Recipe cards shown wider than this view will switch to two-column layout.')
+			.addSlider(slider => slider
+				.setDynamicTooltip()
+				.setLimits(50, 2000, 10)
+				.setValue(this.plugin.settings!.singleColumnMaxWidth)
+				.onChange(async (value) => {
+					this.plugin.settings!.singleColumnMaxWidth = value;
+					await this.plugin.saveSettings()
+				}))
 	}
 }

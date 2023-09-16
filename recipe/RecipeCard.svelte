@@ -12,6 +12,9 @@
 	import Fraction from "fraction.js";
 	import { get } from "http";
 
+	let plugin: RecipeViewPlugin;
+	store.plugin.subscribe((p) => (plugin = p));
+
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
@@ -21,6 +24,9 @@
 	setContext("qtyScaleStore", qtyScaleStore);
 	$: qtyScaleStore.set(qtyScale);
 
+	let containerWidth: number;
+	$: singleColumn = containerWidth < plugin.settings.singleColumnMaxWidth;
+
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
 
@@ -29,9 +35,6 @@
 		thumbnailPath: null,
 		frontmatter: null,
 	};
-
-	let plugin: RecipeViewPlugin;
-	store.plugin.subscribe((p) => (plugin = p));
 
 	onMount(() => {
 		titleProps.title = file.basename;
@@ -155,7 +158,11 @@
 	});
 </script>
 
-<div class="container markdown-rendered">
+<div
+	class="container markdown-rendered"
+	bind:clientWidth={containerWidth}
+	class:single-column={singleColumn}
+>
 	{#if sideColumnComponents.length > 0}
 		<div class="column column-side">
 			<ScaleSelector bind:scale={qtyScale} />
@@ -165,7 +172,7 @@
 		</div>
 	{/if}
 	<div class="column column-main">
-		<RecipeCardTitleBlock {...titleProps} />
+		<RecipeCardTitleBlock {...titleProps} {singleColumn} />
 		{#if sideColumnComponents.length == 0}
 			<ScaleSelector bind:scale={qtyScale} />
 		{/if}
@@ -211,18 +218,16 @@
 	}
 
 	/* Single-column layout */
-	@media (max-width: 600px) {
-		.container {
-			flex-direction: column-reverse;
-			align-items: stretch;
-			justify-content: start;
-			height: auto;
-			overflow: scroll;
-		}
-		.column {
-			max-height: auto;
-			overflow: auto;
-			flex: 0 1 auto;
-		}
+	.single-column.container {
+		flex-direction: column-reverse;
+		align-items: stretch;
+		justify-content: start;
+		height: auto;
+		overflow: scroll;
+	}
+	.single-column .column {
+		max-height: auto;
+		overflow: auto;
+		flex: 0 1 auto;
 	}
 </style>
