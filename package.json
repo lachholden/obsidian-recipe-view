@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-recipe-view",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "View your notes as interactive recipe cards while you cook.",
 	"main": "main.js",
 	"scripts": {
