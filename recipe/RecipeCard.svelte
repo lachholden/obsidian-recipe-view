@@ -123,8 +123,6 @@
 					prev.type == SelectableStepList &&
 					prev.props.kind == "p"
 				) {
-					console.log(prev);
-					console.log(item);
 					prev.props.steps.push(item);
 				} else {
 					sendToColumn.push({
