@@ -4,10 +4,12 @@ import { RecipeView, VIEW_TYPE_RECIPE } from 'recipe/recipe-view';
 
 interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
+	treatH1AsFilename: boolean;
 }
 
 const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
-	sideColumnRegex: 'Ingredients|Nutrition'
+	sideColumnRegex: 'Ingredients|Nutrition',
+	treatH1AsFilename: false,
 }
 
 export default class RecipeViewPlugin extends Plugin {
@@ -108,5 +110,15 @@ class SampleSettingTab extends PluginSettingTab {
 					this.plugin.settings!.sideColumnRegex = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+			.setName('Treat level one heading as filename')
+			.setDesc('If turned on, then in recipes that have a "# Level one heading", there should only be one – and it will be used as the recipe title. Turn this on if you usually start your notes with a level one heading that matches the filename, and turn it off if you would ever use headings like "# Ingredients", "# Directons", etc.')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings!.treatH1AsFilename)
+				.onChange(async (value) => {
+					this.plugin.settings!.treatH1AsFilename = value;
+					await this.plugin.saveSettings();
+				}))
 	}
 }

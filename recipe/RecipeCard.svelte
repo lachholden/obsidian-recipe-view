@@ -8,8 +8,9 @@
 	import store from "./store";
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
-	import { writable } from "svelte/store";
+	import { writable, get } from "svelte/store";
 	import Fraction from "fraction.js";
+	import { get } from "http";
 
 	export let renderedMarkdownDiv: HTMLDivElement;
 	export let metadata: CachedMetadata | undefined;
@@ -29,13 +30,13 @@
 		frontmatter: null,
 	};
 
-	$: titleProps.title = file.basename;
-	$: titleProps.frontmatter = metadata?.frontmatter;
-
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
 
 	onMount(() => {
+		titleProps.title = file.basename;
+		titleProps.frontmatter = metadata?.frontmatter;
+
 		// We essentially want to create all our subcomponents that pick off
 		// the nodes we want from the tree under renderedMarkdownDiv using
 		// appendChild. As this process destructs renderedMarkdownDiv and leaves
@@ -53,8 +54,17 @@
 
 			// Headers can change which column to send items to
 			if (item.nodeName.startsWith("H")) {
-				seenHeader = true;
 				let headerLevel = parseInt(item.nodeName.at(1)!);
+				if (
+					get(store.plugin).settings!.treatH1AsFilename &&
+					headerLevel == 1 &&
+					seenHeader == false
+				) {
+					titleProps.title = item?.textContent!;
+					continue;
+				} else {
+					seenHeader = true;
+				}
 				if (
 					sendToColumn == mainColumnComponents &&
 					item.textContent?.match(sideColumnRegex)
