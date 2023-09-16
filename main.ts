@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, WorkspaceLeaf } from 'obsidian';
 
 import { RecipeView, VIEW_TYPE_RECIPE } from 'recipe/recipe-view';
 
@@ -18,9 +18,15 @@ export default class RecipeViewPlugin extends Plugin {
 
 		this.registerView(VIEW_TYPE_RECIPE, (leaf) => new RecipeView(leaf, this));
 
-		this.addRibbonIcon("chef-hat", "Open as recipe", () => {
-			this.activateView();
-		})
+		this.addRibbonIcon("chef-hat", "Toggle recipe view", () => {
+			this.toggleView(false);
+		});
+
+		this.addCommand({
+			id: "toggle-recipe-view",
+			name: "Toggle recipe view and markdown view",
+			checkCallback: (c) => this.toggleView(c),
+		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new SampleSettingTab(this.app, this));
@@ -33,12 +39,38 @@ export default class RecipeViewPlugin extends Plugin {
 
 	}
 
-	async activateView() {
-		const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-		activeView?.leaf.setViewState({
+	toggleView(this: RecipeViewPlugin, checking: boolean) {
+		const activeLeaf = this.app.workspace.getMostRecentLeaf();
+
+		if (activeLeaf?.getViewState().type == "markdown") {
+			if (!checking) {
+				this.setRecipeView(activeLeaf!);
+			}
+		} else if (activeLeaf?.getViewState().type == VIEW_TYPE_RECIPE) {
+			if (!checking) {
+				this.setMarkdownView(activeLeaf!);
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+
+	async setRecipeView(leaf: WorkspaceLeaf) {
+		await leaf.setViewState({
 			type: VIEW_TYPE_RECIPE,
+			state: leaf.view.getState(),
 			active: true,
-			state: activeView.leaf.view.getState(),
+			popstate: true,
+		})
+	}
+
+	async setMarkdownView(leaf: WorkspaceLeaf) {
+		await leaf.setViewState({
+			type: "markdown",
+			state: leaf.view.getState(),
+			active: true,
+			popstate: true,
 		})
 	}
 
