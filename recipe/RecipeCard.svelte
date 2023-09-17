@@ -188,10 +188,12 @@
 
 	function advanceStep(focusOnly: boolean) {
 		const steps = container.querySelectorAll("input[type=radio]");
-		for (let i = 0; i < steps.length - 1; i++) {
+		for (let i = 0; i < steps.length; i++) {
 			if (steps.item(i).checked) {
-				if (!focusOnly) steps.item(i + 1).checked = true;
-				steps.item(focusOnly ? i : i + 1).focus();
+				if (!focusOnly && steps.item(i + 1))
+					steps.item(i + 1).checked = true;
+				if (focusOnly || steps.item(i + 1))
+					steps.item(focusOnly ? i : i + 1).focus();
 				return;
 			}
 		}
