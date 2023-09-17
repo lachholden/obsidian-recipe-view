@@ -8,9 +8,8 @@
 	import store from "./store";
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
-	import { writable } from "svelte/store";
+	import { writable, get } from "svelte/store";
 	import Fraction from "fraction.js";
-	import { get } from "http";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
@@ -29,6 +28,9 @@
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
+
+	let radioName = `selectable-steps-${get(store.counter)}`;
+	store.counter.update((n) => n + 1);
 
 	let titleProps = {
 		title: "",
@@ -122,6 +124,7 @@
 					type: SelectableStepList,
 					props: {
 						steps: item.children,
+						radioName: radioName,
 						kind: "ol",
 					},
 				});
@@ -142,6 +145,7 @@
 						type: SelectableStepList,
 						props: {
 							steps: [item],
+							radioName: radioName,
 							kind: "p",
 						},
 					});

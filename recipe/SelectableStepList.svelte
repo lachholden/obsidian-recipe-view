@@ -5,8 +5,7 @@
 
 	export let steps: HTMLCollection | Array<HTMLElement>;
 	export let kind: string;
-	let name = `selectable-steps-${get(counter)}`;
-	counter.update((n) => n + 1);
+	export let radioName: string;
 </script>
 
 {#if kind == "ol"}
@@ -15,7 +14,7 @@
 		{#each steps as _, i}
 			<li>
 				<label>
-					<input type="radio" {name} />
+					<input type="radio" name={radioName} />
 					<div class="leaf">
 						<RecipeLeaf
 							childNodes={steps.item(i).childNodes}
@@ -25,20 +24,13 @@
 				</label>
 			</li>
 		{/each}
-		<input type="radio" {name} />
 	</ol>
 {:else if kind == "p"}
 	<!-- means steps is an array of P elements -->
 	{#each steps as _, i}
 		<p>
 			<label>
-				<input
-					type="radio"
-					{name}
-					on:focus={(e) => {
-						console.log(e);
-					}}
-				/>
+				<input type="radio" name={radioName} />
 				<div class="leaf">
 					<RecipeLeaf
 						childNodes={steps[i].childNodes}
@@ -48,7 +40,6 @@
 			</label>
 		</p>
 	{/each}
-	<input type="radio" {name} />
 {/if}
 
 <style>
