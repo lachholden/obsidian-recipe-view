@@ -32,7 +32,13 @@
 	{#each steps as _, i}
 		<p>
 			<label>
-				<input type="radio" {name} />
+				<input
+					type="radio"
+					{name}
+					on:focus={(e) => {
+						console.log(e);
+					}}
+				/>
 				<div class="leaf">
 					<RecipeLeaf
 						childNodes={steps[i].childNodes}
@@ -54,6 +60,9 @@
 	input[type="radio"] {
 		opacity: 0;
 		position: absolute;
+	}
+	label {
+		position: relative;
 	}
 
 	.leaf {
