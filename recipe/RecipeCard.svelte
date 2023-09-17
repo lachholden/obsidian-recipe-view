@@ -18,6 +18,7 @@
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
+	let scaleNum;
 	let qtyScale: Fraction;
 	let qtyScaleStore = writable(new Fraction(1));
 	setContext("qtyScaleStore", qtyScaleStore);
@@ -160,16 +161,88 @@
 			});
 		}
 	});
+
+	let container: HTMLDivElement;
+	let scaler: ScaleSelector;
+
+	function checkNext() {
+		const nextUnchecked = container.querySelector(
+			"input[type=checkbox]:not(:checked)"
+		);
+		if (nextUnchecked) {
+			nextUnchecked.checked = true;
+			nextUnchecked.focus();
+		}
+	}
+
+	function uncheckPrevious() {
+		const checked = container.querySelectorAll(
+			"input[type=checkbox]:checked"
+		);
+		if (checked.length > 0) {
+			const lastChecked = checked.item(checked.length - 1);
+			lastChecked.checked = false;
+			lastChecked.focus();
+		}
+	}
+
+	function advanceStep() {
+		const steps = container.querySelectorAll("input[type=radio]");
+		for (let i = 0; i < steps.length - 1; i++) {
+			if (steps.item(i).checked) {
+				steps.item(i + 1).checked = true;
+				steps.item(i + 1).focus();
+				return;
+			}
+		}
+		steps.item(0).checked = true;
+		steps.item(0).focus();
+	}
+
+	function retreatStep() {
+		const steps = container.querySelectorAll("input[type=radio]");
+		for (let i = 1; i < steps.length; i++) {
+			if (steps.item(i).checked) {
+				steps.item(i - 1).checked = true;
+				steps.item(i - 1).focus();
+				return;
+			}
+		}
+	}
+
+	function handleKeypress(e: KeyboardEvent) {
+		if (e.key == "n") {
+			checkNext();
+		} else if (e.key == "p") {
+			uncheckPrevious();
+		} else if (e.key == "j") {
+			advanceStep();
+		} else if (e.key == "k") {
+			retreatStep();
+		} else if (e.key == ",") {
+			if (scaleNum) {
+				scaleNum -= 0.25;
+			}
+		} else if (e.key == ".") {
+			if (scaleNum) {
+				scaleNum += 0.25;
+			}
+		}
+	}
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
 	class="container markdown-rendered"
 	bind:clientWidth={containerWidth}
+	bind:this={container}
 	class:single-column={singleColumn}
+	on:keypress={handleKeypress}
+	role="document"
 >
 	{#if sideColumnComponents.length > 0}
 		<div class="column column-side">
-			<ScaleSelector bind:scale={qtyScale} />
+			<ScaleSelector bind:scale={qtyScale} bind:scaleNum />
 			{#each sideColumnComponents as c}
 				<svelte:component this={c.type} {...c.props} />
 			{/each}
@@ -178,7 +251,7 @@
 	<div class="column column-main">
 		<RecipeCardTitleBlock {...titleProps} {singleColumn} />
 		{#if sideColumnComponents.length == 0}
-			<ScaleSelector bind:scale={qtyScale} />
+			<ScaleSelector bind:scale={qtyScale} bind:scaleNum />
 		{/if}
 		{#each mainColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
