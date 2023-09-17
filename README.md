@@ -1,6 +1,7 @@
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
-![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237)) ![GitHub](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)
+<a href="https://github.com/lachholden/obsidian-recipe-view/releases/latest">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a> <a href="https://github.com/lachholden/obsidian-recipe-view/blob/release/LICENSE">![License](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)</a> <a href="https://github.com/lachholden/obsidian-recipe-view/actions/workflows/npm_build.yml">![Build status](https://img.shields.io/github/actions/workflow/status/lachholden/obsidian-recipe-view/npm_build.yml)</a>
+
 
 
 *Bring Obsidian with you into the kitchen*
@@ -110,6 +111,13 @@ In the markdown, step 3 looks like:
 
 To stop a certain quantity from being scaled mistakenly, wrap it like `<span data-qty-no-parse>30 centimetres</span>`.
 
+### Keyboard shortcuts
+In addition to the standard browser shortcuts discussed above, a few extras have been added. All of the following shortcuts require some element of the recipe card to be focused to work, so after opening you will need to click or tab to an ingredient/step/the scale textbox. As you use the keyboard shortcuts, the columns will automatically scroll to keep your updates in view.
+
+- Use <kbd>j</kbd> and <kbd>k</kbd> to highlight the next/previous step.
+- Use <kbd>n</kbd> and <kbd>p</kbd> to check off the next ingredient or uncheck the previous ingredient.
+- Use <kbd>h</kbd> and <kbd>l</kbd> to focus the current ingredient/step.
+- Use <kbd>,</kbd> and <kbd>.</kbd> to scale the recipe in increments of 0.25.
 
 ### Additional settings
 The [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin will let you configure aspects of how the recipe card appears.

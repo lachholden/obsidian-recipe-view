@@ -1,11 +1,11 @@
 import RecipeViewPlugin from "main";
-import { FileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
+import { EditableFileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
 import store from "./store";
 
 export const VIEW_TYPE_RECIPE = "recipe-view";
 
-export class RecipeView extends FileView {
+export class RecipeView extends EditableFileView {
     plugin: RecipeViewPlugin
     content?: RecipeCard
 

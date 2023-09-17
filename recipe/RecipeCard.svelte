@@ -8,9 +8,8 @@
 	import store from "./store";
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
-	import { writable } from "svelte/store";
+	import { writable, get } from "svelte/store";
 	import Fraction from "fraction.js";
-	import { get } from "http";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
@@ -19,6 +18,7 @@
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
+	let scaleNum;
 	let qtyScale: Fraction;
 	let qtyScaleStore = writable(new Fraction(1));
 	setContext("qtyScaleStore", qtyScaleStore);
@@ -29,6 +29,9 @@
 
 	let sideColumnComponents = [];
 	let mainColumnComponents = [];
+
+	let radioName = `selectable-steps-${get(store.counter)}`;
+	store.counter.update((n) => n + 1);
 
 	let titleProps = {
 		title: "",
@@ -122,6 +125,7 @@
 					type: SelectableStepList,
 					props: {
 						steps: item.children,
+						radioName: radioName,
 						kind: "ol",
 					},
 				});
@@ -142,6 +146,7 @@
 						type: SelectableStepList,
 						props: {
 							steps: [item],
+							radioName: radioName,
 							kind: "p",
 						},
 					});
@@ -156,16 +161,94 @@
 			});
 		}
 	});
+
+	let container: HTMLDivElement;
+	let scaler: ScaleSelector;
+
+	function checkNext(focusOnly: boolean) {
+		const nextUnchecked = container.querySelector(
+			"input[type=checkbox]:not(:checked)"
+		);
+		if (nextUnchecked) {
+			if (!focusOnly) nextUnchecked.checked = true;
+			nextUnchecked.focus();
+		}
+	}
+
+	function uncheckPrevious() {
+		const checked = container.querySelectorAll(
+			"input[type=checkbox]:checked"
+		);
+		if (checked.length > 0) {
+			const lastChecked = checked.item(checked.length - 1);
+			lastChecked.checked = false;
+			lastChecked.focus();
+		}
+	}
+
+	function advanceStep(focusOnly: boolean) {
+		const steps = container.querySelectorAll("input[type=radio]");
+		for (let i = 0; i < steps.length; i++) {
+			if (steps.item(i).checked) {
+				if (!focusOnly && steps.item(i + 1))
+					steps.item(i + 1).checked = true;
+				if (focusOnly || steps.item(i + 1))
+					steps.item(focusOnly ? i : i + 1).focus();
+				return;
+			}
+		}
+		if (!focusOnly) steps.item(0).checked = true;
+		steps.item(0).focus();
+	}
+
+	function retreatStep() {
+		const steps = container.querySelectorAll("input[type=radio]");
+		for (let i = 1; i < steps.length; i++) {
+			if (steps.item(i).checked) {
+				steps.item(i - 1).checked = true;
+				steps.item(i - 1).focus();
+				return;
+			}
+		}
+	}
+
+	function handleKeypress(e: KeyboardEvent) {
+		if (e.key == "n") {
+			checkNext(false);
+		} else if (e.key == "p") {
+			uncheckPrevious();
+		} else if (e.key == "j") {
+			advanceStep(false);
+		} else if (e.key == "k") {
+			retreatStep();
+		} else if (e.key == ",") {
+			if (scaleNum) {
+				scaleNum -= 0.25;
+			}
+		} else if (e.key == ".") {
+			if (scaleNum) {
+				scaleNum += 0.25;
+			}
+		} else if (e.key == "h") {
+			checkNext(true);
+		} else if (e.key == "l") {
+			advanceStep(true);
+		}
+	}
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
 	class="container markdown-rendered"
 	bind:clientWidth={containerWidth}
+	bind:this={container}
 	class:single-column={singleColumn}
+	on:keypress={handleKeypress}
+	role="document"
 >
 	{#if sideColumnComponents.length > 0}
 		<div class="column column-side">
-			<ScaleSelector bind:scale={qtyScale} />
+			<ScaleSelector bind:scale={qtyScale} bind:scaleNum />
 			{#each sideColumnComponents as c}
 				<svelte:component this={c.type} {...c.props} />
 			{/each}
@@ -174,7 +257,7 @@
 	<div class="column column-main">
 		<RecipeCardTitleBlock {...titleProps} {singleColumn} />
 		{#if sideColumnComponents.length == 0}
-			<ScaleSelector bind:scale={qtyScale} />
+			<ScaleSelector bind:scale={qtyScale} bind:scaleNum />
 		{/if}
 		{#each mainColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />

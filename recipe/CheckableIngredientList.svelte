@@ -31,6 +31,10 @@
 		position: absolute;
 	}
 
+	label {
+		position: relative;
+	}
+
 	input[type="checkbox"]:checked ~ .leaf {
 		color: var(--text-muted);
 		text-decoration: line-through;
