@@ -51,6 +51,7 @@
 	input[type="radio"] {
 		opacity: 0;
 		position: absolute;
+		height: 105%;
 	}
 	label {
 		position: relative;
