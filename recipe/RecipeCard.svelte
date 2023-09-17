@@ -165,12 +165,12 @@
 	let container: HTMLDivElement;
 	let scaler: ScaleSelector;
 
-	function checkNext() {
+	function checkNext(focusOnly: boolean) {
 		const nextUnchecked = container.querySelector(
 			"input[type=checkbox]:not(:checked)"
 		);
 		if (nextUnchecked) {
-			nextUnchecked.checked = true;
+			if (!focusOnly) nextUnchecked.checked = true;
 			nextUnchecked.focus();
 		}
 	}
@@ -186,16 +186,16 @@
 		}
 	}
 
-	function advanceStep() {
+	function advanceStep(focusOnly: boolean) {
 		const steps = container.querySelectorAll("input[type=radio]");
 		for (let i = 0; i < steps.length - 1; i++) {
 			if (steps.item(i).checked) {
-				steps.item(i + 1).checked = true;
-				steps.item(i + 1).focus();
+				if (!focusOnly) steps.item(i + 1).checked = true;
+				steps.item(focusOnly ? i : i + 1).focus();
 				return;
 			}
 		}
-		steps.item(0).checked = true;
+		if (!focusOnly) steps.item(0).checked = true;
 		steps.item(0).focus();
 	}
 
@@ -212,11 +212,11 @@
 
 	function handleKeypress(e: KeyboardEvent) {
 		if (e.key == "n") {
-			checkNext();
+			checkNext(false);
 		} else if (e.key == "p") {
 			uncheckPrevious();
 		} else if (e.key == "j") {
-			advanceStep();
+			advanceStep(false);
 		} else if (e.key == "k") {
 			retreatStep();
 		} else if (e.key == ",") {
@@ -227,6 +227,10 @@
 			if (scaleNum) {
 				scaleNum += 0.25;
 			}
+		} else if (e.key == "h") {
+			checkNext(true);
+		} else if (e.key == "l") {
+			advanceStep(true);
 		}
 	}
 </script>
