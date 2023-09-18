@@ -59,7 +59,7 @@
 			let item = renderedMarkdownDiv.children.item(i)!;
 
 			// Headers can change which column to send items to
-			if (item.nodeName.startsWith("H")) {
+			if (item.nodeName.match(/H[1-6]/)) {
 				let headerLevel = parseInt(item.nodeName.at(1)!);
 				if (
 					plugin.settings!.treatH1AsFilename &&
