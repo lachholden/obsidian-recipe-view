@@ -4,7 +4,7 @@
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 	import CheckableIngredientList from "./CheckableIngredientList.svelte";
 	import SelectableStepList from "./SelectableStepList.svelte";
-	import RecipeViewPlugin from "main";
+	import RecipeViewPlugin from "./main";
 	import store from "./store";
 	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";

@@ -1,4 +1,4 @@
-import RecipeViewPlugin from "main";
+import RecipeViewPlugin from "./main";
 import { EditableFileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
 import store from "./store";

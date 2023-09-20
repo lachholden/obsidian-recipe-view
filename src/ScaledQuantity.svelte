@@ -2,7 +2,7 @@
 	import { QtyFormatType, formatQuantity } from "./quantities";
 	import Fraction from "fraction.js";
 	import store from "./store";
-	import RecipeViewPlugin from "main";
+	import RecipeViewPlugin from "./main";
 
 	export let value: Fraction;
 	export let format: QtyFormatType;
