@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 
 	export let list: HTMLUListElement;
@@ -9,7 +10,21 @@
 	{#each list.children as _, i}
 		<li>
 			<label>
-				<input type="checkbox" />
+				<!-- Persist checkbox state on component re-construction by setting
+				data-checked on the underlying LI element from the rendered markdown.
+				-->
+				<input
+					type="checkbox"
+					checked={list.children.item(i).getAttr("data-checked") ==
+						"true"}
+					on:change={(e) =>
+						list.children
+							.item(i)
+							.setAttr(
+								"data-checked",
+								e.target.checked ? "true" : "false"
+							)}
+				/>
 				<div class="leaf">
 					<RecipeLeaf
 						childNodesOf={list.children.item(i)}
