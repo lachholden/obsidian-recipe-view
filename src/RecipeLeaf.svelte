@@ -13,7 +13,6 @@
 		});
 
 		return () => {
-			console.log("Returning children of ", childNodesOf);
 			if (root)
 				Array.from(root.childNodes).forEach((node) => {
 					childNodesOf.appendChild(node);

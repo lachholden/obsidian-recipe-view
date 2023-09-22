@@ -45,7 +45,8 @@
 	}
 
 	.column {
-		padding: calc(var(--file-margins) / 2);
+		padding: var(--file-margins);
+		display: block;
 	}
 
 	.column:empty {
@@ -67,6 +68,6 @@
 	.column-content {
 		position: -webkit-sticky;
 		position: sticky;
-		top: calc(var(--file-margins) / 2);
+		top: var(--file-margins);
 	}
 </style>
