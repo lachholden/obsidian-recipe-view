@@ -8,6 +8,7 @@
 	import { writable, get } from "svelte/store";
 	import Fraction from "fraction.js";
 	import RecipeCardTwoColumn from "./RecipeCardTwoColumn.svelte";
+	import RecipeCardSplitSteps from "./RecipeCardSplitSteps.svelte";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
@@ -127,28 +128,46 @@
 	on:keypress={handleKeypress}
 	role="document"
 >
-	<RecipeCardTwoColumn
-		sideColumnComponents={isBelowSingleColumnWidth
-			? []
-			: twoColumnSideComponents}
-		mainColumnComponents={isBelowSingleColumnWidth
-			? singleColumnComponents
-			: twoColumnMainComponents}
-	>
-		<ScaleSelector
-			slot="scaleselector"
-			bind:scale={qtyScale}
-			bind:scaleNum
-		/>
+	{#if parsedRecipe?.sections.length <= 3}
+		<RecipeCardTwoColumn
+			sideColumnComponents={isBelowSingleColumnWidth
+				? []
+				: twoColumnSideComponents}
+			mainColumnComponents={isBelowSingleColumnWidth
+				? singleColumnComponents
+				: twoColumnMainComponents}
+		>
+			<ScaleSelector
+				slot="scaleselector"
+				bind:scale={qtyScale}
+				bind:scaleNum
+			/>
 
-		<RecipeCardTitleBlock
-			slot="titleblock"
-			{title}
-			{frontmatter}
-			thumbnailPath={parsedRecipe?.thumbnailPath}
-			singleColumn={isBelowSingleColumnWidth}
-		/>
-	</RecipeCardTwoColumn>
+			<RecipeCardTitleBlock
+				slot="titleblock"
+				{title}
+				{frontmatter}
+				thumbnailPath={parsedRecipe?.thumbnailPath}
+				singleColumn={isBelowSingleColumnWidth}
+			/>
+		</RecipeCardTwoColumn>
+	{:else}
+		<RecipeCardSplitSteps sections={parsedRecipe?.sections}>
+			<ScaleSelector
+				slot="scaleselector"
+				bind:scale={qtyScale}
+				bind:scaleNum
+			/>
+
+			<RecipeCardTitleBlock
+				slot="titleblock"
+				{title}
+				{frontmatter}
+				thumbnailPath={parsedRecipe?.thumbnailPath}
+				singleColumn={isBelowSingleColumnWidth}
+			/>
+		</RecipeCardSplitSteps>
+	{/if}
 </div>
 
 <style>

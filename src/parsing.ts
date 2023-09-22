@@ -42,6 +42,7 @@ export function parseRecipeMarkdown(
     let sendToSideUntilLevel = 7;
     for (let i = 0; i < result.renderedMarkdownParent.children.length; i++) {
         const item = result.renderedMarkdownParent.children.item(i)!;
+        console.log(item);
 
         // Horizontal rules will create a new section
         if (item.nodeName == "HR") {
@@ -51,6 +52,8 @@ export function parseRecipeMarkdown(
                 mainComponents: [],
             });
             currentSection++;
+            currentColumn = "mainComponents"
+            sendToSideUntilLevel = 7;
             continue; // Don't include the HR to be rendered
         }
 
@@ -104,14 +107,14 @@ export function parseRecipeMarkdown(
 
         // If it's an unordered list, make it checkable if either:
         // 1. it's going to the sidebar, or
-        // 2. we haven't seen a header yet
+        // 2. we haven't seen a header yet (and then send it there)
         if (
             item.nodeName == "UL" &&
             (currentColumn == "sideComponents" || !result.sections[currentSection].containsHeader)
         ) {
-            result.sections[currentSection][currentColumn].push({
+            result.sections[currentSection]["sideComponents"].push({
                 type: CheckableIngredientList,
-                props: { list: item, bullets: !result.sections[currentSection].containsHeader },
+                props: { list: item, bullets: false },
                 origIndex: i,
             });
             continue;
@@ -162,5 +165,6 @@ export function parseRecipeMarkdown(
         });
     }
 
+    console.log(result);
     return result;
 }

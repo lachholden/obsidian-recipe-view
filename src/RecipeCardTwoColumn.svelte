@@ -15,10 +15,8 @@
 			{/each}
 		</div>
 	{/if}
-	<slot name="sidecolumn" />
 	<div class="column column-main">
 		<slot name="titleblock" />
-		<slot name="maincolumn" />
 		{#if sideColumnComponents?.length == 0}
 			<slot name="scaleselector" />
 		{/if}
