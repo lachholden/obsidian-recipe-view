@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { get } from "svelte/store";
 	import RecipeLeaf from "./RecipeLeaf.svelte";
-	import { counter } from "./store";
 
 	export let list: HTMLOListElement | Array<HTMLElement>;
 	export let kind: string;

@@ -5,10 +5,10 @@
 
 	export let childNodesOf: HTMLElement;
 	export let asTag: string;
+	export let qtyParseAll: boolean = false;
 
 	let root: HTMLElement;
 
-	let scaleComponents = [];
 	let qtyScaleStore = getContext("qtyScaleStore");
 	function parseForQty(n: Node, qtyScaleStore) {
 		if (n.nodeType == Node.ELEMENT_NODE) {
@@ -35,17 +35,15 @@
 				let qtyTarget = createEl("span");
 				qtyTarget.setAttribute("data-qty", "true");
 				parent.insertBefore(qtyTarget, n);
-				scaleComponents.push(
-					new ScaledQuantity({
-						target: qtyTarget,
-						props: {
-							value: match.value.value,
-							format: match.value.format,
-							unit: match.unit,
-							qtyScaleStore: qtyScaleStore,
-						},
-					})
-				);
+				new ScaledQuantity({
+					target: qtyTarget,
+					props: {
+						value: match.value.value,
+						format: match.value.format,
+						unit: match.unit,
+						qtyScaleStore: qtyScaleStore,
+					},
+				});
 				currentIndex = match.index + match.length;
 			}
 			parent.insertBefore(
@@ -67,12 +65,22 @@
 		Array.from(childNodesOf.childNodes).forEach((node) => {
 			root.appendChild(node);
 		});
+		if (qtyParseAll) {
+			parseForQty(root, qtyScaleStore);
+		} else {
+			Array.from(root.querySelectorAll("[data-qty-parse]")).forEach(
+				(node) => {
+					parseForQty(node, qtyScaleStore);
+				}
+			);
+		}
 	});
 
 	onDestroy(() => {
-		Array.from(root.childNodes).forEach((node) => {
-			childNodesOf.appendChild(node);
-		});
+		if (root)
+			Array.from(root.childNodes).forEach((node) => {
+				childNodesOf.appendChild(node);
+			});
 	});
 </script>
 

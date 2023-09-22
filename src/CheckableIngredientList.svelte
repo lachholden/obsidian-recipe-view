@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 
 	export let list: HTMLUListElement;
@@ -29,6 +28,7 @@
 					<RecipeLeaf
 						childNodesOf={list.children.item(i)}
 						asTag="div"
+						qtyParseAll={true}
 					/>
 				</div>
 			</label>

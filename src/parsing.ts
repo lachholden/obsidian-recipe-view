@@ -10,11 +10,13 @@ export function parseRecipeMarkdown(
     plugin: RecipeViewPlugin, text: string, path: string, component: Component
 ) {
     // Create our object to store the result.
-    // When we want to render HTML elements created from rendering the markdown, we need
+    // - When we want to render HTML elements created from rendering the markdown, we need
     // to reparent them rather than clone them (or e.g. callout icons, transclusions,
     // etc. get lost.) As such, every element being rendered directly from the rendered
     // markdown needs to be wrapped in a RecipeLeaf, which ensures it doesn't get
     // destroyed if the components get rebuilt e.g. because the layout changes.
+    // - RecipeLeaf is also in charge of injecting ScaledQuantity components, but this
+    // only happens once – they just then stick around with the element as it moves.
     const result = {
         title: null,
         thumbnailPath: null,
