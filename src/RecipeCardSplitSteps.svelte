@@ -14,14 +14,18 @@
 		{#each sections as section}
 			<div class="split-step">
 				<div class="column column-side">
-					{#each section.sideComponents as c (c)}
-						<svelte:component this={c.type} {...c.props} />
-					{/each}
+					<div class="column-content">
+						{#each section.sideComponents as c (c)}
+							<svelte:component this={c.type} {...c.props} />
+						{/each}
+					</div>
 				</div>
 				<div class="column column-main">
-					{#each section.mainComponents as c (c)}
-						<svelte:component this={c.type} {...c.props} />
-					{/each}
+					<div class="column-content">
+						{#each section.mainComponents as c (c)}
+							<svelte:component this={c.type} {...c.props} />
+						{/each}
+					</div>
 				</div>
 			</div>
 		{/each}
@@ -33,6 +37,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+		align-items: stretch;
 	}
 
 	.split-step:nth-child(even) {
@@ -57,5 +62,11 @@
 		flex-basis: var(--file-line-width);
 		flex-grow: 0;
 		flex-shrink: 1;
+	}
+
+	.column-content {
+		position: -webkit-sticky;
+		position: sticky;
+		top: calc(var(--file-margins) / 2);
 	}
 </style>
