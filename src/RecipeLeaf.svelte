@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { onMount, getContext } from "svelte";
+	import { onMount, onDestroy, getContext } from "svelte";
 	import ScaledQuantity from "./ScaledQuantity.svelte";
 	import { deUnicodeFractions, matchQuantities } from "./quantities";
 
 	export let element: HTMLElement | undefined;
-	export let childNodes: NodeListOf<ChildNode> | undefined;
+	export let childrenOf: HTMLElement | undefined;
 	export let qtyParseAll: boolean;
 	let div: HTMLDivElement;
+	let elementParent;
 
 	let scaleComponents = [];
 
@@ -64,23 +65,16 @@
 		}
 	}
 
-	onMount(() => {
-		// Mount all child nodes in the component
-
-		if (childNodes) {
-			Array.from(childNodes).forEach((n) => {
-				div.appendChild(n);
+	$: if (div) {
+		div.childNodes.forEach((n) => div.removeChild(n));
+		if (childrenOf) {
+			Array.from(childrenOf.childNodes).forEach((n) => {
+				div.appendChild(n.cloneNode(true));
 			});
 		} else if (element) {
-			div.appendChild(element);
+			div.appendChild(element.cloneNode(true));
 		}
-
-		// Walk all trees under elements with data-qty-parse to parse quantities
-		if (qtyParseAll) parseForQty(div, qtyScaleStore);
-		div.querySelectorAll("[data-qty-parse]").forEach((root) => {
-			parseForQty(root, qtyScaleStore);
-		});
-	});
+	}
 </script>
 
 <div bind:this={div} />

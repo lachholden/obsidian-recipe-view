@@ -11,10 +11,7 @@
 			<label>
 				<input type="checkbox" />
 				<div class="leaf">
-					<RecipeLeaf
-						childNodes={items.item(i).childNodes}
-						qtyParseAll={true}
-					/>
+					<RecipeLeaf childrenOf={items.item(i)} qtyParseAll={true} />
 				</div>
 			</label>
 		</li>

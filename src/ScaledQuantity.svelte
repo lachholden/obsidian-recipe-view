@@ -16,7 +16,7 @@
 	store.plugin.subscribe((p) => (plugin = p));
 </script>
 
-<span class:scaled={!scale.equals(1)}
+<span class:scaled={!scale?.equals(1) || false}
 	><span class="scale-number"
 		>{formatQuantity(
 			value,

@@ -17,7 +17,7 @@
 					<input type="radio" name={radioName} />
 					<div class="leaf">
 						<RecipeLeaf
-							childNodes={steps.item(i).childNodes}
+							childrenOf={steps.item(i)}
 							qtyParseAll={false}
 						/>
 					</div>
@@ -32,10 +32,7 @@
 			<label>
 				<input type="radio" name={radioName} />
 				<div class="leaf">
-					<RecipeLeaf
-						childNodes={steps[i].childNodes}
-						qtyParseAll={false}
-					/>
+					<RecipeLeaf childrenOf={steps[i]} qtyParseAll={false} />
 				</div>
 			</label>
 		</p>

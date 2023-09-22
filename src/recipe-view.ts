@@ -2,6 +2,8 @@ import RecipeViewPlugin from "./main";
 import { EditableFileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
 import store from "./store";
+import { get } from "svelte/store";
+import { parseMarkdownDiv } from "./parsing";
 
 export const VIEW_TYPE_RECIPE = "recipe-view";
 
@@ -69,10 +71,14 @@ export class RecipeView extends EditableFileView {
         const metadata = await this.app.metadataCache.getFileCache(this.file!);
         const mdDiv = createDiv();
         MarkdownRenderer.render(this.app, text, mdDiv, this.file!.path, this);
+        const radioName = `selectable-steps-${get(store.counter)}`;
+        store.counter.update((n) => n + 1);
+        const parseResults = parseMarkdownDiv(this.plugin, mdDiv, radioName);
+        console.log(parseResults);
         this.content = new RecipeCard({
             target: this.contentEl,
             props: {
-                renderedMarkdownDiv: mdDiv,
+                parsedRecipe: parseResults,
                 file: this.file!,
                 metadata: metadata,
             }
