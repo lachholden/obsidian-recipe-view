@@ -2,8 +2,19 @@ import RecipeViewPlugin from "./main";
 import RecipeLeaf from "./RecipeLeaf.svelte";
 import CheckableIngredientList from "./CheckableIngredientList.svelte";
 import SelectableStepList from "./SelectableStepList.svelte";
+import { App, Component, MarkdownRenderer } from "obsidian";
+import store from "./store"
+import { get } from "svelte/store"
 
-export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: HTMLDivElement, radioName: string) {
+export function parseRecipeMarkdown(
+    plugin: RecipeViewPlugin, text: string, path: string, component: Component
+) {
+    // Create our object to store the result.
+    // When we want to render HTML elements created from rendering the markdown, we need
+    // to reparent them rather than clone them (or e.g. callout icons, transclusions,
+    // etc. get lost.) As such, every element being rendered directly from the rendered
+    // markdown needs to be wrapped in a RecipeLeaf, which ensures it doesn't get
+    // destroyed if the components get rebuilt e.g. because the layout changes.
     const result = {
         title: null,
         thumbnailPath: null,
@@ -11,8 +22,15 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
             containsHeader: false,
             sideComponents: [],
             mainComponents: [],
-        }]
+        }],
+        renderedMarkdownParent: createDiv(),
     };
+
+    MarkdownRenderer.render(plugin.app, text, result.renderedMarkdownParent, path, component);
+
+
+    const radioName = `selectable-steps-${get(store.counter)}`;
+    store.counter.update((n) => n + 1);
 
     const sideColumnRegex = RegExp(plugin.settings.sideColumnRegex, "i");
 
@@ -20,8 +38,8 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
     let currentColumn = "mainComponents";
 
     let sendToSideUntilLevel = 7;
-    for (let i = 0; i < renderedMarkdownDiv.children.length; i++) {
-        const item = renderedMarkdownDiv.children.item(i)!;
+    for (let i = 0; i < result.renderedMarkdownParent.children.length; i++) {
+        const item = result.renderedMarkdownParent.children.item(i)!;
 
         // Horizontal rules will create a new section
         if (item.nodeName == "HR") {
@@ -91,7 +109,7 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
         ) {
             result.sections[currentSection][currentColumn].push({
                 type: CheckableIngredientList,
-                props: { items: item.children, bullets: !result.sections[currentSection].containsHeader },
+                props: { list: item, bullets: !result.sections[currentSection].containsHeader },
                 origIndex: i,
             });
             continue;
@@ -102,9 +120,9 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
             result.sections[currentSection][currentColumn].push({
                 type: SelectableStepList,
                 props: {
-                    steps: item.children,
-                    radioName: radioName,
+                    list: item,
                     kind: "ol",
+                    radioName: radioName,
                 },
                 origIndex: i,
             });
@@ -119,14 +137,14 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
                 prev.type == SelectableStepList &&
                 prev.props.kind == "p"
             ) {
-                prev.props.steps.push(item);
+                prev.props.list.push(item);
             } else {
                 result.sections[currentSection][currentColumn].push({
                     type: SelectableStepList,
                     props: {
-                        steps: [item],
-                        radioName: radioName,
+                        list: [item],
                         kind: "p",
+                        radioName: radioName,
                     },
                     origIndex: i,
                 });
@@ -137,7 +155,7 @@ export function parseMarkdownDiv(plugin: RecipeViewPlugin, renderedMarkdownDiv: 
         // Add current item to current column
         result.sections[currentSection][currentColumn].push({
             type: RecipeLeaf,
-            props: { element: item, qtyParseAll: false },
+            props: { childNodesOf: item, asTag: item.nodeName },
             origIndex: i,
         });
     }

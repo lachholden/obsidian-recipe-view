@@ -1,17 +1,20 @@
 <script lang="ts">
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 
-	export let items: HTMLCollection;
+	export let list: HTMLUListElement;
 	export let bullets: boolean;
 </script>
 
 <ul class:bullets>
-	{#each items as _, i}
+	{#each list.children as _, i}
 		<li>
 			<label>
 				<input type="checkbox" />
 				<div class="leaf">
-					<RecipeLeaf childrenOf={items.item(i)} qtyParseAll={true} />
+					<RecipeLeaf
+						childNodesOf={list.children.item(i)}
+						asTag="div"
+					/>
 				</div>
 			</label>
 		</li>

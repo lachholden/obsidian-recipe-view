@@ -3,16 +3,13 @@
 	import ScaledQuantity from "./ScaledQuantity.svelte";
 	import { deUnicodeFractions, matchQuantities } from "./quantities";
 
-	export let element: HTMLElement | undefined;
-	export let childrenOf: HTMLElement | undefined;
-	export let qtyParseAll: boolean;
-	let div: HTMLDivElement;
-	let elementParent;
+	export let childNodesOf: HTMLElement;
+	export let asTag: string;
+
+	let root: HTMLElement;
 
 	let scaleComponents = [];
-
 	let qtyScaleStore = getContext("qtyScaleStore");
-
 	function parseForQty(n: Node, qtyScaleStore) {
 		if (n.nodeType == Node.ELEMENT_NODE) {
 			if (
@@ -65,16 +62,18 @@
 		}
 	}
 
-	$: if (div) {
-		div.childNodes.forEach((n) => div.removeChild(n));
-		if (childrenOf) {
-			Array.from(childrenOf.childNodes).forEach((n) => {
-				div.appendChild(n.cloneNode(true));
-			});
-		} else if (element) {
-			div.appendChild(element.cloneNode(true));
-		}
-	}
+	// We just borrow the original node's children, and return them when we're done
+	onMount(() => {
+		Array.from(childNodesOf.childNodes).forEach((node) => {
+			root.appendChild(node);
+		});
+	});
+
+	onDestroy(() => {
+		Array.from(root.childNodes).forEach((node) => {
+			childNodesOf.appendChild(node);
+		});
+	});
 </script>
 
-<div bind:this={div} />
+<svelte:element this={asTag} bind:this={root} />

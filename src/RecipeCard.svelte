@@ -146,7 +146,7 @@
 			{title}
 			{frontmatter}
 			thumbnailPath={parsedRecipe?.thumbnailPath}
-			singleColumn={true}
+			singleColumn={isBelowSingleColumnWidth}
 		/>
 	</RecipeCardTwoColumn>
 </div>

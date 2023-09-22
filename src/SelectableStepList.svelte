@@ -3,7 +3,7 @@
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 	import { counter } from "./store";
 
-	export let steps: HTMLCollection | Array<HTMLElement>;
+	export let list: HTMLOListElement | Array<HTMLElement>;
 	export let kind: string;
 	export let radioName: string;
 </script>
@@ -11,14 +11,14 @@
 {#if kind == "ol"}
 	<!-- means steps is the children of an OL element -->
 	<ol class="recipe-mutex-select">
-		{#each steps as _, i}
+		{#each list.children as _, i}
 			<li>
 				<label>
 					<input type="radio" name={radioName} />
 					<div class="leaf">
 						<RecipeLeaf
-							childrenOf={steps.item(i)}
-							qtyParseAll={false}
+							childNodesOf={list.children.item(i)}
+							asTag="div"
 						/>
 					</div>
 				</label>
@@ -27,12 +27,12 @@
 	</ol>
 {:else if kind == "p"}
 	<!-- means steps is an array of P elements -->
-	{#each steps as _, i}
+	{#each list as p}
 		<p>
 			<label>
 				<input type="radio" name={radioName} />
 				<div class="leaf">
-					<RecipeLeaf childrenOf={steps[i]} qtyParseAll={false} />
+					<RecipeLeaf childNodesOf={p} asTag="div" />
 				</div>
 			</label>
 		</p>
