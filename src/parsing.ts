@@ -4,7 +4,90 @@ import CheckableIngredientList from "./CheckableIngredientList.svelte";
 import SelectableStepList from "./SelectableStepList.svelte";
 import { App, Component, MarkdownRenderer } from "obsidian";
 import store from "./store"
-import { get } from "svelte/store"
+import { get, writable } from "svelte/store"
+import Fraction from "fraction.js";
+import { deUnicodeFractions, matchQuantities } from "./quantities";
+import ScaledQuantity from "./ScaledQuantity.svelte";
+
+function parseForQty(n: Node, qtyScaleStore) {
+    if (n.nodeType == Node.ELEMENT_NODE) {
+        if (
+            (n as HTMLElement).hasAttribute("data-qty") ||
+            (n as HTMLElement).hasAttribute("data-qty-no-parse")
+        ) {
+            return;
+        }
+    }
+
+    if (n.nodeType == Node.TEXT_NODE) {
+        let parent = n.parentNode!;
+        let currentIndex = 0;
+        n.textContent = deUnicodeFractions(n.textContent!);
+        for (let match of matchQuantities(n.textContent!)) {
+            parent.insertBefore(
+                document.createTextNode(
+                    n.textContent!.slice(currentIndex, match.index)
+                ),
+                n
+            );
+            let qtyTarget = createEl("span");
+            qtyTarget.setAttribute("data-qty", "true");
+            parent.insertBefore(qtyTarget, n);
+            new ScaledQuantity({
+                target: qtyTarget,
+                props: {
+                    value: match.value.value,
+                    format: match.value.format,
+                    unit: match.unit,
+                    qtyScaleStore: qtyScaleStore,
+                },
+            });
+            currentIndex = match.index + match.length;
+        }
+        parent.insertBefore(
+            document.createTextNode(n.textContent!.slice(currentIndex)),
+            n
+        );
+        parent.removeChild(n);
+    }
+
+    if (n.hasChildNodes()) {
+        Array.from(n.childNodes).forEach((c) =>
+            parseForQty(c, qtyScaleStore)
+        );
+    }
+}
+
+function injectQuantities(parsedRecipe) {
+    parsedRecipe.sections.flatMap((s) => s.sideComponents.concat(s.mainComponents)).map((c) => {
+        switch (c.type) {
+            case RecipeLeaf:
+                Array.from(c.props.childNodesOf.querySelectorAll("[data-qty-parse]"))
+                    .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
+                break;
+
+            case SelectableStepList:
+                if (c.props.kind == "ol") {
+                    Array.from(c.props.list.querySelectorAll("[data-qty-parse]"))
+                        .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
+                } else {
+                    c.props.list.forEach((p) => {
+                        Array.from(p.querySelectorAll("[data-qty-parse]"))
+                            .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
+                    })
+                }
+                break;
+
+            case CheckableIngredientList:
+                parseForQty(c.props.list, parsedRecipe.qtyScaleStore);
+                break;
+
+            default:
+                break;
+        }
+        console.log(c);
+    })
+}
 
 export function parseRecipeMarkdown(
     plugin: RecipeViewPlugin, text: string, path: string, component: Component
@@ -15,8 +98,6 @@ export function parseRecipeMarkdown(
     // etc. get lost.) As such, every element being rendered directly from the rendered
     // markdown needs to be wrapped in a RecipeLeaf, which ensures it doesn't get
     // destroyed if the components get rebuilt e.g. because the layout changes.
-    // - RecipeLeaf is also in charge of injecting ScaledQuantity components, but this
-    // only happens once – they just then stick around with the element as it moves.
     const result = {
         title: null,
         thumbnailPath: null,
@@ -26,6 +107,7 @@ export function parseRecipeMarkdown(
             mainComponents: [],
         }],
         renderedMarkdownParent: createDiv(),
+        qtyScaleStore: writable(new Fraction(1)),
     };
 
     MarkdownRenderer.render(plugin.app, text, result.renderedMarkdownParent, path, component);
@@ -42,7 +124,6 @@ export function parseRecipeMarkdown(
     let sendToSideUntilLevel = 7;
     for (let i = 0; i < result.renderedMarkdownParent.children.length; i++) {
         const item = result.renderedMarkdownParent.children.item(i)!;
-        console.log(item);
 
         // Horizontal rules will create a new section
         if (item.nodeName == "HR") {
@@ -165,6 +246,7 @@ export function parseRecipeMarkdown(
         });
     }
 
-    console.log(result);
+    injectQuantities(result);
+
     return result;
 }

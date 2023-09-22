@@ -1,7 +1,4 @@
 <script lang="ts">
-	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
-	import ScaleSelector from "./ScaleSelector.svelte";
-
 	export let sideColumnComponents;
 	export let mainColumnComponents;
 </script>

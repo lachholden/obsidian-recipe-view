@@ -9,6 +9,7 @@
 	import Fraction from "fraction.js";
 	import RecipeCardTwoColumn from "./RecipeCardTwoColumn.svelte";
 	import RecipeCardSplitSteps from "./RecipeCardSplitSteps.svelte";
+	import RecipeCardOneColumn from "./RecipeCardOneColumn.svelte";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
@@ -19,11 +20,9 @@
 	export let file: TFile;
 
 	// Recipe scaling - create store here to pass to all children via ctx
-	let scaleNum: number;
+	let scaleNum: number = 1;
 	let qtyScale: Fraction;
-	let qtyScaleStore = writable(new Fraction(1));
-	setContext("qtyScaleStore", qtyScaleStore);
-	$: qtyScaleStore.set(qtyScale);
+	$: parsedRecipe?.qtyScaleStore.set(qtyScale);
 
 	// Determining the recipe format
 	let containerWidth: number;
@@ -37,9 +36,11 @@
 		parsedRecipe?.sections.flatMap(
 			({ mainComponents }) => mainComponents
 		) || [];
-	$: singleColumnComponents = twoColumnSideComponents
-		.concat(twoColumnMainComponents)
-		.toSorted((a, b) => a.origIndex - b.origIndex);
+	$: singleColumnSections = parsedRecipe?.sections.map((s) =>
+		s.sideComponents
+			.concat(s.mainComponents)
+			.toSorted((a, b) => a.origIndex - b.origIndex)
+	);
 
 	// Titleblock variables
 	$: title = parsedRecipe?.title || file.basename;
@@ -104,13 +105,17 @@
 			advanceStep(false);
 		} else if (e.key == "k") {
 			retreatStep();
-		} else if (e.key == ",") {
+		} else if (e.key == "[") {
 			if (scaleNum) {
 				scaleNum -= 0.25;
+			} else {
+				scaleNum = 0.75;
 			}
-		} else if (e.key == ".") {
+		} else if (e.key == "]") {
 			if (scaleNum) {
 				scaleNum += 0.25;
+			} else {
+				scaleNum = 1.25;
 			}
 		} else if (e.key == "h") {
 			checkNext(true);
@@ -128,14 +133,26 @@
 	on:keypress={handleKeypress}
 	role="document"
 >
-	{#if parsedRecipe?.sections.length <= 3}
+	{#if isBelowSingleColumnWidth != false}
+		<RecipeCardOneColumn sections={singleColumnSections}>
+			<ScaleSelector
+				slot="scaleselector"
+				bind:scale={qtyScale}
+				bind:scaleNum
+			/>
+
+			<RecipeCardTitleBlock
+				slot="titleblock"
+				{title}
+				{frontmatter}
+				thumbnailPath={parsedRecipe?.thumbnailPath}
+				singleColumn={true}
+			/>
+		</RecipeCardOneColumn>
+	{:else if parsedRecipe?.sections.length <= 3}
 		<RecipeCardTwoColumn
-			sideColumnComponents={isBelowSingleColumnWidth
-				? []
-				: twoColumnSideComponents}
-			mainColumnComponents={isBelowSingleColumnWidth
-				? singleColumnComponents
-				: twoColumnMainComponents}
+			sideColumnComponents={twoColumnSideComponents}
+			mainColumnComponents={twoColumnMainComponents}
 		>
 			<ScaleSelector
 				slot="scaleselector"
@@ -148,7 +165,7 @@
 				{title}
 				{frontmatter}
 				thumbnailPath={parsedRecipe?.thumbnailPath}
-				singleColumn={isBelowSingleColumnWidth}
+				singleColumn={false}
 			/>
 		</RecipeCardTwoColumn>
 	{:else}
@@ -164,11 +181,18 @@
 				{title}
 				{frontmatter}
 				thumbnailPath={parsedRecipe?.thumbnailPath}
-				singleColumn={isBelowSingleColumnWidth}
+				singleColumn={false}
 			/>
 		</RecipeCardSplitSteps>
 	{/if}
 </div>
 
 <style>
+	.container {
+		position: relative;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 100%;
+	}
 </style>

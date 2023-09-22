@@ -28,7 +28,6 @@
 					<RecipeLeaf
 						childNodesOf={list.children.item(i)}
 						asTag="div"
-						qtyParseAll={true}
 					/>
 				</div>
 			</label>
