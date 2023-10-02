@@ -3,6 +3,26 @@
 
 	export let list: HTMLUListElement;
 	export let bullets: boolean;
+
+	function isChecked(index: number): boolean {
+		return (
+			list.children.item(index)?.getAttr("data-checked") == "true" ||
+			false
+		);
+	}
+
+	function changeChecked(index: number, e: Event) {
+		list.children
+			.item(index)
+			?.setAttr(
+				"data-checked",
+				(e.target as HTMLInputElement).checked ? "true" : "false"
+			);
+	}
+
+	function itemAt(index: number): HTMLElement {
+		return (list.children.item(index) as HTMLLIElement)!;
+	}
 </script>
 
 <ul class:bullets>
@@ -14,21 +34,11 @@
 				-->
 				<input
 					type="checkbox"
-					checked={list.children.item(i).getAttr("data-checked") ==
-						"true"}
-					on:change={(e) =>
-						list.children
-							.item(i)
-							.setAttr(
-								"data-checked",
-								e.target.checked ? "true" : "false"
-							)}
+					checked={isChecked(i)}
+					on:change={(e) => changeChecked(i, e)}
 				/>
 				<div class="leaf">
-					<RecipeLeaf
-						childNodesOf={list.children.item(i)}
-						asTag="div"
-					/>
+					<RecipeLeaf childNodesOf={itemAt(i)} asTag="div" />
 				</div>
 			</label>
 		</li>

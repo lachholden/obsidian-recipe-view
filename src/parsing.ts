@@ -4,12 +4,33 @@ import CheckableIngredientList from "./CheckableIngredientList.svelte";
 import SelectableStepList from "./SelectableStepList.svelte";
 import { App, Component, MarkdownRenderer } from "obsidian";
 import store from "./store"
-import { get, writable } from "svelte/store"
+import { Writable, get, writable } from "svelte/store"
 import Fraction from "fraction.js";
 import { deUnicodeFractions, matchQuantities } from "./quantities";
 import ScaledQuantity from "./ScaledQuantity.svelte";
+import { SvelteComponent } from "svelte";
+import RecipeCard from "./RecipeCard.svelte";
 
-function parseForQty(n: Node, qtyScaleStore) {
+
+export interface ParsedRecipeComponent {
+    type: typeof SvelteComponent;
+    props: Record<string, unknown>;
+}
+
+export interface ParsedRecipeSection {
+    containsHeader: boolean;
+    sideComponents: Array<ParsedRecipeComponent>;
+    mainComponents: Array<ParsedRecipeComponent>;
+}
+export interface ParsedRecipe {
+    title: string;
+    thumbnailPath: string;
+    sections: Array<ParsedRecipeSection>;
+    renderedMarkdownParent: HTMLElement;
+    qtyScaleStore: Writable<Fraction>;
+}
+
+function parseForQty(n: Node, qtyScaleStore: Writable<Fraction>) {
     if (n.nodeType == Node.ELEMENT_NODE) {
         if (
             (n as HTMLElement).hasAttribute("data-qty") ||
@@ -42,7 +63,7 @@ function parseForQty(n: Node, qtyScaleStore) {
                     qtyScaleStore: qtyScaleStore,
                 },
             });
-            currentIndex = match.index + match.length;
+            currentIndex = (match.index || currentIndex) + match.length;
         }
         parent.insertBefore(
             document.createTextNode(n.textContent!.slice(currentIndex)),
@@ -58,20 +79,20 @@ function parseForQty(n: Node, qtyScaleStore) {
     }
 }
 
-function injectQuantities(parsedRecipe) {
+function injectQuantities(parsedRecipe: ParsedRecipe) {
     parsedRecipe.sections.flatMap((s) => s.sideComponents.concat(s.mainComponents)).map((c) => {
         switch (c.type) {
             case RecipeLeaf:
-                Array.from(c.props.childNodesOf.querySelectorAll("[data-qty-parse]"))
+                Array.from((c.props.childNodesOf as HTMLElement).querySelectorAll("[data-qty-parse]"))
                     .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
                 break;
 
             case SelectableStepList:
                 if (c.props.kind == "ol") {
-                    Array.from(c.props.list.querySelectorAll("[data-qty-parse]"))
+                    Array.from((c.props.list as HTMLElement).querySelectorAll("[data-qty-parse]"))
                         .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
                 } else {
-                    c.props.list.forEach((p) => {
+                    (c.props.list as Array<HTMLElement>).forEach((p) => {
                         Array.from(p.querySelectorAll("[data-qty-parse]"))
                             .forEach((n) => parseForQty(n, parsedRecipe.qtyScaleStore));
                     })
@@ -79,7 +100,7 @@ function injectQuantities(parsedRecipe) {
                 break;
 
             case CheckableIngredientList:
-                parseForQty(c.props.list, parsedRecipe.qtyScaleStore);
+                parseForQty((c.props.list as HTMLElement), parsedRecipe.qtyScaleStore);
                 break;
 
             default:

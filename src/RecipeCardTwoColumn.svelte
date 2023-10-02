@@ -1,6 +1,7 @@
 <script lang="ts">
-	export let sideColumnComponents;
-	export let mainColumnComponents;
+	import { ParsedRecipeComponent } from "./parsing";
+	export let sideColumnComponents: Array<ParsedRecipeComponent>;
+	export let mainColumnComponents: Array<ParsedRecipeComponent>;
 </script>
 
 <div class="recipe-card two-column">

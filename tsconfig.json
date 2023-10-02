@@ -13,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": true,
     "module": "ESNext",
-    "target": "ES6",
+    "target": "es2018",
     "allowJs": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -28,6 +28,7 @@
     ]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "**/*.svelte",
   ]
 }
