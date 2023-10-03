@@ -47,7 +47,7 @@
 	);
 
 	// Titleblock variables
-	$: title = parsedRecipe.title == "" ? parsedRecipe.title : file.basename;
+	$: title = parsedRecipe.title ? parsedRecipe.title : file.basename;
 	$: frontmatter = metadata?.frontmatter || {};
 
 	// DOM searching and manipulating keyboard shortcuts

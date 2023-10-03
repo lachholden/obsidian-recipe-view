@@ -108,7 +108,6 @@ function injectQuantities(parsedRecipe: ParsedRecipe) {
             default:
                 break;
         }
-        console.log(c);
     })
 }
 
@@ -199,13 +198,13 @@ export function parseRecipeMarkdown(
         if (
             item.getElementsByTagName("IMG").length > 0 &&
             currentSection == 0 &&
-            result.thumbnailPath == null &&
+            !result.thumbnailPath &&
             !result.sections[0].containsHeader
         ) {
             result.thumbnailPath = item
                 .getElementsByTagName("IMG")
-                .item(0)!
-                .getAttribute("src") || "";
+                .item(0)?.getAttribute("src") || "";
+            console.log(result.thumbnailPath);
             continue; // Don't send to either column
         }
 

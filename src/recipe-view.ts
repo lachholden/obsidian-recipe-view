@@ -69,7 +69,8 @@ export class RecipeView extends EditableFileView {
         if (!this.file) { return false };
         const text = await this.app.vault.cachedRead(this.file!);
         const metadata = await this.app.metadataCache.getFileCache(this.file!);
-        const parsedRecipe = parseRecipeMarkdown(this.plugin, text, this.file!.path, this)
+        const parsedRecipe = parseRecipeMarkdown(this.plugin, text, this.file!.path, this);
+        console.log(parsedRecipe);
         this.content = new RecipeCard({
             target: this.contentEl,
             props: {
