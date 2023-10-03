@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import RecipeViewPlugin from "main";
+import RecipeViewPlugin from "./main";
 
 export const plugin = writable<RecipeViewPlugin>();
 export const counter = writable(0);

@@ -1,20 +1,44 @@
 <script lang="ts">
 	import RecipeLeaf from "./RecipeLeaf.svelte";
 
-	export let items: HTMLCollection;
+	export let list: HTMLUListElement;
 	export let bullets: boolean;
+
+	function isChecked(index: number): boolean {
+		return (
+			list.children.item(index)?.getAttr("data-checked") == "true" ||
+			false
+		);
+	}
+
+	function changeChecked(index: number, e: Event) {
+		list.children
+			.item(index)
+			?.setAttr(
+				"data-checked",
+				(e.target as HTMLInputElement).checked ? "true" : "false"
+			);
+	}
+
+	function itemAt(index: number): HTMLElement {
+		return (list.children.item(index) as HTMLLIElement)!;
+	}
 </script>
 
 <ul class:bullets>
-	{#each items as _, i}
+	{#each list.children as _, i}
 		<li>
 			<label>
-				<input type="checkbox" />
+				<!-- Persist checkbox state on component re-construction by setting
+				data-checked on the underlying LI element from the rendered markdown.
+				-->
+				<input
+					type="checkbox"
+					checked={isChecked(i)}
+					on:change={(e) => changeChecked(i, e)}
+				/>
 				<div class="leaf">
-					<RecipeLeaf
-						childNodes={items.item(i).childNodes}
-						qtyParseAll={true}
-					/>
+					<RecipeLeaf childNodesOf={itemAt(i)} asTag="div" />
 				</div>
 			</label>
 		</li>

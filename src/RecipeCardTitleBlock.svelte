@@ -12,7 +12,9 @@
 				href: url.toString(),
 				text: url.host,
 			}).outerHTML;
-		} catch (e) {}
+		} catch (e) {
+			/* empty */
+		}
 
 		// See if it's tags
 		if (key == "tags") {
@@ -55,6 +57,7 @@
 						<span class="frontmatter-entry">
 							<span class="key">{key}</span>
 							<span class="value">
+								<!-- eslint-disable -->
 								{@html formatFrontmatterValue(key, value)}
 							</span>
 						</span>

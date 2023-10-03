@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Fraction from "fraction.js";
 
-	export let scaleNum: number | null = 1.0;
-	export let scale = new Fraction(1);
+	export let scaleNum: number | null = 1;
+	export let scale;
 	$: scale = new Fraction(scaleNum || 1);
 </script>
 
