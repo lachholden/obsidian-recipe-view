@@ -202,7 +202,6 @@ export function parseRecipeMarkdown(
             result.thumbnailPath = item
                 .getElementsByTagName("IMG")
                 .item(0)?.getAttribute("src") || "";
-            console.log(result.thumbnailPath);
             continue; // Don't send to either column
         }
 
