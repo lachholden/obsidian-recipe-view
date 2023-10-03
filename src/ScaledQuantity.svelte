@@ -10,7 +10,7 @@
 	export let qtyScaleStore;
 
 	export let scale: Fraction = new Fraction(1);
-	qtyScaleStore.subscribe((s) => (scale = s));
+	qtyScaleStore.subscribe((s: Fraction) => (scale = s));
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));

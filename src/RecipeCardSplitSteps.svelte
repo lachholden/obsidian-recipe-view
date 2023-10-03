@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let sections;
+	import { ParsedRecipeSection } from "./parsing";
+
+	export let sections: Array<ParsedRecipeSection>;
 </script>
 
 <div class="recipe-card split-steps">

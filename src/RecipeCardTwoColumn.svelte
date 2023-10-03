@@ -8,7 +8,7 @@
 	{#if sideColumnComponents.length > 0}
 		<div class="column column-side">
 			<slot name="scaleselector" />
-			{#each sideColumnComponents as c (c)}
+			{#each sideColumnComponents as c}
 				<svelte:component this={c.type} {...c.props} />
 			{/each}
 		</div>
@@ -18,7 +18,7 @@
 		{#if sideColumnComponents?.length == 0}
 			<slot name="scaleselector" />
 		{/if}
-		{#each mainColumnComponents as c (c)}
+		{#each mainColumnComponents as c}
 			<svelte:component this={c.type} {...c.props} />
 		{/each}
 	</div>

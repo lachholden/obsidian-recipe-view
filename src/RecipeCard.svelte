@@ -10,12 +10,13 @@
 	import RecipeCardTwoColumn from "./RecipeCardTwoColumn.svelte";
 	import RecipeCardSplitSteps from "./RecipeCardSplitSteps.svelte";
 	import RecipeCardOneColumn from "./RecipeCardOneColumn.svelte";
+	import { ParsedRecipe, ParsedRecipeComponent } from "./parsing";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
 
 	// Props to be passed in
-	export let parsedRecipe;
+	export let parsedRecipe: ParsedRecipe;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
 
@@ -39,12 +40,15 @@
 	$: singleColumnSections = parsedRecipe?.sections.map((s) =>
 		s.sideComponents
 			.concat(s.mainComponents)
-			.toSorted((a, b) => a.origIndex - b.origIndex)
+			.sort(
+				(a: ParsedRecipeComponent, b: ParsedRecipeComponent) =>
+					a.origIndex - b.origIndex
+			)
 	);
 
 	// Titleblock variables
-	$: title = parsedRecipe?.title || file.basename;
-	$: frontmatter = metadata?.frontmatter;
+	$: title = parsedRecipe.title == "" ? parsedRecipe.title : file.basename;
+	$: frontmatter = metadata?.frontmatter || {};
 
 	// DOM searching and manipulating keyboard shortcuts
 	let container: HTMLDivElement;
@@ -52,7 +56,7 @@
 	function checkNext(focusOnly: boolean) {
 		const nextUnchecked = container.querySelector(
 			"input[type=checkbox]:not(:checked)"
-		);
+		) as HTMLInputElement;
 		if (nextUnchecked) {
 			if (!focusOnly) nextUnchecked.checked = true;
 			nextUnchecked.focus();
@@ -62,7 +66,7 @@
 	function uncheckPrevious() {
 		const checked = container.querySelectorAll(
 			"input[type=checkbox]:checked"
-		);
+		) as NodeListOf<HTMLInputElement>;
 		if (checked.length > 0) {
 			const lastChecked = checked.item(checked.length - 1);
 			lastChecked.checked = false;
@@ -71,7 +75,9 @@
 	}
 
 	function advanceStep(focusOnly: boolean) {
-		const steps = container.querySelectorAll("input[type=radio]");
+		const steps = container.querySelectorAll(
+			"input[type=radio]"
+		) as NodeListOf<HTMLInputElement>;
 		for (let i = 0; i < steps.length; i++) {
 			if (steps.item(i).checked) {
 				if (!focusOnly && steps.item(i + 1))
@@ -86,7 +92,9 @@
 	}
 
 	function retreatStep() {
-		const steps = container.querySelectorAll("input[type=radio]");
+		const steps = container.querySelectorAll(
+			"input[type=radio]"
+		) as NodeListOf<HTMLInputElement>;
 		for (let i = 1; i < steps.length; i++) {
 			if (steps.item(i).checked) {
 				steps.item(i - 1).checked = true;

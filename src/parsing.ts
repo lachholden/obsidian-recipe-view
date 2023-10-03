@@ -8,13 +8,15 @@ import { Writable, get, writable } from "svelte/store"
 import Fraction from "fraction.js";
 import { deUnicodeFractions, matchQuantities } from "./quantities";
 import ScaledQuantity from "./ScaledQuantity.svelte";
-import { SvelteComponent } from "svelte";
+import { ComponentType, SvelteComponent } from "svelte";
 import RecipeCard from "./RecipeCard.svelte";
+import { receiveMessageOnPort } from "worker_threads";
 
 
 export interface ParsedRecipeComponent {
-    type: typeof SvelteComponent;
+    type: ComponentType;
     props: Record<string, unknown>;
+    origIndex: number;
 }
 
 export interface ParsedRecipeSection {
@@ -41,17 +43,17 @@ function parseForQty(n: Node, qtyScaleStore: Writable<Fraction>) {
     }
 
     if (n.nodeType == Node.TEXT_NODE) {
-        let parent = n.parentNode!;
+        const parent = n.parentNode!;
         let currentIndex = 0;
         n.textContent = deUnicodeFractions(n.textContent!);
-        for (let match of matchQuantities(n.textContent!)) {
+        for (const match of matchQuantities(n.textContent!)) {
             parent.insertBefore(
                 document.createTextNode(
                     n.textContent!.slice(currentIndex, match.index)
                 ),
                 n
             );
-            let qtyTarget = createEl("span");
+            const qtyTarget = createEl("span");
             qtyTarget.setAttribute("data-qty", "true");
             parent.insertBefore(qtyTarget, n);
             new ScaledQuantity({
@@ -119,9 +121,9 @@ export function parseRecipeMarkdown(
     // etc. get lost.) As such, every element being rendered directly from the rendered
     // markdown needs to be wrapped in a RecipeLeaf, which ensures it doesn't get
     // destroyed if the components get rebuilt e.g. because the layout changes.
-    const result = {
-        title: null,
-        thumbnailPath: null,
+    const result: ParsedRecipe = {
+        title: "",
+        thumbnailPath: "",
         sections: [{
             containsHeader: false,
             sideComponents: [],
@@ -167,7 +169,7 @@ export function parseRecipeMarkdown(
                 headerLevel == 1 &&
                 result.sections[currentSection].containsHeader == false
             ) {
-                result.title = item?.textContent;
+                result.title = item?.textContent || "";
                 continue;
             } else {
                 result.sections[currentSection].containsHeader = true;
@@ -202,8 +204,8 @@ export function parseRecipeMarkdown(
         ) {
             result.thumbnailPath = item
                 .getElementsByTagName("IMG")
-                .item(0)
-                .getAttribute("src");
+                .item(0)!
+                .getAttribute("src") || "";
             continue; // Don't send to either column
         }
 
@@ -244,7 +246,7 @@ export function parseRecipeMarkdown(
                 prev.type == SelectableStepList &&
                 prev.props.kind == "p"
             ) {
-                prev.props.list.push(item);
+                (prev.props.list as Array<HTMLElement>).push(item as HTMLElement);
             } else {
                 result.sections[currentSection][currentColumn].push({
                     type: SelectableStepList,
@@ -260,6 +262,7 @@ export function parseRecipeMarkdown(
         }
 
         // Add current item to current column
+        // @ts-ignore
         result.sections[currentSection][currentColumn].push({
             type: RecipeLeaf,
             props: { childNodesOf: item, asTag: item.nodeName },

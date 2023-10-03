@@ -4,20 +4,29 @@
 	export let list: HTMLOListElement | Array<HTMLElement>;
 	export let kind: string;
 	export let radioName: string;
+
+	function olChildren() {
+		return (list as HTMLOListElement).children;
+	}
+
+	function olChild(index: number) {
+		return olChildren().item(index)! as HTMLElement;
+	}
+
+	function pList() {
+		return list as Array<HTMLElement>;
+	}
 </script>
 
 {#if kind == "ol"}
 	<!-- means steps is the children of an OL element -->
 	<ol class="recipe-mutex-select">
-		{#each list.children as _, i}
+		{#each olChildren() as _, i}
 			<li>
 				<label>
 					<input type="radio" name={radioName} />
 					<div class="leaf">
-						<RecipeLeaf
-							childNodesOf={list.children.item(i)}
-							asTag="div"
-						/>
+						<RecipeLeaf childNodesOf={olChild(i)} asTag="div" />
 					</div>
 				</label>
 			</li>
@@ -25,7 +34,7 @@
 	</ol>
 {:else if kind == "p"}
 	<!-- means steps is an array of P elements -->
-	{#each list as p}
+	{#each pList() as p}
 		<p>
 			<label>
 				<input type="radio" name={radioName} />

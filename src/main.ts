@@ -17,7 +17,7 @@ const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
 }
 
 export default class RecipeViewPlugin extends Plugin {
-	settings: RecipeViewPluginSettings | undefined;
+	settings: RecipeViewPluginSettings = DEFAULT_SETTINGS;
 
 	async onload() {
 		await this.loadSettings();

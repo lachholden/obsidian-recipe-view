@@ -75,7 +75,7 @@ export class RecipeView extends EditableFileView {
             props: {
                 parsedRecipe: parsedRecipe,
                 file: this.file!,
-                metadata: metadata,
+                metadata: metadata || undefined,
             }
         });
 
