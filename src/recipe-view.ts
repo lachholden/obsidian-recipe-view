@@ -1,8 +1,7 @@
 import RecipeViewPlugin from "./main";
-import { EditableFileView, MarkdownRenderer, TFile, WorkspaceLeaf } from "obsidian";
+import { EditableFileView, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
 import store from "./store";
-import { get } from "svelte/store";
 import { parseRecipeMarkdown } from "./parsing";
 
 export const VIEW_TYPE_RECIPE = "recipe-view";
@@ -66,7 +65,7 @@ export class RecipeView extends EditableFileView {
     }
 
     async renderRecipe(): Promise<boolean> {
-        if (!this.file) { return false };
+        if (!this.file) { return false }
         const text = await this.app.vault.cachedRead(this.file!);
         const metadata = await this.app.metadataCache.getFileCache(this.file!);
         const parsedRecipe = parseRecipeMarkdown(this.plugin, text, this.file!.path, this);

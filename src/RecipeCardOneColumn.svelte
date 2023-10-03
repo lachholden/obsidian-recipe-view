@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ParsedRecipeComponent, ParsedRecipeSection } from "./parsing";
+	import { ParsedRecipeComponent } from "./parsing";
 
 	export let sections: Array<Array<ParsedRecipeComponent>>;
 </script>

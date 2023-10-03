@@ -2,15 +2,13 @@ import RecipeViewPlugin from "./main";
 import RecipeLeaf from "./RecipeLeaf.svelte";
 import CheckableIngredientList from "./CheckableIngredientList.svelte";
 import SelectableStepList from "./SelectableStepList.svelte";
-import { App, Component, MarkdownRenderer } from "obsidian";
+import { Component, MarkdownRenderer } from "obsidian";
 import store from "./store"
 import { Writable, get, writable } from "svelte/store"
 import Fraction from "fraction.js";
 import { deUnicodeFractions, matchQuantities } from "./quantities";
 import ScaledQuantity from "./ScaledQuantity.svelte";
-import { ComponentType, SvelteComponent } from "svelte";
-import RecipeCard from "./RecipeCard.svelte";
-import { receiveMessageOnPort } from "worker_threads";
+import { ComponentType } from "svelte";
 
 
 export interface ParsedRecipeComponent {
@@ -239,7 +237,7 @@ export function parseRecipeMarkdown(
 
         // If we're sending a paragraph to the main column, then make it selectable
         if (item.nodeName == "P" && currentColumn == "mainComponents") {
-            let prev = result.sections[currentSection][currentColumn][result.sections[currentSection][currentColumn].length - 1];
+            const prev = result.sections[currentSection][currentColumn][result.sections[currentSection][currentColumn].length - 1];
             if (
                 prev &&
                 prev.type == SelectableStepList &&

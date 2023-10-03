@@ -3,9 +3,7 @@
 	import RecipeCardTitleBlock from "./RecipeCardTitleBlock.svelte";
 	import RecipeViewPlugin from "./main";
 	import store from "./store";
-	import { onMount, setContext } from "svelte";
 	import ScaleSelector from "./ScaleSelector.svelte";
-	import { writable, get } from "svelte/store";
 	import Fraction from "fraction.js";
 	import RecipeCardTwoColumn from "./RecipeCardTwoColumn.svelte";
 	import RecipeCardSplitSteps from "./RecipeCardSplitSteps.svelte";
@@ -21,7 +19,7 @@
 	export let file: TFile;
 
 	// Recipe scaling - create store here to pass to all children via ctx
-	let scaleNum: number = 1;
+	let scaleNum = 1;
 	let qtyScale: Fraction;
 	$: parsedRecipe?.qtyScaleStore.set(qtyScale);
 

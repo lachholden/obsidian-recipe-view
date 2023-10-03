@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy, getContext } from "svelte";
+	import { onMount } from "svelte";
 
 	export let childNodesOf: HTMLElement;
 	export let asTag: string;
