@@ -8,6 +8,8 @@ Welcome to the documentaton for Obsidian Recipe View!
 
 *Bring Obsidian with you into the kitchen*
 
+.. image:: /_static/preview.png
+
 Store, write, and manage your recipes in as regular Obsidian notes in **portable, future-proof markdown**, then view them as a gorgeous **interactive recipe card** when it's time to cook in the kitchen.
 
 Overview
@@ -36,8 +38,6 @@ Activating the recipe view
 ==========================
 When you have the note for the recipe you want to view active, click the chef's hat icon in the ribbon or use the "Toggle recipe view and markdown view" command. To make any edits to the recipe, use either of these same methods again to return to the normal markdown editor. 
 
-The recipe will automatically be displayed using the view format inferred from the page width and markdown content – either single column, two column, or two column with split steps. For more, see xxxxx.
-
 
 More details
 ============
@@ -45,7 +45,6 @@ More details
 .. toctree::
    :maxdepth: 2
 
-   usage/views
    usage/formatting
    usage/scaling
    usage/shortcuts

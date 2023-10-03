@@ -1,11 +1,14 @@
 Scaling ingredients
 ===================
 
-Easily scale the ingredient quantities in your recipes using the widget at the top of the side column. By default, it will scale detected quantities in checkable ingredient lists only. Numbers will be detected as quantities if either they are alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or if they are with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
+.. image:: /_static/scaling.gif
+   :width: 200
+
+Easily scale the ingredient quantities in your recipes using the widget at the top of the recipe card. By default, it will scale detected quantities in checkable ingredient lists only. Numbers will be detected as quantities if either they are alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or if they are with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
 
 * 450 g – an integer
 * 1/4 tsp – a text fraction
-* ½ cup – a unicode fraction
+* ½ cup – a unicode fraction
 * 3.5 litres – a decimal number
 * 2 3/4 sticks – a mixed text number
 * 1¾ kg – a mixed unicode number (with or without space in between)

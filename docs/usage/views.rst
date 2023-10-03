@@ -1,3 +1,0 @@
-Recipe view types
-=================
-
