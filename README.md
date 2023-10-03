@@ -6,7 +6,7 @@
 
 *Bring Obsidian with you into the kitchen*
 
-![Two example windows of the plugins showing open recipes](docs/preview.png)
+![Two example windows of the plugins showing open recipes](docs/_static/preview.png)
 
 ---
 
@@ -32,7 +32,7 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 
 Here's a tour of the main features.
 
-![A demonstration of the main interactive features](docs/interactive.gif)
+![A demonstration of the main interactive features](docs/_static/interactive.gif)
 
 ### Activation
 When you have the note for the recipe you want to view active, click the chef's hat icon in the ribbon or use the "Toggle recipe view and markdown view" command. To make any edits to the recipe, use either of these same methods again to return to the normal markdown editor.
@@ -83,7 +83,7 @@ Feel free to adapt the suggested format however you like though – and if there
 
 
 ### Scaling ingredients
-![A demonstration of scaling the ingredients for cookies by 2 and 2.5 times](docs/scaling.gif)
+![A demonstration of scaling the ingredients for cookies by 2 and 2.5 times](docs/_static/scaling.gif)
 
 Easily scale the ingredient quantities in your recipes using the widget at the top of the side column. By default, it will scale detected quantities in checkable ingredient lists only. Numbers will be detected as quantities if either they are alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or if they are with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
 - 450 g – an integer
@@ -102,7 +102,7 @@ If the recipe is scaled, any quantities that have been adjusted will have an und
 #### Manual control
 To scale certain quantities in other sections e.g. in the directions, wrap them like `<span data-qty-parse>180 grams</span>`. You could also wrap a whole step in the same tags to parse all present quantities. In most recipes, quantities outside the ingredient lists don't need to be scaled, but an example where it is useful using these `<span>` tags is shown below.
 
-![](docs/method_scaling.jpeg)
+![](docs/_static/method_scaling.jpeg)
 
 In the markdown, step 3 looks like:
 ```markdown
