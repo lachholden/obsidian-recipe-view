@@ -1,10 +1,16 @@
+<div align="center">
+
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
-<a href="https://github.com/lachholden/obsidian-recipe-view/releases/latest">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a> <a href="https://github.com/lachholden/obsidian-recipe-view/blob/release/LICENSE">![License](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)</a> <a href="https://github.com/lachholden/obsidian-recipe-view/actions/workflows/npm_build.yml">![Build status](https://img.shields.io/github/actions/workflow/status/lachholden/obsidian-recipe-view/npm_build.yml)</a> [![Documentation Status](https://readthedocs.org/projects/obsidian-recipe-view/badge/?version=latest)](https://obsidian-recipe-view.readthedocs.io/en/latest/?badge=latest)
-
-
+<a href="https://github.com/lachholden/obsidian-recipe-view/releases/latest">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a>
+<a href="https://github.com/lachholden/obsidian-recipe-view/blob/release/LICENSE">![License](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)</a>
+<a href="https://github.com/lachholden/obsidian-recipe-view/actions/workflows/npm_build.yml">![Build status](https://img.shields.io/github/actions/workflow/status/lachholden/obsidian-recipe-view/npm_build.yml)</a>
+[![Documentation Status](https://readthedocs.org/projects/obsidian-recipe-view/badge/?version=latest)](https://obsidian-recipe-view.readthedocs.io/en/latest/?badge=latest)
 
 *Bring Obsidian with you into the kitchen*
+
+</div>
+
 
 ![Two example windows of the plugins showing open recipes](docs/_static/preview.png)
 
