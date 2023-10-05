@@ -17,7 +17,7 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 - 🎨 Strives for maximum compatability with custom themes
 - 🌈 Lets you use all the markdown that works in the rest of your vault
 - ⚖️ Scales the quantities in your recipes easily
-- ⚙️ Splits your recipes into two columns, for easier reference while cooking
+* ⚙️ Can split your recipes into two columns or separate ingredients out by step, for easier reference while cooking
 - ✅ Makes ingredient lists cross-out-able
 - 📌 Lets you highlight steps to keep track of where you're up to
 - 📱 Works on phones and tablets

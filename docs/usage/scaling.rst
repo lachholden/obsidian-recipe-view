@@ -4,7 +4,7 @@ Scaling ingredients
 .. image:: /_static/scaling.gif
    :width: 200
 
-Easily scale the ingredient quantities in your recipes using the widget at the top of the recipe card. By default, it will scale detected quantities in checkable ingredient lists only. Numbers will be detected as quantities if either they are alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or if they are with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
+Easily scale the ingredient quantities in your recipes using the widget at the top of the recipe card. By default, it will scale detected quantities in :ref:`checkable ingredient lists<Checkable ingredient lists>` only. Numbers will be detected as quantities if either they are alone at the start of a bit of a text (e.g. "**1** egg" or "**2** dashes of brandy"), or if they are with a usual scaled cooking unit anywhere in text (e.g. "plus an extra **50 g** for dusting"). The number can be in any of the following formats:
 
 * 450 g – an integer
 * 1/4 tsp – a text fraction
@@ -17,7 +17,7 @@ Easily scale the ingredient quantities in your recipes using the widget at the t
 Scaling display
 ***************
 
-When rescaling, units will be displayed as either a decimal or a fraction based on what was used in the original, or if the original was an integer then a choice is made based on the unit used. All displayed fractions are presented as mixed numbers with the fraction part rounded to the nearest 1/16, and they will be nicely rendered in unicode regardless of the input format. There does not need to be a space between the number and the unit, but all quantites will be rendered with a space. Likewise, any dashes in mixed numbers will be rendered as a space.
+When rescaling, units will be displayed as either a decimal or a fraction based on what was used in the original, or if the original was an integer then a choice is made based on the unit used. All displayed fractions are presented as mixed numbers with the fraction part rounded to the nearest 1/16, and there is a setting to make them nicely rendered in unicode regardless of the input format. There does not need to be a space between the number and the unit, but all quantites will be rendered with a space. Likewise, any dashes in mixed numbers will be rendered as a space.
 
 If the recipe is scaled, any quantities that have been adjusted will have an underline to make it clear what has and has not changed.
 

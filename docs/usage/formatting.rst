@@ -36,7 +36,7 @@ The plugin is designed to not enforce any kind of strict format on your recipe n
   Common when recipes are downloaded from the web
 
 
-Feel free to adapt the suggested format however you like, and if there's a certain style you prefer that does not work well with the plugin currently, create an issue with an example recipe.
+Feel free to adapt the suggested format however you like, and if there's a certain style you prefer that does not work well with the plugin currently, `create an issue <https://github.com/lachholden/obsidian-recipe-view/issues/new>`_ with an example recipe.
 
 
 Side column sections
