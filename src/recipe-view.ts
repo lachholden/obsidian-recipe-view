@@ -1,5 +1,5 @@
 import RecipeViewPlugin from "./main";
-import { EditableFileView, TFile, WorkspaceLeaf } from "obsidian";
+import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
 import store from "./store";
 import { parseRecipeMarkdown } from "./parsing";
@@ -28,23 +28,21 @@ export class RecipeView extends EditableFileView {
     }
 
     async onOpen() {
-        store.plugin.set(this.plugin);
-
         this.renderRecipe();
         // These events can be registered directly as they'll be cleaned up
         // when `containerEl` goes out of scope
         this.containerEl.on('mouseover', 'a.internal-link', (e, el) => {
             this.app.workspace.trigger('hover-link', {
                 event: e,
-                source: this, // TODO ??
+                source: this,
                 hoverParent: this,
                 el,
                 linktext: el.getAttr("href"),
                 sourcePath: this.file!.path,
             });
-        }); // TODO check this behaves as expected
+        });
         this.containerEl.on('click', 'a.internal-link', (e, el) => {
-            const inNewLeaf = e.button === 1 || e.ctrlKey || e.metaKey;
+            const inNewLeaf = Keymap.isModEvent(e);
             this.app.workspace.openLinkText(
                 el.getAttribute("href")!,
                 this.file!.path,

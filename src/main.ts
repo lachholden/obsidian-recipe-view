@@ -1,6 +1,7 @@
 import { App, Plugin, PluginSettingTab, Setting, WorkspaceLeaf } from 'obsidian';
 
 import { RecipeView, VIEW_TYPE_RECIPE } from './recipe-view';
+import store from './store';
 
 interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
@@ -30,22 +31,24 @@ export default class RecipeViewPlugin extends Plugin {
 
 		this.addCommand({
 			id: "toggle-recipe-view",
-			name: "Toggle recipe view and markdown view",
+			name: "Toggle between recipe card and markdown",
 			checkCallback: (c) => this.toggleView(c),
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new RecipeViewSettingsTab(this.app, this));
 
 		// Load style settings variables
 		this.app.workspace.trigger("parse-style-settings");
+
+		store.plugin.set(this);
 	}
 
 	onunload() {
 
 	}
 
-	toggleView(this: RecipeViewPlugin, checking: boolean) {
+	toggleView(checking: boolean) {
 		const activeLeaf = this.app.workspace.getMostRecentLeaf();
 
 		if (activeLeaf?.getViewState().type == "markdown") {
@@ -91,7 +94,7 @@ export default class RecipeViewPlugin extends Plugin {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
+class RecipeViewSettingsTab extends PluginSettingTab {
 	plugin: RecipeViewPlugin;
 
 	constructor(app: App, plugin: RecipeViewPlugin) {
