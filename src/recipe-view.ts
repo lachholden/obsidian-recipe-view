@@ -1,7 +1,6 @@
 import RecipeViewPlugin from "./main";
 import { EditableFileView, Keymap, TFile, WorkspaceLeaf } from "obsidian";
 import RecipeCard from "./RecipeCard.svelte"
-import store from "./store";
 import { parseRecipeMarkdown } from "./parsing";
 
 export const VIEW_TYPE_RECIPE = "recipe-view";
