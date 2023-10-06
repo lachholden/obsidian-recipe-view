@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/_static/Logo2.png" style="width:200px">
+
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
 <a href="https://github.com/lachholden/obsidian-recipe-view/releases/latest">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a>
@@ -47,6 +49,6 @@ The [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin
 - Themes used in the screenshot examples
     - Default Obsidian theme with Orange accent
     - [Damian Korcz's excellent Prism Theme](https://github.com/damiankorcz/Prism-Theme)
-- In top preview image & social media preview
+- In logo, top preview image, & social media preview
     - Photo by <a href="https://unsplash.com/@andyc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Andy Chilton</a> on <a href="https://unsplash.com/photos/0JFveX0c778?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
   

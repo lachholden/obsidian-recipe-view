@@ -33,4 +33,5 @@ html_theme_options = {
     "github_type": "star",
     "show_related": "true",
     "show_relbars": "true",
+    "logo": "Logo2.png",
 }
