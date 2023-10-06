@@ -6,5 +6,6 @@
 	"description": "View your notes as interactive recipe cards while you cook.",
 	"author": "lachholden",
 	"authorUrl": "https://github.com/lachholden",
-	"isDesktopOnly": false
+	"isDesktopOnly": false,
+	"fundingUrl": "https://ko-fi.com/lachholden"
 }

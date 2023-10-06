@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/_static/Logo2.png" style="width:200px">
+<img src="docs/_static/Whisk.png" style="width:200px">
 
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
@@ -8,6 +8,9 @@
 <a href="https://github.com/lachholden/obsidian-recipe-view/blob/release/LICENSE">![License](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)</a>
 <a href="https://github.com/lachholden/obsidian-recipe-view/actions/workflows/npm_build.yml">![Build status](https://img.shields.io/github/actions/workflow/status/lachholden/obsidian-recipe-view/npm_build.yml)</a>
 [![Documentation Status](https://readthedocs.org/projects/obsidian-recipe-view/badge/?version=latest)](https://obsidian-recipe-view.readthedocs.io/en/latest/?badge=latest)
+
+
+<a href='https://ko-fi.com/L4L5PUX5B' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 *Bring Obsidian with you into the kitchen*
 

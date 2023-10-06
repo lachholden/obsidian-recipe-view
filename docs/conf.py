@@ -33,5 +33,16 @@ html_theme_options = {
     "github_type": "star",
     "show_related": "true",
     "show_relbars": "true",
-    "logo": "Logo2.png",
+    "logo": "Logo.png",
+    "logo_name": "false",
 }
+html_sidebars = {
+    "**": [
+        "about.html",
+        "ko-fi.html",
+        "navigation.html",
+        "relations.html",
+        "searchbox.html",
+    ]
+}
+html_favicon = "_static/favicon.ico"
