@@ -32,9 +32,8 @@
 			({ sideComponents }) => sideComponents
 		) || [];
 	$: twoColumnMainComponents =
-		parsedRecipe?.sections.flatMap(
-			({ mainComponents }) => mainComponents
-		) || [];
+		parsedRecipe?.sections.map(({ mainComponents }) => mainComponents) ||
+		[];
 	$: singleColumnSections = parsedRecipe?.sections.map((s) =>
 		s.sideComponents
 			.concat(s.mainComponents)
@@ -139,7 +138,7 @@
 	on:keypress={handleKeypress}
 	role="document"
 >
-	{#if isBelowSingleColumnWidth != false || twoColumnSideComponents.length == 0 || twoColumnMainComponents.length == 0}
+	{#if isBelowSingleColumnWidth != false || twoColumnSideComponents.length == 0 || twoColumnMainComponents.flat().length == 0}
 		<RecipeCardOneColumn sections={singleColumnSections}>
 			<ScaleSelector
 				slot="scaleselector"
@@ -158,7 +157,7 @@
 	{:else if parsedRecipe?.sections.length <= 3}
 		<RecipeCardTwoColumn
 			sideColumnComponents={twoColumnSideComponents}
-			mainColumnComponents={twoColumnMainComponents}
+			mainColumnSections={twoColumnMainComponents}
 		>
 			<ScaleSelector
 				slot="scaleselector"

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ParsedRecipeComponent } from "./parsing";
 	export let sideColumnComponents: Array<ParsedRecipeComponent>;
-	export let mainColumnComponents: Array<ParsedRecipeComponent>;
+	export let mainColumnSections: Array<Array<ParsedRecipeComponent>>;
 </script>
 
 <div class="recipe-card two-column">
@@ -18,8 +18,15 @@
 		{#if sideColumnComponents?.length == 0}
 			<slot name="scaleselector" />
 		{/if}
-		{#each mainColumnComponents as c}
-			<svelte:component this={c.type} {...c.props} />
+		{#each mainColumnSections as mainColumnComponents}
+			<div
+				class="split-step"
+				class:only-step={mainColumnSections.length == 1}
+			>
+				{#each mainColumnComponents as c}
+					<svelte:component this={c.type} {...c.props} />
+				{/each}
+			</div>
 		{/each}
 	</div>
 </div>
@@ -57,5 +64,19 @@
 		flex-basis: var(--file-line-width);
 		flex-grow: 0;
 		flex-shrink: 1;
+	}
+
+	.split-step {
+		padding-inline: var(--file-margins);
+		margin-inline: calc(-1 * var(--file-margins));
+	}
+
+	.split-step:nth-child(even) {
+		background-color: var(--background-secondary);
+		/* outline: calc(var(--file-margins)) solid var(--background-secondary); */
+	}
+
+	.split-step.only-step {
+		background-color: transparent !important;
 	}
 </style>
