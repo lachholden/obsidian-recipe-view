@@ -1,7 +1,8 @@
-import { App, Plugin, PluginSettingTab, Setting, WorkspaceLeaf } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, WorkspaceLeaf, addIcon } from 'obsidian';
 
 import { RecipeView, VIEW_TYPE_RECIPE } from './recipe-view';
 import store from './store';
+import { WHISK_SVG } from './whisk';
 
 interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
@@ -25,7 +26,8 @@ export default class RecipeViewPlugin extends Plugin {
 
 		this.registerView(VIEW_TYPE_RECIPE, (leaf) => new RecipeView(leaf, this));
 
-		this.addRibbonIcon("chef-hat", "Toggle recipe view", () => {
+		addIcon("recipe-whisk", WHISK_SVG)
+		this.addRibbonIcon("recipe-whisk", "Toggle recipe view", () => {
 			this.toggleView(false);
 		});
 

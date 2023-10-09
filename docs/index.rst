@@ -16,7 +16,7 @@ In the meantime, it can be installed using `BRAT <https://github.com/TfTHacker/o
 
 Activating the recipe view
 ==========================
-When you have the note for the recipe you want to view active, click the chef's hat icon in the ribbon or use the "Toggle recipe view and markdown view" command. To make any edits to the recipe, use either of these same methods again to return to the normal markdown editor. 
+When you have the note for the recipe you want to view active, click the whisk icon in the ribbon or use the "Toggle recipe view and markdown view" command. To make any edits to the recipe, use either of these same methods again to return to the normal markdown editor. 
 
 
 More details
