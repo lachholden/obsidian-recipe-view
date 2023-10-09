@@ -35,6 +35,10 @@
 		justify-content: center;
 	}
 
+	.split-step-title {
+		padding: var(--file-margins);
+	}
+
 	.split-step:nth-child(even) {
 		background-color: var(--background-secondary);
 	}
@@ -48,7 +52,7 @@
 		flex-shrink: 1;
 	}
 	.column {
-		padding: var(--file-margins);
+		padding-inline: var(--file-margins);
 	}
 	.column-title {
 		padding-bottom: 0;

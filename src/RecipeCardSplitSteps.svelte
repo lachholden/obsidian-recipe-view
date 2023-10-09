@@ -46,8 +46,12 @@
 		background-color: var(--background-secondary);
 	}
 
-	.column {
+	.split-step-title {
 		padding: var(--file-margins);
+	}
+
+	.column {
+		padding-inline: var(--file-margins);
 		display: block;
 	}
 
