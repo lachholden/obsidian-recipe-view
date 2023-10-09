@@ -203,4 +203,9 @@
 		width: 100%;
 		display: block;
 	}
+
+	/* Hide strange mobile frontmatter stuff */
+	:global(.recipe-card div:has(> .frontmatter-section)) {
+		display: none;
+	}
 </style>
