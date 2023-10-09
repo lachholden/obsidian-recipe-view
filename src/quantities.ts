@@ -96,7 +96,7 @@ export function matchQuantities(str: string) {
 export function formatQuantity(value: Fraction, format: QtyFormatType, scale: Fraction, unicodeFractions: boolean) {
     value = value.mul(scale);
     if (format == QtyFormatType.FRACTION) {
-        value = new Fraction(Math.round(16 * new Fraction(value).valueOf()), 16);
+        value = value.d == 3 ? value : new Fraction(Math.round(16 * new Fraction(value).valueOf()), 16);
         return unicodeFractions ? reUnicodeFractions(value.toFraction(true)) : value.toFraction(true);
     } else {
         return value.toString();
