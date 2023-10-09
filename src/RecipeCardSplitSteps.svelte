@@ -42,12 +42,13 @@
 		align-items: stretch;
 	}
 
-	.split-step:nth-child(even) {
+	.split-step:nth-child(odd) {
 		background-color: var(--background-secondary);
 	}
 
 	.split-step-title {
 		padding: var(--file-margins);
+		background-color: transparent !important;
 	}
 
 	.column {

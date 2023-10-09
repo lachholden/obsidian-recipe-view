@@ -71,9 +71,8 @@
 		margin-inline: calc(-1 * var(--file-margins));
 	}
 
-	.split-step:nth-child(even) {
+	.split-step:nth-child(odd) {
 		background-color: var(--background-secondary);
-		/* outline: calc(var(--file-margins)) solid var(--background-secondary); */
 	}
 
 	.split-step.only-step {
