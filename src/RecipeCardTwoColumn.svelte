@@ -47,7 +47,7 @@
 	.column {
 		padding: var(--file-margins);
 		max-height: 100%;
-		overflow: scroll;
+		overflow-y: auto;
 	}
 
 	.column:empty {
@@ -69,6 +69,9 @@
 	.split-step {
 		padding-inline: var(--file-margins);
 		margin-inline: calc(-1 * var(--file-margins));
+		margin-block: 0px;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.split-step:nth-child(odd) {
