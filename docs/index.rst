@@ -8,6 +8,11 @@ Welcome to the documentaton for Obsidian Recipe View!
 
 Store, write, and manage your recipes in as regular Obsidian notes in **portable, future-proof markdown**, then view them as a gorgeous **interactive recipe card** when it's time to cook in the kitchen.
 
+Plugin installation
+===================
+This plugin is currently being reviewed for inclusion in the community plugins list.
+
+In the meantime, it can be installed using `BRAT <https://github.com/TfTHacker/obsidian42-brat>`_ Just add the URL `https://github.com/lachholden/obsidian-recipe-view` as a beta plugin.
 
 Activating the recipe view
 ==========================

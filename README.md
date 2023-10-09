@@ -39,6 +39,11 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 - 🌏 Cross-link and tag your recipes, link them to notes on technique, keep a baking log in your daily notes, or use Dataview or Kanban to plan out your cooking
 - ☁️ Write them on your laptop, check ingredients in the store on your phone, and cook from them in the kitchen with your iPad
 
+## Installation
+This plugin is currently being reviewed for inclusion in the community plugins list.
+
+In the meantime, it can be installed using [BRAT](https://github.com/TfTHacker/obsidian42-brat). Just add the URL `https://github.com/lachholden/obsidian-recipe-view` as a beta plugin.
+
 ## Documentation
 To learn how to use the plugin, **[read the documentation here!](https://obsidian-recipe-view.readthedocs.io/)**
 
