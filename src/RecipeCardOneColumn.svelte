@@ -6,7 +6,7 @@
 
 <div class="recipe-card one-column">
 	<div class="split-step split-step-title">
-		<div class="column column-main">
+		<div class="column column-main column-title">
 			<slot name="titleblock" />
 			<slot name="scaleselector" />
 		</div>
@@ -35,22 +35,22 @@
 		justify-content: center;
 	}
 
-	.column {
-		padding: var(--file-margins);
-		max-height: 100%;
-		overflow: scroll;
-	}
-
 	.split-step:nth-child(even) {
 		background-color: var(--background-secondary);
 	}
 	.split-step.only-step {
-		background-color: var(--background-primary) !important;
+		background-color: transparent !important;
 	}
 
 	.column-main {
 		flex-basis: var(--file-line-width);
 		flex-grow: 0;
 		flex-shrink: 1;
+	}
+	.column {
+		padding: var(--file-margins);
+	}
+	.column-title {
+		padding-bottom: 0;
 	}
 </style>

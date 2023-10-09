@@ -139,7 +139,7 @@
 	on:keypress={handleKeypress}
 	role="document"
 >
-	{#if isBelowSingleColumnWidth != false}
+	{#if isBelowSingleColumnWidth != false || twoColumnSideComponents.length == 0 || twoColumnMainComponents.length == 0}
 		<RecipeCardOneColumn sections={singleColumnSections}>
 			<ScaleSelector
 				slot="scaleselector"
