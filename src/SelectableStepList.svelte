@@ -74,7 +74,10 @@
 		margin: calc(-1 * var(--size-4-2));
 	}
 
-	li .leaf {
+	:global(body:not(.is-mobile)) li .leaf {
+		/* on desktop, include number in selected step
+           -> operates weirdly on mobile, so there just leave default spacing 
+		*/
 		padding-inline-start: var(--list-indent);
 		margin-inline-start: calc(-1 * var(--list-indent));
 	}
