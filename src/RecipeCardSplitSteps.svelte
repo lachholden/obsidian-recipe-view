@@ -40,7 +40,9 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: stretch;
-		padding-block: var(--size-4-4);
+		padding-inline: var(--file-margins);
+		margin-inline: calc(-1 * var(--file-margins));
+		padding-block: calc(var(--file-margins) / 2);
 	}
 
 	.split-step:nth-child(odd) {
@@ -50,6 +52,10 @@
 	.split-step-title {
 		padding: var(--file-margins);
 		background-color: transparent !important;
+	}
+
+	.split-steps {
+		padding-block: var(--file-margins);
 	}
 
 	.column {
