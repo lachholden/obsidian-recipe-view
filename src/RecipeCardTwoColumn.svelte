@@ -5,19 +5,14 @@
 </script>
 
 <div class="recipe-card two-column">
-	{#if sideColumnComponents.length > 0}
-		<div class="column column-side">
-			<slot name="scaleselector" />
-			{#each sideColumnComponents as c}
-				<svelte:component this={c.type} {...c.props} />
-			{/each}
-		</div>
-	{/if}
+	<div class="column column-side">
+		<slot name="scaleselector" />
+		{#each sideColumnComponents as c}
+			<svelte:component this={c.type} {...c.props} />
+		{/each}
+	</div>
 	<div class="column column-main">
 		<slot name="titleblock" />
-		{#if sideColumnComponents?.length == 0}
-			<slot name="scaleselector" />
-		{/if}
 		{#each mainColumnSections as mainColumnComponents}
 			<div
 				class="split-step"
@@ -42,16 +37,14 @@
 		position: relative;
 		top: 0;
 		left: 0;
+		right: 0;
+		bottom: 0;
 	}
 
 	.column {
 		padding: var(--file-margins);
 		max-height: 100%;
 		overflow-y: auto;
-	}
-
-	.column:empty {
-		display: none;
 	}
 
 	.column-side {
@@ -69,10 +62,7 @@
 	.split-step {
 		padding-inline: var(--file-margins);
 		margin-inline: calc(-1 * var(--file-margins));
-		margin-block: 0px;
-		display: flex;
-		flex-direction: column;
-		padding-block: var(--size-4-4);
+		padding-block: calc(var(--file-margins) / 2);
 	}
 
 	.split-step:nth-child(odd) {

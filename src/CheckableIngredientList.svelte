@@ -55,6 +55,8 @@
 	input[type="checkbox"] {
 		opacity: 0;
 		position: absolute;
+		margin: 0;
+		padding: 0;
 	}
 
 	label {
@@ -67,23 +69,16 @@
 	}
 
 	input[type="checkbox"]:focus ~ .leaf {
-		/* background-color: var(--color-base-30) !important; */
 		color: var(--text-accent-hover);
 	}
 
 	ul > li {
-		margin-top: var(--size-4-2);
 		list-style-type: none;
-	}
-
-	ul.bullets {
-		padding-inline-start: var(--list-indent);
+		margin-block: var(--list-spacing);
 	}
 
 	ul.bullets > li {
 		list-style-type: square;
-		list-style-position: outside;
-		padding-inline: var(--size-4-2);
-		margin-left: calc(-1 * var(--size-4-2));
+		margin-inline-start: var(--list-indent);
 	}
 </style>

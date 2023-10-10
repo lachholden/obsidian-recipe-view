@@ -51,9 +51,8 @@
 {/if}
 
 <style>
-	ol {
-		counter-reset: step;
-		list-style-position: outside;
+	li {
+		margin-block: var(--p-spacing);
 	}
 
 	input[type="radio"] {
@@ -61,7 +60,10 @@
 		position: absolute;
 		height: 100%;
 		width: 100%;
+		margin: 0;
+		padding: 0;
 	}
+
 	label {
 		position: relative;
 	}
@@ -69,6 +71,12 @@
 	.leaf {
 		border-radius: var(--radius-m);
 		padding: var(--size-4-2);
+		margin: calc(-1 * var(--size-4-2));
+	}
+
+	li .leaf {
+		padding-inline-start: var(--list-indent);
+		margin-inline-start: calc(-1 * var(--list-indent));
 	}
 
 	input[type="radio"]:checked ~ .leaf {
@@ -83,24 +91,5 @@
 	input[type="radio"]:focus ~ .leaf {
 		box-shadow: inset 0px 0px 0px var(--border-width)
 			var(--interactive-accent);
-	}
-
-	ol > li {
-		margin-left: calc(-1 * var(--size-4-2));
-		counter-increment: step;
-	}
-
-	ol > li::marker {
-		color: var(--text-accent);
-		content: counter(step) " ";
-	}
-
-	:global(ol.recipe-mutex-select p) {
-		margin: 0;
-	}
-
-	p {
-		margin-inline: calc(-1 * var(--size-4-2));
-		margin-block: calc(var(--p-spacing) - 2 * var(--size-4-2));
 	}
 </style>
