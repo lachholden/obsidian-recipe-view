@@ -37,7 +37,6 @@
 	}
 
 	.split-step-title {
-		padding: var(--file-margins);
 		background-color: transparent !important;
 	}
 
