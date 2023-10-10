@@ -72,6 +72,7 @@
 		margin-block: 0px;
 		display: flex;
 		flex-direction: column;
+		padding-block: var(--size-4-4);
 	}
 
 	.split-step:nth-child(odd) {

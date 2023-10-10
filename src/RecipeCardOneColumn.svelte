@@ -33,6 +33,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+		padding-block: var(--size-4-4);
 	}
 
 	.split-step-title {
