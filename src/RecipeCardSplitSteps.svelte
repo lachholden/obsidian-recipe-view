@@ -40,8 +40,6 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: stretch;
-		padding-inline: var(--file-margins);
-		margin-inline: calc(-1 * var(--file-margins));
 		padding-block: calc(var(--file-margins) / 2);
 	}
 

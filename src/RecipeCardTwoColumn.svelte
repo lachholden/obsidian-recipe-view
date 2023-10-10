@@ -12,7 +12,9 @@
 		{/each}
 	</div>
 	<div class="column column-main">
-		<slot name="titleblock" />
+		<div class="split-step split-step-title">
+			<slot name="titleblock" />
+		</div>
 		{#each mainColumnSections as mainColumnComponents}
 			<div
 				class="split-step"
@@ -63,6 +65,10 @@
 		padding-inline: var(--file-margins);
 		margin-inline: calc(-1 * var(--file-margins));
 		padding-block: calc(var(--file-margins) / 2);
+	}
+
+	.split-step-title {
+		background-color: transparent !important;
 	}
 
 	.split-step:nth-child(odd) {
