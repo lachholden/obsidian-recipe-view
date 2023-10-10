@@ -21,4 +21,6 @@
 	});
 </script>
 
-<svelte:element this={asTag} bind:this={root} />
+<div>
+	<svelte:element this={asTag} bind:this={root} />
+</div>

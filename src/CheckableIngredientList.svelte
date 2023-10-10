@@ -25,25 +25,27 @@
 	}
 </script>
 
-<ul class:bullets>
-	{#each list.children as _, i}
-		<li>
-			<label>
-				<!-- Persist checkbox state on component re-construction by setting
+<div>
+	<ul class:bullets>
+		{#each list.children as _, i}
+			<li>
+				<label>
+					<!-- Persist checkbox state on component re-construction by setting
 				data-checked on the underlying LI element from the rendered markdown.
 				-->
-				<input
-					type="checkbox"
-					checked={isChecked(i)}
-					on:change={(e) => changeChecked(i, e)}
-				/>
-				<div class="leaf">
-					<RecipeLeaf childNodesOf={itemAt(i)} asTag="div" />
-				</div>
-			</label>
-		</li>
-	{/each}
-</ul>
+					<input
+						type="checkbox"
+						checked={isChecked(i)}
+						on:change={(e) => changeChecked(i, e)}
+					/>
+					<div class="leaf">
+						<RecipeLeaf childNodesOf={itemAt(i)} asTag="div" />
+					</div>
+				</label>
+			</li>
+		{/each}
+	</ul>
+</div>
 
 <style>
 	ul {

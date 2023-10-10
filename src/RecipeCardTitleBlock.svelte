@@ -72,7 +72,7 @@
 	.title-block {
 		display: flex;
 		flex-direction: row;
-		margin-block-end: var(--size-4-4);
+		margin-block-end: var(--size-4-8);
 	}
 	img.thumbnail {
 		height: var(--thumbnail-size);

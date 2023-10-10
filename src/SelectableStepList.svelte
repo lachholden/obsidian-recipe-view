@@ -20,29 +20,33 @@
 
 {#if kind == "ol"}
 	<!-- means steps is the children of an OL element -->
-	<ol class="recipe-mutex-select">
-		{#each olChildren() as _, i}
-			<li>
-				<label>
-					<input type="radio" name={radioName} />
-					<div class="leaf">
-						<RecipeLeaf childNodesOf={olChild(i)} asTag="div" />
-					</div>
-				</label>
-			</li>
-		{/each}
-	</ol>
+	<div>
+		<ol class="recipe-mutex-select">
+			{#each olChildren() as _, i}
+				<li>
+					<label>
+						<input type="radio" name={radioName} />
+						<div class="leaf">
+							<RecipeLeaf childNodesOf={olChild(i)} asTag="div" />
+						</div>
+					</label>
+				</li>
+			{/each}
+		</ol>
+	</div>
 {:else if kind == "p"}
 	<!-- means steps is an array of P elements -->
 	{#each pList() as p}
-		<p>
-			<label>
-				<input type="radio" name={radioName} />
-				<div class="leaf">
-					<RecipeLeaf childNodesOf={p} asTag="div" />
-				</div>
-			</label>
-		</p>
+		<div>
+			<p>
+				<label>
+					<input type="radio" name={radioName} />
+					<div class="leaf">
+						<RecipeLeaf childNodesOf={p} asTag="div" />
+					</div>
+				</label>
+			</p>
+		</div>
 	{/each}
 {/if}
 
@@ -55,7 +59,8 @@
 	input[type="radio"] {
 		opacity: 0;
 		position: absolute;
-		height: 105%;
+		height: 100%;
+		width: 100%;
 	}
 	label {
 		position: relative;
