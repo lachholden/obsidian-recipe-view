@@ -40,6 +40,7 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: stretch;
+		padding-block: var(--size-4-4);
 	}
 
 	.split-step:nth-child(odd) {
