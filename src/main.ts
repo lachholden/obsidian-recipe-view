@@ -3,6 +3,7 @@ import { App, Plugin, PluginSettingTab, Setting, WorkspaceLeaf, addIcon } from '
 import { RecipeView, VIEW_TYPE_RECIPE } from './recipe-view';
 import store from './store';
 import { WHISK_SVG } from './whisk';
+import { exportPDF } from './pdf-export';
 
 interface RecipeViewPluginSettings {
 	sideColumnRegex: string;
@@ -36,6 +37,11 @@ export default class RecipeViewPlugin extends Plugin {
 			name: "Toggle between recipe card and markdown",
 			checkCallback: (c) => this.toggleView(c),
 		});
+		this.addCommand({
+			id: "export-pdf",
+			name: "Export recipe as PDF",
+			checkCallback: (c) => this.exportPDF(c),
+		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new RecipeViewSettingsTab(this.app, this));
@@ -48,6 +54,17 @@ export default class RecipeViewPlugin extends Plugin {
 
 	onunload() {
 
+	}
+
+	exportPDF(checking: boolean) {
+		const activeLeaf = this.app.workspace.getMostRecentLeaf();
+		if (activeLeaf?.getViewState().type == VIEW_TYPE_RECIPE) {
+			if (!checking) {
+				exportPDF(activeLeaf!.view.file, this);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	toggleView(checking: boolean) {
