@@ -43,12 +43,15 @@ export class RecipeView extends EditableFileView {
         this.containerEl.on('click', 'a.internal-link', (e, el) => {
             const inNewLeaf = Keymap.isModEvent(e);
             this.app.workspace.openLinkText(
-                el.getAttribute("href")!,
+                el.getAttr("href")!,
                 this.file!.path,
                 inNewLeaf,
             )
         });
-        // TODO clicking tags and file links
+        this.containerEl.on('click', 'a.tag', (e, el) => {
+            (this.app as any).internalPlugins.getPluginById('global-search')
+                .instance.openGlobalSearch(`tag:${el.getAttr('href')}`);
+        });
     }
 
     async onClose() {
