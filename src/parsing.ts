@@ -172,7 +172,6 @@ export function parseRecipeMarkdown(
                 result.sections[currentSection].containsHeader = true;
             }
             if (
-                currentColumn == "mainComponents" &&
                 item.textContent?.match(sideColumnRegex)
             ) {
                 currentColumn = "sideComponents";
