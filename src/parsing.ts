@@ -256,6 +256,23 @@ export function parseRecipeMarkdown(
             continue;
         }
 
+        // If it's a callout, that's a top-level div so we need to wrap it or we'll
+        // steal its children without the actual <div class='callout'> around them
+        if (item.hasClass("callout")) {
+            const calloutWrapper = createDiv();
+            calloutWrapper.appendChild(item);
+            // @ts-ignore
+            result.sections[currentSection][currentColumn].push({
+                type: RecipeLeaf,
+                props: { childNodesOf: calloutWrapper, asTag: "div" },
+                origIndex: i,
+            });
+            // because we reparented the callout, if we don't fix the index it'll skip
+            // the next block
+            i -= 1;
+            continue;
+        }
+
         // Add current item to current column
         // @ts-ignore
         result.sections[currentSection][currentColumn].push({
