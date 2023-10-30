@@ -12,6 +12,10 @@
 			root.appendChild(node);
 		});
 
+		for (var dataAttr in childNodesOf.dataset) {
+			root.setAttr("data-" + dataAttr, childNodesOf.dataset[dataAttr]!);
+		}
+
 		return () => {
 			if (root)
 				Array.from(root.childNodes).forEach((node) => {
