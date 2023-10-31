@@ -134,7 +134,9 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
-	class="container markdown-rendered"
+	class={frontmatter?.cssclasses.join(" ")}
+	class:container={true}
+	class:markdown-rendered={true}
 	bind:clientWidth={containerWidth}
 	bind:this={container}
 	on:keypress={handleKeypress}
