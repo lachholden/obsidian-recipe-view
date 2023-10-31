@@ -1,8 +1,14 @@
 <script lang="ts">
+	import { App, MarkdownRenderer, TFile } from "obsidian";
+	import { RecipeView } from "./recipe-view";
+
 	export let thumbnailPath: string | undefined;
 	export let title: string;
 	export let frontmatter: object;
 	export let singleColumn: boolean;
+	export let app: App;
+	export let file: TFile;
+	export let view: RecipeView;
 
 	function formatFrontmatterValue(key: string, value: any) {
 		// See if it's a URL
@@ -33,7 +39,17 @@
 		}
 
 		if (typeof value === "string" || value instanceof String) {
-			return value;
+			const markdownContainer = createSpan();
+			MarkdownRenderer.render(
+				app,
+				value.toString(),
+				markdownContainer,
+				file.path,
+				view
+			);
+			// Will just return what's in the first paragraph, so only really works with
+			// a single line – but imo that's fine
+			return markdownContainer.children.item(0)?.innerHTML || "-";
 		}
 
 		return undefined;

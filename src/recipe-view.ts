@@ -75,6 +75,7 @@ export class RecipeView extends EditableFileView {
                 parsedRecipe: parsedRecipe,
                 file: this.file!,
                 metadata: metadata || undefined,
+                view: this,
             }
         });
 

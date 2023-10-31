@@ -9,6 +9,7 @@
 	import RecipeCardSplitSteps from "./RecipeCardSplitSteps.svelte";
 	import RecipeCardOneColumn from "./RecipeCardOneColumn.svelte";
 	import { ParsedRecipe, ParsedRecipeComponent } from "./parsing";
+	import { RecipeView } from "./recipe-view";
 
 	let plugin: RecipeViewPlugin;
 	store.plugin.subscribe((p) => (plugin = p));
@@ -17,6 +18,7 @@
 	export let parsedRecipe: ParsedRecipe;
 	export let metadata: CachedMetadata | undefined;
 	export let file: TFile;
+	export let view: RecipeView;
 
 	// Recipe scaling - create store here to pass to all children via ctx
 	let scaleNum = 1;
@@ -152,6 +154,9 @@
 				{frontmatter}
 				thumbnailPath={parsedRecipe?.thumbnailPath}
 				singleColumn={true}
+				app={plugin.app}
+				{file}
+				{view}
 			/>
 		</RecipeCardOneColumn>
 	{:else if parsedRecipe?.sections.length <= 3}
@@ -171,6 +176,9 @@
 				{frontmatter}
 				thumbnailPath={parsedRecipe?.thumbnailPath}
 				singleColumn={false}
+				app={plugin.app}
+				{file}
+				{view}
 			/>
 		</RecipeCardTwoColumn>
 	{:else}
@@ -187,6 +195,9 @@
 				{frontmatter}
 				thumbnailPath={parsedRecipe?.thumbnailPath}
 				singleColumn={false}
+				app={plugin.app}
+				{file}
+				{view}
 			/>
 		</RecipeCardSplitSteps>
 	{/if}
