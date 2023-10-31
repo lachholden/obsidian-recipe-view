@@ -54,9 +54,11 @@
 			{#if frontmatter}
 				{#each Object.entries(frontmatter) as [key, value]}
 					{#if formatFrontmatterValue(key, value)}
-						<span class="frontmatter-entry">
-							<span class="key">{key}</span>
-							<span class="value">
+						<span class="title-block-property">
+							<span class="key" data-property-key={key}
+								>{key}</span
+							>
+							<span class="value" data-property-value={value}>
 								<!-- eslint-disable -->
 								{@html formatFrontmatterValue(key, value)}
 							</span>
@@ -89,7 +91,7 @@
 		justify-content: start;
 		gap: var(--size-2-1) var(--size-4-4);
 	}
-	.frontmatter-entry {
+	.title-block-property {
 		display: inline-block;
 		font-size: var(--font-small);
 	}
