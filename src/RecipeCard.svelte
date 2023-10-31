@@ -134,7 +134,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
-	class={frontmatter?.cssclasses.join(" ")}
+	class={frontmatter?.cssclasses?.join(" ")}
 	class:container={true}
 	class:markdown-rendered={true}
 	bind:clientWidth={containerWidth}
