@@ -4,7 +4,7 @@
 
 # 🧑‍🍳 Obsidian Recipe View 🥘
 
-<a href="https://github.com/lachholden/obsidian-recipe-view/releases/latest">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a>
+<a href="obsidian://show-plugin?id=recipe-view">![Obsidian release version badge](https://img.shields.io/github/v/release/lachholden/obsidian-recipe-view?logo=obsidian&color=rgb(125%2C58%2C237))</a>
 <a href="https://github.com/lachholden/obsidian-recipe-view/blob/release/LICENSE">![License](https://img.shields.io/github/license/lachholden/obsidian-recipe-view?color=blue)</a>
 <a href="https://github.com/lachholden/obsidian-recipe-view/actions/workflows/npm_build.yml">![Build status](https://img.shields.io/github/actions/workflow/status/lachholden/obsidian-recipe-view/npm_build.yml)</a>
 [![Documentation Status](https://readthedocs.org/projects/obsidian-recipe-view/badge/?version=latest)](https://obsidian-recipe-view.readthedocs.io/en/latest/?badge=latest)
@@ -40,9 +40,9 @@ Store, write, and manage your recipes in as regular Obsidian notes in **portable
 - ☁️ Write them on your laptop, check ingredients in the store on your phone, and cook from them in the kitchen with your iPad
 
 ## Installation
-This plugin is currently being reviewed for inclusion in the community plugins list.
+This plugin can be installed using the usual Obsidian community plugins browser [here](obsidian://show-plugin?id=recipe-view).
 
-In the meantime, it can be installed using [BRAT](https://github.com/TfTHacker/obsidian42-brat). Just add the URL `https://github.com/lachholden/obsidian-recipe-view` as a beta plugin.
+Beta versions can also be installed using [BRAT](https://github.com/TfTHacker/obsidian42-brat). Just add the URL `https://github.com/lachholden/obsidian-recipe-view` as a beta plugin.
 
 ## Documentation
 To learn how to use the plugin, **[read the documentation here!](https://obsidian-recipe-view.readthedocs.io/)**
