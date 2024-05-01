@@ -11,7 +11,7 @@ Easily scale the ingredient quantities in your recipes using the widget at the t
 * ½ cup – a unicode fraction
 * 3.5 litres – a decimal number
 * 2 3/4 sticks – a mixed text number
-* 1¾ kg – a mixed unicode number (with or without space in between)
+* 1 ¾ kg – a mixed unicode number (requires a space in between the integral and fractional part)
 * 1-1/4 oz. – a mixed number separated by a dash (both text and unicode work)
 
 Scaling display

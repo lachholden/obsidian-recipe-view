@@ -6,7 +6,7 @@ import { Component, MarkdownRenderer } from "obsidian";
 import store from "./store"
 import { Writable, get, writable } from "svelte/store"
 import Fraction from "fraction.js";
-import { deUnicodeFractions, matchQuantities } from "./quantities";
+import { matchQuantities } from "./quantities";
 import ScaledQuantity from "./ScaledQuantity.svelte";
 import { ComponentType } from "svelte";
 
@@ -43,7 +43,7 @@ function parseForQty(n: Node, qtyScaleStore: Writable<Fraction>) {
     if (n.nodeType == Node.TEXT_NODE) {
         const parent = n.parentNode!;
         let currentIndex = 0;
-        n.textContent = deUnicodeFractions(n.textContent!);
+        n.textContent = n.textContent!.normalize("NFKD");
         for (const match of matchQuantities(n.textContent!)) {
             parent.insertBefore(
                 document.createTextNode(
