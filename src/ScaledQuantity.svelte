@@ -6,7 +6,7 @@
 
 	export let value: Fraction;
 	export let format: QtyFormatType;
-	export let unit: string;
+	export let unit: string | null;
 	export let qtyScaleStore;
 
 	export let scale: Fraction = new Fraction(1);
@@ -22,7 +22,7 @@
 			value,
 			format,
 			scale,
-			plugin.settings.renderUnicodeFractions
+			plugin.settings.renderUnicodeFractions,
 		)}</span
 	>{#if unit}
 		<span class="scale-unit">&nbsp;{unit}</span>{/if}</span
