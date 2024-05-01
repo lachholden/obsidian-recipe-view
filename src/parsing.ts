@@ -43,7 +43,7 @@ function parseForQty(n: Node, qtyScaleStore: Writable<Fraction>) {
     if (n.nodeType == Node.TEXT_NODE) {
         const parent = n.parentNode!;
         let currentIndex = 0;
-        n.textContent = n.textContent!.normalize("NFKD").replace("\u2044", "/");
+        n.textContent = n.textContent!.normalize("NFKD").replaceAll("\u2044", "/");
         for (const match of matchQuantities(n.textContent!)) {
             parent.insertBefore(
                 document.createTextNode(
