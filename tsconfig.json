@@ -13,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": true,
     "module": "ESNext",
-    "target": "es2018",
+    "target": "es2022",
     "allowJs": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -22,9 +22,7 @@
     "strictNullChecks": true,
     "lib": [
       "DOM",
-      "ES5",
-      "ES6",
-      "ES7"
+      "ES2022"
     ]
   },
   "include": [
