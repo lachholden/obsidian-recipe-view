@@ -1,6 +1,6 @@
-/** Matches numbers of the forms e.g. 1, 1.5, 1/2, 3 1/2 */
 import Fraction from "fraction.js";
 
+/** Matches numbers of the forms e.g. 1, 1.5, 1/2, 3 1/2, 5-3/4 */
 export const NUMBER = new RegExp(/\d+(([\s-]+\d+)?\/\d+|\.\d+)?/)
 
 /** Matches a whole bunch of common units that you would want to scale in recipes */
@@ -29,46 +29,62 @@ export enum QtyFormatType {
 export function reUnicodeFractions(str: string) {
     return str.replace(/\b(?<n>\d+)\/(?<d>\d+)\b/ig, (m, $1, $2) => {
         return $1
-            .replace("0", "\u2070")
-            .replace("1", "\u00B9")
-            .replace("2", "\u00B2")
-            .replace("3", "\u00B3")
-            .replace("4", "\u2074")
-            .replace("5", "\u2075")
-            .replace("6", "\u2076")
-            .replace("7", "\u2077")
-            .replace("8", "\u2078")
-            .replace("9", "\u2079") + "\u2044" + $2
-                .replace("0", "\u2080")
-                .replace("1", "\u2081")
-                .replace("2", "\u2082")
-                .replace("3", "\u2083")
-                .replace("4", "\u2084")
-                .replace("5", "\u2085")
-                .replace("6", "\u2086")
-                .replace("7", "\u2087")
-                .replace("8", "\u2088")
-                .replace("9", "\u2089")
+            .replaceAll("0", "\u2070")
+            .replaceAll("1", "\u00B9")
+            .replaceAll("2", "\u00B2")
+            .replaceAll("3", "\u00B3")
+            .replaceAll("4", "\u2074")
+            .replaceAll("5", "\u2075")
+            .replaceAll("6", "\u2076")
+            .replaceAll("7", "\u2077")
+            .replaceAll("8", "\u2078")
+            .replaceAll("9", "\u2079") + "\u2044" + $2
+                .replaceAll("0", "\u2080")
+                .replaceAll("1", "\u2081")
+                .replaceAll("2", "\u2082")
+                .replaceAll("3", "\u2083")
+                .replaceAll("4", "\u2084")
+                .replaceAll("5", "\u2085")
+                .replaceAll("6", "\u2086")
+                .replaceAll("7", "\u2087")
+                .replaceAll("8", "\u2088")
+                .replaceAll("9", "\u2089")
     });
 }
 
-function numberStringToQuantityNumber(str: string, unit?: string) {
+/**
+ * Take a string of one of the forms matched by the NUMBER regex and an optional unit,
+ * and return an object with the Fraction value of the number and whether, when scaled,
+ * it should be represented as a fraction or decimal.
+ * 
+ * The preferred format will match the input. If the input is an integer, then
+ * tablespoons/teaspoons/cups/sticks will be fractions, and all other units (or no unit
+ * specified) will be decimals.
+ */
+function quantityStringsToValue(str: string, unit?: string) {
     return {
         value: new Fraction(str.replace(/[-\s]+/g, " ")),
-        format: (str.contains("/") ||
+        format: (str.includes("/") ||
             unit?.match(/tablespoons?|teaspoons?|tb?sp?s?\.?|cups?|sticks?/i) ||
-            !unit)
+            (!unit && !str.includes(".")))
             ? QtyFormatType.FRACTION : QtyFormatType.DECIMAL,
     }
 }
 
+/**
+ * Match all of the quantities present in a string, and return an array of objects
+ * describing them.
+ * 
+ * Requires unicode fractions to have already been normalised to ASCII, which involves
+ * NFKD normalisation + replacing \u2044 with a slash.
+ */
 export function matchQuantities(str: string) {
     return Array.from(str.matchAll(QUANTITY)).map((match) => {
         return {
             index: match.index,
             length: match[0].length,
-            value: numberStringToQuantityNumber(match.groups!.number || match.groups!.startnumber, match.groups!.unit),
-            unit: match.groups!.unit,
+            value: quantityStringsToValue(match.groups!.number || match.groups!.startnumber, match.groups!.unit),
+            unit: match.groups!.unit || null,
         }
     });
 }
