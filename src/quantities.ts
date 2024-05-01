@@ -20,32 +20,12 @@ export enum QtyFormatType {
     DECIMAL,
 }
 
-export function deUnicodeFractions(str: string) {
-    str = str.normalize("NFKD"); // turns special fractions into super/subscripts
-    return str.replace(/(\d+)(.+\u2044.+)\b/ig, "$1 $2")
-        .replace("\u2044", "/")
-        .replace("\u2070", "0")
-        .replace("\u00B9", "1")
-        .replace("\u00B2", "2")
-        .replace("\u00B3", "3")
-        .replace("\u2074", "4")
-        .replace("\u2075", "5")
-        .replace("\u2076", "6")
-        .replace("\u2077", "7")
-        .replace("\u2078", "8")
-        .replace("\u2079", "9")
-        .replace("\u2080", "0")
-        .replace("\u2081", "1")
-        .replace("\u2082", "2")
-        .replace("\u2083", "3")
-        .replace("\u2084", "4")
-        .replace("\u2085", "5")
-        .replace("\u2086", "6")
-        .replace("\u2087", "7")
-        .replace("\u2088", "8")
-        .replace("\u2089", "9")
-}
-
+/**
+ * Replace text fractions in a normalised unicode string with unicode equivalents, built
+ * from super- and sub-script characters + \u2044.
+ * @param str NFKD-normalised unicode string
+ * @returns The same string with text fractions replaced by unicode equivalents
+ */
 export function reUnicodeFractions(str: string) {
     return str.replace(/\b(?<n>\d+)\/(?<d>\d+)\b/ig, (m, $1, $2) => {
         return $1
