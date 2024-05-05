@@ -213,7 +213,7 @@ export function parseRecipeMarkdown(
         ) {
             result.sections[currentSection]["sideComponents"].push({
                 type: CheckableIngredientList,
-                props: { list: item, bullets: false },
+                props: { list: item, bullets: plugin.settings.showBulletsTwoColumn },
                 origIndex: i,
             });
             continue;

@@ -9,6 +9,7 @@ interface RecipeViewPluginSettings {
 	treatH1AsFilename: boolean;
 	renderUnicodeFractions: boolean;
 	singleColumnMaxWidth: number;
+	showBulletsTwoColumn: boolean;
 }
 
 const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
@@ -16,6 +17,7 @@ const DEFAULT_SETTINGS: RecipeViewPluginSettings = {
 	treatH1AsFilename: false,
 	renderUnicodeFractions: true,
 	singleColumnMaxWidth: 600,
+	showBulletsTwoColumn: false,
 }
 
 export default class RecipeViewPlugin extends Plugin {
@@ -144,6 +146,16 @@ class RecipeViewSettingsTab extends PluginSettingTab {
 				.setValue(this.plugin.settings!.renderUnicodeFractions)
 				.onChange(async (value) => {
 					this.plugin.settings!.renderUnicodeFractions = value;
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl)
+			.setName('Display ingredients in two-column view with bullets')
+			.setDesc('If turned on, will display bullets for all checkable ingredient lists – not just in single-column view.')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings!.showBulletsTwoColumn)
+				.onChange(async (value) => {
+					this.plugin.settings!.showBulletsTwoColumn = value;
 					await this.plugin.saveSettings();
 				}));
 

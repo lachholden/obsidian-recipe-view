@@ -16,7 +16,7 @@
 			.item(index)
 			?.setAttr(
 				"data-checked",
-				(e.target as HTMLInputElement).checked ? "true" : "false"
+				(e.target as HTMLInputElement).checked ? "true" : "false",
 			);
 	}
 
@@ -80,5 +80,9 @@
 	ul.bullets > li {
 		list-style-type: square;
 		margin-inline-start: var(--list-indent);
+	}
+
+	:global(.column-side) ul.bullets > li {
+		margin-inline-start: 0px;
 	}
 </style>
