@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import Fraction from "fraction.js";
-import { reUnicodeFractions, matchQuantities, QtyFormatType } from './quantities'
+import { reUnicodeFractions, matchQuantities, QtyFormatType, formatQuantity } from './quantities'
 
 describe('re-unicoding fractions', () => {
     test('converts a lone fraction', () => {
@@ -214,5 +214,50 @@ describe('matching multiple quantities in strings', () => {
                     unit: "tsp"
                 }
             ]);
+    });
+});
+
+describe('formatting scaled quantities', () => {
+    test('decimal to decimal', () => {
+        expect(
+            formatQuantity(new Fraction("0.25"), QtyFormatType.DECIMAL, new Fraction("3.0"), false)
+        ).toBe(
+            "0.75"
+        );
+    });
+    test('int to decimal', () => {
+        expect(
+            formatQuantity(new Fraction("2"), QtyFormatType.DECIMAL, new Fraction("1.25"), false)
+        ).toBe(
+            "2.5"
+        );
+    });
+    test('fraction to fraction exact', () => {
+        expect(
+            formatQuantity(new Fraction("1/3"), QtyFormatType.FRACTION, new Fraction("2"), false)
+        ).toBe(
+            "2/3"
+        );
+    });
+    test('fraction to fraction nearest 1/16', () => {
+        expect(
+            formatQuantity(new Fraction("1/7"), QtyFormatType.FRACTION, new Fraction("2"), false)
+        ).toBe(
+            "5/16"
+        );
+    });
+    test('fraction to fraction not rounding thirds', () => {
+        expect(
+            formatQuantity(new Fraction("1/6"), QtyFormatType.FRACTION, new Fraction("4"), false)
+        ).toBe(
+            "2/3"
+        );
+    });
+    test('int to fraction', () => {
+        expect(
+            formatQuantity(new Fraction("3"), QtyFormatType.FRACTION, new Fraction("0.25"), false)
+        ).toBe(
+            "3/4"
+        );
     });
 });
